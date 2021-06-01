@@ -90,17 +90,17 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#earth-to-mars">Earth to Mars</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#earth-times-to-mars-times">Earth times to Mars times</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#datetime-to-fractional-mars-year">datetime_to_fractional_mars_year</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#datetime-to-whole-mars-year">datetime_to_whole_mars_year</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#datetime-to-sol-number">datetime_to_sol_number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#datetime-to-sol">datetime_to_sol</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#datetime-to-solar-longitude">datetime_to_solar_longitude</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sols-between-datetimes">sols_between_datetimes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sols-since-datetime">sols_since_datetime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sols-after-mars-year-0">sols_after_mars_year_0</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mars-to-earth">Mars to Earth</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mars-times-to-earth-times">Mars times to Earth times</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mars-year-to-datetime">mars_year_to_datetime</a></li>
 </ul>
 </li>
@@ -176,10 +176,11 @@
             
   <div class="section" id="api-reference">
 <h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>The mer package reference.</p>
-<div class="section" id="earth-to-mars">
-<h2>Earth to Mars<a class="headerlink" href="#earth-to-mars" title="Permalink to this headline">¶</a></h2>
-<p>Convert Earth datetime objects into Martian times.</p>
+<p>You can find all functions present in the package at this page.</p>
+<div class="section" id="earth-times-to-mars-times">
+<h2>Earth times to Mars times<a class="headerlink" href="#earth-times-to-mars-times" title="Permalink to this headline">¶</a></h2>
+<p>These are a series of functions to convert Earth datetime objects into Martian
+times.</p>
 <div class="section" id="datetime-to-fractional-mars-year">
 <h3>datetime_to_fractional_mars_year<a class="headerlink" href="#datetime-to-fractional-mars-year" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
@@ -198,7 +199,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Convert a datetime to a fractional Mars year.</p>
+<p>Convert a datetime into its corresponding fractional Mars year.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_fractional_mars_year</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
@@ -226,7 +227,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Convert a datetime to a “whole” Mars year.</p>
+<p>Convert a datetime into its corresponding “whole” Mars year.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_whole_mars_year</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
@@ -236,12 +237,12 @@
 </dd></dl>
 
 </div>
-<div class="section" id="datetime-to-sol-number">
-<h3>datetime_to_sol_number<a class="headerlink" href="#datetime-to-sol-number" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="datetime-to-sol">
+<h3>datetime_to_sol<a class="headerlink" href="#datetime-to-sol" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="mer.datetime_to_sol_number">
-<span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_sol_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_sol_number" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the sol number (day of the Martian year) of an input datetime.</p>
+<dt class="sig sig-object py" id="mer.datetime_to_sol">
+<span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_sol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the sol (day of the Martian year) of an input datetime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
@@ -257,10 +258,10 @@
 <p>This function begins counting from 0. Beware that some places like LMD
 use the convention that the new year starts on sol 1.</p>
 <p class="rubric">Examples</p>
-<p>Convert a datetime to a sol number of a Mars year.</p>
+<p>Convert a datetime into its corresponding sol.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_sol_number</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_sol</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
 <span class="go">275.86418326244836</span>
 </pre></div>
 </div>
@@ -285,7 +286,7 @@ use the convention that the new year starts on sol 1.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Convert a date to solar longitude.</p>
+<p>Convert a datetime into its corresponding solar longitude.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_solar_longitude</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
@@ -369,12 +370,29 @@ minute, or second of the start or end of the mission so I set them to 0.</p>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Find the number of sols after Mars year 0 that MAVEN arrived at Mars.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sols</span> <span class="o">=</span> <span class="n">mer</span><span class="o">.</span><span class="n">sols_after_mars_year_0</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sols</span>
+<span class="go">21781.872772174716</span>
+</pre></div>
+</div>
+<p>Get the Mars year at the arrival date. Note that it’s more efficient to use
+the built-in function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sols</span> <span class="o">/</span> <span class="n">mer</span><span class="o">.</span><span class="n">sols_per_martian_year</span>
+<span class="go">32.57857586833816</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_fractional_mars_year</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="go">32.57857586833816</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
 </div>
-<div class="section" id="mars-to-earth">
-<h2>Mars to Earth<a class="headerlink" href="#mars-to-earth" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mars-times-to-earth-times">
+<h2>Mars times to Earth times<a class="headerlink" href="#mars-times-to-earth-times" title="Permalink to this headline">¶</a></h2>
 <p>Convert Martian times into Earth datetime objects.</p>
 <div class="section" id="mars-year-to-datetime">
 <h3>mars_year_to_datetime<a class="headerlink" href="#mars-year-to-datetime" title="Permalink to this headline">¶</a></h3>
@@ -386,8 +404,11 @@ minute, or second of the start or end of the mission so I set them to 0.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mars_year</strong> (<em>float</em>) – Any Mars year.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>datetime.datetime</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – Raised if <code class="code docutils literal notranslate"><span class="pre">mars_year</span></code> is not an int or a float.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>datetime.datetime</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -405,9 +426,7 @@ minute, or second of the start or end of the mission so I set them to 0.</p>
 <div class="section" id="constants">
 <h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
 <p>A collection of Martian time constants. Note that these can be accessed via
-the <code class="code docutils literal notranslate"><span class="pre">constants</span></code> module (as shown) or used directly from mer’s namespace
-(I can’t get the docstrings to render without this; it’s a
-<a class="reference external" href="https://github.com/sphinx-doc/sphinx/issues/6495">known Sphinx issue</a>).</p>
+the <code class="code docutils literal notranslate"><span class="pre">constants</span></code> module (as shown) or used directly from mer’s namespace.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="mer.constants.date_of_start_of_mars_year_0">
 <span class="sig-prename descclassname"><span class="pre">mer.constants.</span></span><span class="sig-name descname"><span class="pre">date_of_start_of_mars_year_0</span></span><em class="property"><span class="pre">:</span> <span class="pre">datetime.datetime</span></em><em class="property"> <span class="pre">=</span> <span class="pre">datetime.datetime(1953,</span> <span class="pre">5,</span> <span class="pre">24,</span> <span class="pre">11,</span> <span class="pre">57,</span> <span class="pre">7,</span> <span class="pre">200011)</span></em><a class="headerlink" href="#mer.constants.date_of_start_of_mars_year_0" title="Permalink to this definition">¶</a></dt>

@@ -5,7 +5,7 @@ from mer.constants import seconds_per_sol, sols_per_martian_year, \
 
 # TODO: in python3.10, using int | float
 def mars_year_to_datetime(mars_year: float) -> datetime.datetime:
-    """Compute the datetime of an input Mars year.
+    """Compute the datetime corresponding to an input Mars year.
 
     Parameters
     ----------
@@ -19,7 +19,7 @@ def mars_year_to_datetime(mars_year: float) -> datetime.datetime:
 
     Examples
     --------
-    Convert a Mars year to a datetime.
+    Convert a Mars year into its corresponding datetime.
 
     >>> import datetime, mer
     >>> mars_year = 35.41260282427384

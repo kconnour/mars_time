@@ -1,18 +1,17 @@
 """Convert UTC times into Martian times.
 
 This module provides functions to convert coordinated universal time (UTC) into
-Martian sols, Martian years, and solar longitude.
+Martian sols, Mars years, and solar longitude.
 
 """
 import datetime
 import math
-import numpy as np
 from mer.constants import seconds_per_sol, sols_per_martian_year, \
     date_of_start_of_mars_year_0
 
 
 def datetime_to_fractional_mars_year(date: datetime.datetime) -> float:
-    """Compute the fractional Mars year of an input datetime.
+    """Compute the fractional Mars year corresponding to an input datetime.
 
     Parameters
     ----------
@@ -26,7 +25,7 @@ def datetime_to_fractional_mars_year(date: datetime.datetime) -> float:
 
     Examples
     --------
-    Convert a datetime to a fractional Mars year.
+    Convert a datetime into its corresponding fractional Mars year.
 
     >>> import datetime, mer
     >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
@@ -38,7 +37,7 @@ def datetime_to_fractional_mars_year(date: datetime.datetime) -> float:
 
 
 def datetime_to_whole_mars_year(date: datetime.datetime) -> int:
-    """Compute the integer Mars year of an input datetime.
+    """Compute the integer Mars year corresponding to an input datetime.
 
     Parameters
     ----------
@@ -52,7 +51,7 @@ def datetime_to_whole_mars_year(date: datetime.datetime) -> int:
 
     Examples
     --------
-    Convert a datetime to a "whole" Mars year.
+    Convert a datetime into its corresponding "whole" Mars year.
 
     >>> import datetime, mer
     >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
@@ -63,8 +62,9 @@ def datetime_to_whole_mars_year(date: datetime.datetime) -> int:
     return math.floor(datetime_to_fractional_mars_year(date))
 
 
-def datetime_to_sol_number(date: datetime.datetime) -> float:
-    """Compute the sol number (day of the Martian year) of an input datetime.
+def datetime_to_sol(date: datetime.datetime) -> float:
+    """Compute the sol (day of the Martian year) corresponding to an input
+    datetime.
 
     Parameters
     ----------
@@ -83,11 +83,11 @@ def datetime_to_sol_number(date: datetime.datetime) -> float:
 
     Examples
     --------
-    Convert a datetime to a sol number of a Mars year.
+    Convert a datetime into its corresponding sol.
 
     >>> import datetime, mer
     >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
-    >>> mer.datetime_to_sol_number(date)
+    >>> mer.datetime_to_sol(date)
     275.86418326244836
 
     """
@@ -95,7 +95,7 @@ def datetime_to_sol_number(date: datetime.datetime) -> float:
 
 
 def datetime_to_solar_longitude(date: datetime.datetime) -> float:
-    r"""Compute the Martian solar longitude of an input datetime.
+    r"""Compute the Martian solar longitude corresponding to an input datetime.
 
     Parameters
     ----------
@@ -109,7 +109,7 @@ def datetime_to_solar_longitude(date: datetime.datetime) -> float:
 
     Examples
     --------
-    Convert a date to solar longitude.
+    Convert a datetime into its corresponding solar longitude.
 
     >>> import datetime, mer
     >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
@@ -123,10 +123,11 @@ def datetime_to_solar_longitude(date: datetime.datetime) -> float:
     _DateValidator(date)
     j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0)
     elapsed_days = (date - j2000).total_seconds() / 86400
-    m = np.radians(19.41 + 0.5240212 * elapsed_days)
+    m = math.radians(19.41 + 0.5240212 * elapsed_days)
     a = 270.39 + 0.5240384 * elapsed_days
-    ls = a + (10.691 + 3.7 * 10 ** -7 * elapsed_days) * np.sin(m) + \
-        0.623 * np.sin(2 * m) + 0.05 * np.sin(3 * m) + 0.005 * np.sin(4 * m)
+    ls = a + (10.691 + 3.7 * 10 ** -7 * elapsed_days) * math.sin(m) + \
+        0.623 * math.sin(2 * m) + 0.05 * math.sin(3 * m) + \
+        0.005 * math.sin(4 * m)
     return ls % 360
 
 
@@ -195,6 +196,24 @@ def sols_after_mars_year_0(date: datetime.datetime) -> float:
     ------
     TypeError
         Raised if :code:`date` is not a datetime.datetime.
+
+    Examples
+    --------
+    Find the number of sols after Mars year 0 that MAVEN arrived at Mars.
+
+    >>> import datetime, mer
+    >>> date = datetime.datetime(2014, 9, 2, 2, 24, 0)
+    >>> sols = mer.sols_after_mars_year_0(date)
+    >>> sols
+    21781.872772174716
+
+    Get the Mars year at the arrival date. Note that it's more efficient to use
+    the built-in function.
+
+    >>> sols / mer.sols_per_martian_year
+    32.57857586833816
+    >>> mer.datetime_to_fractional_mars_year(date)
+    32.57857586833816
 
     """
     return sols_between_datetimes(date_of_start_of_mars_year_0, date)
