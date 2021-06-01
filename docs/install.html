@@ -89,7 +89,10 @@
             
               <p class="caption"><span class="caption-text">Useful links</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api-reference.html">API reference</a></li>
 </ul>
 
@@ -160,7 +163,26 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Use pip locally. I shall add it to PyPI soon.</p>
+<p>The easiest way to install mer is to use pip. Simply use
+<code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mer</span></code> and you should be good to go!</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<p>mer doesn’t require any external libraries for its standard installation.
+However, to rebuild documentation or run tests, external libraries are needed.
+The following lists the installation options.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>docs</strong></dt><dd><p>Install all libraries needed to build the documentation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test</strong></dt><dd><p>Install all libraries needed to run the unit tests.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
 </div>
 
 

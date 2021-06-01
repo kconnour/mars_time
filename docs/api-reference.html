@@ -186,7 +186,7 @@ times.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.datetime_to_fractional_mars_year">
 <span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_fractional_mars_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_fractional_mars_year" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the fractional Mars year of an input datetime.</p>
+<dd><p>Compute the fractional Mars year corresponding to an input datetime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
@@ -214,7 +214,7 @@ times.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.datetime_to_whole_mars_year">
 <span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_whole_mars_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_whole_mars_year" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the integer Mars year of an input datetime.</p>
+<dd><p>Compute the integer Mars year corresponding to an input datetime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
@@ -242,7 +242,8 @@ times.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.datetime_to_sol">
 <span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_sol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_sol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the sol (day of the Martian year) of an input datetime.</p>
+<dd><p>Compute the sol (day of the Martian year) corresponding to an input
+datetime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
@@ -273,7 +274,7 @@ use the convention that the new year starts on sol 1.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.datetime_to_solar_longitude">
 <span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">datetime_to_solar_longitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.datetime_to_solar_longitude" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the Martian solar longitude of an input datetime.</p>
+<dd><p>Compute the Martian solar longitude corresponding to an input datetime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
@@ -380,7 +381,7 @@ minute, or second of the start or end of the mission so I set them to 0.</p>
 </pre></div>
 </div>
 <p>Get the Mars year at the arrival date. Note that it’s more efficient to use
-the built-in function</p>
+the built-in function.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sols</span> <span class="o">/</span> <span class="n">mer</span><span class="o">.</span><span class="n">sols_per_martian_year</span>
 <span class="go">32.57857586833816</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">datetime_to_fractional_mars_year</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
@@ -399,7 +400,7 @@ the built-in function</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.mars_year_to_datetime">
 <span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">mars_year_to_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mars_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.mars_year_to_datetime" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the datetime of an input Mars year.</p>
+<dd><p>Compute the datetime corresponding to an input Mars year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mars_year</strong> (<em>float</em>) – Any Mars year.</p>
@@ -412,7 +413,7 @@ the built-in function</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Convert a Mars year to a datetime.</p>
+<p>Convert a Mars year into its corresponding datetime.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mars_year</span> <span class="o">=</span> <span class="mf">35.41260282427384</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">mars_year_to_datetime</span><span class="p">(</span><span class="n">mars_year</span><span class="p">)</span>
