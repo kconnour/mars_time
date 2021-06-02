@@ -1,7 +1,7 @@
 import datetime
 import pytest
 from mer.constants import date_of_start_of_mars_year_0
-from mer.misc import sols_after_mars_year_0, sols_between_datetimes,\
+from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
     sols_since_datetime
 
 
