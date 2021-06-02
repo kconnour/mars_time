@@ -37,7 +37,7 @@ sols_after_mars_year_0
 
 Mars times to Earth times
 *************************
-Convert Martian times into Earth datetime objects.
+.. automodule:: mer.mars_to_earth
 
 mars_year_to_datetime
 ---------------------
@@ -45,8 +45,10 @@ mars_year_to_datetime
 
 Constants
 *********
-A collection of Martian time constants. Note that these can be accessed via
-the :code:`constants` module (as shown) or used directly from mer's namespace.
+.. automodule:: mer.constants
+
+Note that these can be accessed via the :code:`constants` module (as shown)
+or used directly from mer's namespace.
 
 .. autodata:: mer.constants.date_of_start_of_mars_year_0
 .. autodata:: mer.constants.martian_sol_length

@@ -1,3 +1,6 @@
+"""A collection of Martian time constants. Except where noted, these values
+come directly or indirectly from the `Mars fact sheet
+<https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
 import datetime
 
 
@@ -7,8 +10,7 @@ date_of_start_of_mars_year_0: datetime.datetime = \
 <https://doi.org/10.1016/j.icarus.2014.12.014>`_."""
 
 martian_sol_length: float = 24.6597
-"""Length of a Martian sol [hours]. This value comes from the `Mars fact sheet
-<https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
+"""Length of a Martian sol [hours]."""
 
 seconds_per_sol: float = martian_sol_length / 24 * 86400
 """Number of seconds per Martian sol."""
