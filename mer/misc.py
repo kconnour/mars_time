@@ -1,6 +1,6 @@
+"""Miscellaneous functions for getting sol differences."""
 import datetime
 from mer.constants import date_of_start_of_mars_year_0, seconds_per_sol
-from mer._validators import DatetimeValidator
 
 
 def sols_after_mars_year_0(dt: datetime.datetime) -> float:
@@ -10,42 +10,45 @@ def sols_after_mars_year_0(dt: datetime.datetime) -> float:
     Parameters
     ----------
     dt
-        Any date.
+        Any datetime.
 
     Raises
     ------
     TypeError
-        Raised if :code:`date` is not a datetime.datetime.
+        Raised if :code:`dt` is not a datetime.datetime.
 
     Examples
     --------
     Find the number of sols after Mars year 0 that MAVEN arrived at Mars.
 
     >>> import datetime, mer
-    >>> dt = datetime.datetime(2014, 9, 2, 2, 24, 0)
-    >>> sols = mer.sols_after_mars_year_0(dt)
-    >>> sols
+    >>> maven_arrival_datetime = datetime.datetime(2014, 9, 2, 2, 24, 0)
+    >>> mer.sols_after_mars_year_0(maven_arrival_datetime)
     21781.872772174716
 
     """
-    return sols_between_datetimes(date_of_start_of_mars_year_0, dt)
+    try:
+        return sols_between_datetimes(date_of_start_of_mars_year_0, dt)
+    except TypeError as type_error:
+        message = 'dt must be a datetime.datetime.'
+        raise TypeError(message) from type_error
 
 
-def sols_between_datetimes(early_date: datetime.datetime,
-                           later_date: datetime.datetime) -> float:
+def sols_between_datetimes(early_dt: datetime.datetime,
+                           later_dt: datetime.datetime) -> float:
     """Compute the number of sols between two datetimes.
 
     Parameters
     ----------
-    early_date
-        The earlier of the two dates.
-    later_date
-        The latter of the two dates.
+    early_dt
+        The earlier of the two datetimes.
+    later_dt
+        The latter of the two datetimes.
 
     Raises
     ------
     TypeError
-        Raised if either :code:`early_date` or :code:`later_date` are not a
+        Raised if either :code:`early_dt` or :code:`later_dt` are not a
         datetime.datetime.
 
     Examples
@@ -61,11 +64,14 @@ def sols_between_datetimes(early_date: datetime.datetime,
 
     """
     try:
-        elapsed_seconds = (later_date - early_date).total_seconds()
+        elapsed_seconds = (later_dt - early_dt).total_seconds()
         return elapsed_seconds / seconds_per_sol
     except TypeError as type_error:
-        message = 'At least one of the inputs is not a datetime.datetime.'
+        message = 'Both inputs must be a datetime.datetime.'
         raise TypeError(message) from type_error
+    except AttributeError as attr_error:
+        message = 'Both inputs must be a datetime.datetime.'
+        raise TypeError(message) from attr_error
 
 
 def sols_since_datetime(date: datetime.datetime) -> float:

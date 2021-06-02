@@ -2,10 +2,9 @@ API reference
 =============
 You can find all functions present in the package at this page.
 
-Earth times to Mars times
-*************************
-These are a series of functions to convert Earth datetime objects into Martian
-times.
+Earth time to Mars time
+***********************
+.. automodule:: mer.earth_to_mars
 
 datetime_to_fractional_mars_year
 --------------------------------
@@ -23,20 +22,8 @@ datetime_to_solar_longitude
 ---------------------------
 .. autofunction:: mer.datetime_to_solar_longitude
 
-sols_between_datetimes
-----------------------
-.. autofunction:: mer.sols_between_datetimes
-
-sols_since_datetime
--------------------
-.. autofunction:: mer.sols_since_datetime
-
-sols_after_mars_year_0
-----------------------
-.. autofunction:: mer.sols_after_mars_year_0
-
-Mars times to Earth times
-*************************
+Mars time to Earth time
+***********************
 .. automodule:: mer.mars_to_earth
 
 mars_year_to_datetime

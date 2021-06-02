@@ -2,7 +2,7 @@
 import datetime
 import math
 from mer.constants import sols_per_martian_year
-#sols_after_mars_year_0
+from mer.sols import sols_after_mars_year_0
 
 
 def datetime_to_fractional_mars_year(date: datetime.datetime) -> float:
@@ -124,30 +124,3 @@ def datetime_to_solar_longitude(date: datetime.datetime) -> float:
         0.623 * math.sin(2 * m) + 0.05 * math.sin(3 * m) + \
         0.005 * math.sin(4 * m)
     return ls % 360
-
-
-class _DateValidator:
-    """Ensure an input date is a valid UTC datetime.
-
-    """
-    def __init__(self, date: datetime.datetime):
-        """
-        Parameters
-        ----------
-        date
-            Any date.
-
-        Raises
-        ------
-        TypeError
-            Raised if date is not a datetime.date.
-
-        """
-        self.date = date
-
-        self.__raise_type_error_if_not_datetime_date()
-
-    def __raise_type_error_if_not_datetime_date(self):
-        if not isinstance(self.date, datetime.datetime):
-            message = 'date must be a datetime.datetime.'
-            raise TypeError(message)
