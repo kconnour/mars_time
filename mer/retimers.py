@@ -2,6 +2,7 @@
 representations."""
 import datetime
 import math
+import pytz
 from mer.constants import date_of_start_of_mars_year_0, sols_per_martian_year, \
     seconds_per_sol
 
@@ -23,14 +24,18 @@ class EarthDatetime:
             Raised if :code:`dt` is not a datetime.datetime.
 
         """
-        self.__dt = dt
+        self.__raise_type_error_if_not_datetime(dt)
+        self.__dt = self.__make_aware_timezone(dt)
 
-        self.__raise_type_error_if_not_datetime()
-
-    def __raise_type_error_if_not_datetime(self) -> None:
-        if not isinstance(self.__dt, datetime.datetime):
+    @staticmethod
+    def __raise_type_error_if_not_datetime(dt) -> None:
+        if not isinstance(dt, datetime.datetime):
             message = 'dt must be a datetime.datetime.'
             raise TypeError(message)
+
+    @staticmethod
+    def __make_aware_timezone(dt):
+        return dt.replace(tzinfo=pytz.UTC) if dt.tzinfo is None else dt
 
     def __str__(self):
         return f'{self.__dt}'
@@ -105,7 +110,7 @@ class EarthDatetime:
         The equation used to convert to L\ :sub:`s` can be found in `this paper
         <https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/97GL01950>`_.
         """
-        j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0)
+        j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, pytz.UTC)
         elapsed_days = (self.__dt - j2000).total_seconds() / 86400
         m = math.radians(19.41 + 0.5240212 * elapsed_days)
         a = 270.39 + 0.5240384 * elapsed_days
@@ -201,3 +206,15 @@ def sols_since_datetime(date: datetime.datetime) -> float:
 
     """
     return sols_between_datetimes(date, datetime.datetime.utcnow())
+
+
+if __name__ == '__main__':
+    d = datetime.datetime(2000, 1, 1, 0, 0, 0, 0, tzinfo=pytz.timezone('US/Eastern'))
+    e = EarthDatetime(d)
+    print(e)
+    print(e.to_sol())
+
+    d = datetime.datetime(2000, 1, 1, 0, 0, 0, 0)
+    e = EarthDatetime(d)
+    print(e)
+    print(e.to_sol())
