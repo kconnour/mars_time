@@ -1,50 +1,32 @@
 API reference
 =============
-You can find all functions present in the package at this page.
+You can find all classes present in the package at this page. In general, all
+classes have methods to convert to all other time representations.
 
-Earth times to Mars times
-*************************
-These are a series of functions to convert Earth datetime objects into Martian
-times.
+EarthDatetime
+-------------
+.. autoclass:: mer.EarthDatetime
+   :members:
+   :member-order: bysource
 
-datetime_to_fractional_mars_year
---------------------------------
-.. autofunction:: mer.datetime_to_fractional_mars_year
-
-datetime_to_whole_mars_year
----------------------------
-.. autofunction:: mer.datetime_to_whole_mars_year
-
-datetime_to_sol
+sol differences
 ---------------
-.. autofunction:: mer.datetime_to_sol
+A collection of functions for converting sol differences.
 
-datetime_to_solar_longitude
----------------------------
-.. autofunction:: mer.datetime_to_solar_longitude
+sols_after_mars_year_0
+**********************
+.. autofunction:: mer.sols_after_mars_year_0
 
 sols_between_datetimes
-----------------------
+**********************
 .. autofunction:: mer.sols_between_datetimes
 
 sols_since_datetime
--------------------
+*******************
 .. autofunction:: mer.sols_since_datetime
 
-sols_after_mars_year_0
-----------------------
-.. autofunction:: mer.sols_after_mars_year_0
-
-Mars times to Earth times
-*************************
-.. automodule:: mer.mars_to_earth
-
-mars_year_to_datetime
----------------------
-.. autofunction:: mer.mars_year_to_datetime
-
 Constants
-*********
+---------
 .. automodule:: mer.constants
 
 Note that these can be accessed via the :code:`constants` module (as shown)

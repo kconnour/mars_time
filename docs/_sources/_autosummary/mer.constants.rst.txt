@@ -1,0 +1,32 @@
+mer.constants
+=============
+
+.. automodule:: mer.constants
+
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      date_of_start_of_mars_year_0
+      martian_sol_length
+      seconds_per_sol
+      sols_per_martian_year
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
