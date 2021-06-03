@@ -23,6 +23,39 @@ class EarthDatetime:
         TypeError
             Raised if :code:`dt` is not a datetime.datetime.
 
+        Notes
+        -----
+        :code:`dt` can be "aware" (have time zone information included with it)
+        or "unaware" (have no associated time zone information). If the input is
+        unaware, it is assumed to be a UTC time and will have that info added to
+        it.
+
+        Examples
+        --------
+        This object simply accepts datetimes. You can include time zone
+        information as shown below.
+
+        >>> import datetime, pytz, mer
+        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
+        >>> aware_dt = EarthDatetime(dt)
+        >>> print(aware_dt)
+        2020-01-01 00:00:00+00:00
+
+        If no time zone information is included, the datetime is assumed to be
+        in UTC.
+
+        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
+        >>> unaware_dt = EarthDatetime(dt)
+        >>> print(aware_dt)
+        2020-01-01 00:00:00+00:00
+
+        You can also include non-UTC timezones.
+
+        >>> eastern = pytz.timezone('US/Eastern')
+        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
+        >>> print(EarthDatetime(dt))
+        2020-01-01 00:00:00-04:56
+
         """
         self.__raise_type_error_if_not_datetime(dt)
         self.__dt = self.__make_aware_timezone(dt)
@@ -47,9 +80,9 @@ class EarthDatetime:
         --------
         Convert a datetime into its corresponding fractional Mars year.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
-        >>> EarthDatetime(date).to_fractional_mars_year()
+        >>> import datetime, pytz, mer
+        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
+        >>> EarthDatetime(dt).to_fractional_mars_year()
         35.41260282427384
 
         """
@@ -62,8 +95,8 @@ class EarthDatetime:
         --------
         Convert a datetime into its corresponding "whole" Mars year.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
+        >>> import datetime, pytz, mer
+        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
         >>> EarthDatetime(date).to_whole_mars_year()
         35
 
@@ -83,8 +116,8 @@ class EarthDatetime:
         --------
         Convert a datetime into its corresponding sol.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
+        >>> import datetime, pytz, mer
+        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
         >>> EarthDatetime(date).to_sol()
         275.86418326244836
 
@@ -100,8 +133,8 @@ class EarthDatetime:
         --------
         Convert a datetime into its corresponding solar longitude.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0)
+        >>> import datetime, pytz, mer
+        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
         >>> EarthDatetime(date).to_solar_longitude()
         128.8354595387973
 
@@ -139,7 +172,7 @@ def sols_after_mars_year_0(dt: datetime.datetime) -> float:
     Find the number of sols after Mars year 0 that MAVEN arrived at Mars.
 
     >>> import datetime, mer
-    >>> maven_arrival_datetime = datetime.datetime(2014, 9, 2, 2, 24, 0)
+    >>> maven_arrival_datetime = datetime.datetime(2014, 9, 2, 2, 24, 0, 0, tzinfo=pytz.UTC)
     >>> mer.sols_after_mars_year_0(maven_arrival_datetime)
     21781.872772174716
 
@@ -174,8 +207,8 @@ def sols_between_datetimes(early_dt: datetime.datetime,
     minute, or second of the start or end of the mission so I set them to 0.
 
     >>> import datetime, mer
-    >>> opportunity_start = datetime.datetime(2004, 1, 25, 0, 0, 0)
-    >>> opportunity_end = datetime.datetime(2018, 6, 10, 0, 0, 0)
+    >>> opportunity_start = datetime.datetime(2004, 1, 25, 0, 0, 0, 0, tzinfo=pytz.UTC)
+    >>> opportunity_end = datetime.datetime(2018, 6, 10, 0, 0, 0, 0, tzinfo=pytz.UTC)
     >>> mer.sols_between_datetimes(opportunity_start, opportunity_end)
     5109.551211085292
 
@@ -206,15 +239,3 @@ def sols_since_datetime(date: datetime.datetime) -> float:
 
     """
     return sols_between_datetimes(date, datetime.datetime.utcnow())
-
-
-if __name__ == '__main__':
-    d = datetime.datetime(2000, 1, 1, 0, 0, 0, 0, tzinfo=pytz.timezone('US/Eastern'))
-    e = EarthDatetime(d)
-    print(e)
-    print(e.to_sol())
-
-    d = datetime.datetime(2000, 1, 1, 0, 0, 0, 0)
-    e = EarthDatetime(d)
-    print(e)
-    print(e.to_sol())

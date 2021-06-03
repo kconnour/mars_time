@@ -1,0 +1,29 @@
+mer.mars\_to\_earth
+===================
+
+.. automodule:: mer.mars_to_earth
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      mars_year_to_datetime
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -185,15 +185,45 @@ classes have methods to convert to all other time representations.</p>
 <dd class="field-even"><p><strong>TypeError</strong> – Raised if <code class="code docutils literal notranslate"><span class="pre">dt</span></code> is not a datetime.datetime.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p><code class="code docutils literal notranslate"><span class="pre">dt</span></code> can be “aware” (have time zone information included with it)
+or “unaware” (have no associated time zone information). If the input is
+unaware, it is assumed to be a UTC time and will have that info added to
+it.</p>
+<p class="rubric">Examples</p>
+<p>This object simply accepts datetimes. You can include time zone
+information as shown below.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">pytz</span><span class="o">,</span> <span class="nn">mer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aware_dt</span> <span class="o">=</span> <span class="n">EarthDatetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aware_dt</span><span class="p">)</span>
+<span class="go">2020-01-01 00:00:00+00:00</span>
+</pre></div>
+</div>
+<p>If no time zone information is included, the datetime is assumed to be
+in UTC.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unaware_dt</span> <span class="o">=</span> <span class="n">EarthDatetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aware_dt</span><span class="p">)</span>
+<span class="go">2020-01-01 00:00:00+00:00</span>
+</pre></div>
+</div>
+<p>You can also include non-UTC timezones.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eastern</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;US/Eastern&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">eastern</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">EarthDatetime</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+<span class="go">2020-01-01 00:00:00-04:56</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="mer.EarthDatetime.to_fractional_mars_year">
 <span class="sig-name descname"><span class="pre">to_fractional_mars_year</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mer.EarthDatetime.to_fractional_mars_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the fractional Mars year corresponding to the input datetime.</p>
 <p class="rubric">Examples</p>
 <p>Convert a datetime into its corresponding fractional Mars year.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">mer</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">EarthDatetime</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">to_fractional_mars_year</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">pytz</span><span class="o">,</span> <span class="nn">mer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EarthDatetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">to_fractional_mars_year</span><span class="p">()</span>
 <span class="go">35.41260282427384</span>
 </pre></div>
 </div>
@@ -366,7 +396,7 @@ come directly or indirectly from the <a class="reference external" href="https:/
 or used directly from mer’s namespace.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="mer.constants.date_of_start_of_mars_year_0">
-<span class="sig-prename descclassname"><span class="pre">mer.constants.</span></span><span class="sig-name descname"><span class="pre">date_of_start_of_mars_year_0</span></span><em class="property"><span class="pre">:</span> <span class="pre">datetime.datetime</span></em><em class="property"> <span class="pre">=</span> <span class="pre">datetime.datetime(1953,</span> <span class="pre">5,</span> <span class="pre">24,</span> <span class="pre">11,</span> <span class="pre">57,</span> <span class="pre">7,</span> <span class="pre">200011)</span></em><a class="headerlink" href="#mer.constants.date_of_start_of_mars_year_0" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">mer.constants.</span></span><span class="sig-name descname"><span class="pre">date_of_start_of_mars_year_0</span></span><em class="property"><span class="pre">:</span> <span class="pre">datetime.datetime</span></em><em class="property"> <span class="pre">=</span> <span class="pre">datetime.datetime(1953,</span> <span class="pre">5,</span> <span class="pre">24,</span> <span class="pre">11,</span> <span class="pre">57,</span> <span class="pre">7,</span> <span class="pre">200011,</span> <span class="pre">tzinfo=&lt;UTC&gt;)</span></em><a class="headerlink" href="#mer.constants.date_of_start_of_mars_year_0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time of the start of Mars year 0. This value comes from <a class="reference external" href="https://doi.org/10.1016/j.icarus.2014.12.014">this article</a>.</p>
 </dd></dl>
 

@@ -1,4 +1,5 @@
 import datetime
+import pytz
 import pytest
 from mer.constants import date_of_start_of_mars_year_0
 from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
@@ -8,7 +9,7 @@ from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
 class TestSolsAfterMarsYear0:
     @pytest.fixture
     def maven_arrival_datetime(self):
-        yield datetime.datetime(2014, 9, 2, 2, 24, 0)
+        yield datetime.datetime(2014, 9, 2, 2, 24, 0, 0, pytz.UTC)
 
     def test_start_of_mars_year_0_returns_0(self):
         assert sols_after_mars_year_0(date_of_start_of_mars_year_0) == 0
