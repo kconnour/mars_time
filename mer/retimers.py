@@ -46,8 +46,10 @@ class EarthDatetime:
 
         >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
         >>> unaware_dt = EarthDatetime(dt)
-        >>> print(aware_dt)
+        >>> print(unaware_dt)
         2020-01-01 00:00:00+00:00
+        >>> aware_dt == unaware_dt
+        True
 
         You can also include non-UTC timezones.
 
@@ -72,6 +74,10 @@ class EarthDatetime:
 
     def __str__(self):
         return f'{self.__dt}'
+
+    def __eq__(self, other):
+        return self.__dt == other.__dt if isinstance(other, EarthDatetime) \
+            else False
 
     def to_fractional_mars_year(self) -> float:
         """Compute the fractional Mars year corresponding to the input datetime.
