@@ -3,10 +3,11 @@ representations."""
 import datetime
 import math
 import pytz
-from mer.constants import date_of_start_of_mars_year_0, sols_per_martian_year, \
+from mer.constants import mars_year_0_start, sols_per_martian_year, \
     seconds_per_sol
 
 
+# TODO: remove the print statements in the examples
 class EarthDatetime:
     """Convert Earth datetimes into Martian times.
 
@@ -26,7 +27,7 @@ class EarthDatetime:
         Notes
         -----
         :code:`dt` can be "aware" (have time zone information included with it)
-        or "unaware" (have no associated time zone information). If the input is
+        or "unaware" (have no associated time zone information). If it is
         unaware, it is assumed to be a UTC time and will have that info added to
         it.
 
@@ -134,7 +135,6 @@ class EarthDatetime:
         r"""Compute the Martian solar longitude corresponding to the input
         datetime.
 
-
         Examples
         --------
         Convert a datetime into its corresponding solar longitude.
@@ -157,6 +157,115 @@ class EarthDatetime:
             0.623 * math.sin(2 * m) + 0.05 * math.sin(3 * m) + \
             0.005 * math.sin(4 * m)
         return ls % 360
+
+
+class Sol:
+    """Convert sols into different temporal representations.
+
+    """
+    def __init__(self, mars_year: int, sol: float):
+        """
+        Parameters
+        ----------
+        mars_year
+            The Mars year.
+        sol
+            The sol number, assuming the Mars year starts at sol 0.
+
+        Raises
+        ------
+        TypeError
+            Raised if :code:`mars_year` is not an int, or if :code:`sol` is not
+            an int or float.
+        ValueError
+            Raised if :code:`sol` is an unphysical value.
+
+        """
+        self.__my = mars_year
+        self.__sol = sol
+
+        self.__raise_type_error_if_mars_year_is_not_int()
+        self.__raise_type_error_if_sol_is_not_int_or_float()
+        self.__raise_value_error_if_sol_is_unphysical()
+
+    def __raise_type_error_if_mars_year_is_not_int(self):
+        if not isinstance(self.__my, int):
+            message = 'mars_year must be an int.'
+            raise TypeError(message)
+
+    def __raise_type_error_if_sol_is_not_int_or_float(self):
+        if not isinstance(self.__sol, (int, float)):
+            message = 'sol must be an int or a float.'
+            raise TypeError(message)
+
+    def __raise_value_error_if_sol_is_unphysical(self):
+        if not (0 <= self.__sol <= sols_per_martian_year):
+            message = f'sol must be between 0 and {sols_per_martian_year}.'
+            raise ValueError(message)
+
+    def __str__(self):
+        return f'Mars year: {self.__my}, sol: {self.__sol}'
+
+    def to_fractional_mars_year(self) -> float:
+        """Compute the fractional Mars year of the input Mars year and sol.
+
+        Examples
+        --------
+        Convert a sol to a fractional Mars year.
+
+        >>> Sol(30, 254).to_fractional_mars_year()
+        30.379901138763824
+
+        """
+        return self.__my + self.__sol / sols_per_martian_year
+
+    def to_datetime(self) -> datetime.datetime:
+        """Convert the sol of the Mars year to a datetime.
+
+        Raises
+        ------
+        OverflowError
+            Raised if the input Mars year is too far from the present. This
+            happens around Mars years of -1039 and 4279.
+
+        Examples
+        --------
+        Convert a sol to its corresponding datetime.
+
+        >>> Sol(30, 254).to_datetime()
+        datetime.datetime(2010, 7, 14, 16, 4, 32, 880011, tzinfo=<UTC>)
+
+        """
+        try:
+            frac_my = self.to_fractional_mars_year()
+            elapsed_seconds = frac_my * sols_per_martian_year * \
+                seconds_per_sol
+            return mars_year_0_start + \
+                datetime.timedelta(seconds=elapsed_seconds)
+        except OverflowError as overflow_error:
+            message = 'The input Mars year is too far from the present for ' \
+                      'datetime to compute dates.'
+            raise OverflowError(message) from overflow_error
+
+    def to_solar_longitude(self) -> float:
+        """Convert the input to a solar longitude.
+
+        Raises
+        ------
+        OverflowError
+            Raised if the input Mars year is too far from the present. This
+            happens around Mars years of -1039 and 4279.
+
+        Examples
+        --------
+        Convert a sol to its corresponding solar longitude.
+
+        >>> Sol(30, 254).to_solar_longitude()
+        118.21959480190617
+
+        """
+        dt = self.to_datetime()
+        return EarthDatetime(dt).to_solar_longitude()
 
 
 def sols_after_mars_year_0(dt: datetime.datetime) -> float:
@@ -184,7 +293,7 @@ def sols_after_mars_year_0(dt: datetime.datetime) -> float:
 
     """
     try:
-        return sols_between_datetimes(date_of_start_of_mars_year_0, dt)
+        return sols_between_datetimes(mars_year_0_start, dt)
     except TypeError as type_error:
         message = 'dt must be a datetime.datetime.'
         raise TypeError(message) from type_error
