@@ -135,6 +135,7 @@ class EarthDatetime:
         """
         return sols_after_mars_year_0(self.__dt) % sols_per_martian_year
 
+    # TODO: degree symbol in the references
     def to_solar_longitude(self) -> float:
         r"""Compute the corresponding Martian solar longitude.
 
@@ -150,7 +151,9 @@ class EarthDatetime:
         References
         ----------
         The equation used in this method can be found in `this paper
-        <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
+        <https://doi.org/10.1016/j.icarus.2014.12.014>`_. While this paper
+        claims the equation is accurate to within 0.05 degrees, I have found
+        errors up to 0.2 degrees.
         """
         j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, pytz.UTC)
         elapsed_days = (self.__dt - j2000).total_seconds() / 86400
@@ -164,7 +167,7 @@ class EarthDatetime:
 
 
 class Sol:
-    """Convert sols into different temporal representations.
+    """An object that can convert sols into different temporal representations.
 
     """
     def __init__(self, mars_year: int, sol: float):
@@ -192,17 +195,17 @@ class Sol:
         self.__raise_type_error_if_sol_is_not_int_or_float()
         self.__raise_value_error_if_sol_is_unphysical()
 
-    def __raise_type_error_if_mars_year_is_not_int(self):
+    def __raise_type_error_if_mars_year_is_not_int(self) -> None:
         if not isinstance(self.__my, int):
             message = 'mars_year must be an int.'
             raise TypeError(message)
 
-    def __raise_type_error_if_sol_is_not_int_or_float(self):
+    def __raise_type_error_if_sol_is_not_int_or_float(self) -> None:
         if not isinstance(self.__sol, (int, float)):
             message = 'sol must be an int or a float.'
             raise TypeError(message)
 
-    def __raise_value_error_if_sol_is_unphysical(self):
+    def __raise_value_error_if_sol_is_unphysical(self) -> None:
         if not (0 <= self.__sol <= sols_per_martian_year):
             message = f'sol must be between 0 and {sols_per_martian_year}.'
             raise ValueError(message)
@@ -211,13 +214,13 @@ class Sol:
         return f'Mars year: {self.__my}, sol: {self.__sol}'
 
     def to_datetime(self) -> datetime.datetime:
-        """Convert the sol of the Mars year to a datetime.
+        """Compute the corresponding datetime.
 
         Raises
         ------
         OverflowError
-            Raised if the input Mars year is too far from the present. This
-            happens around Mars years of -1039 and 4279.
+            Raised if the Mars year is too far from the present. This happens
+            around Mars years of -1039 and 4279.
 
         Examples
         --------
@@ -239,7 +242,7 @@ class Sol:
             raise OverflowError(message) from overflow_error
 
     def to_fractional_mars_year(self) -> float:
-        """Compute the fractional Mars year of the input Mars year and sol.
+        """Compute the corresponding fractional Mars year.
 
         Examples
         --------
@@ -252,7 +255,7 @@ class Sol:
         return self.__my + self.__sol / sols_per_martian_year
 
     def to_solar_longitude(self) -> float:
-        """Convert the input to a solar longitude.
+        """Compute the corresponding solar longitude [degrees].
 
         Raises
         ------
@@ -267,6 +270,11 @@ class Sol:
         >>> Sol(30, 254).to_solar_longitude()
         118.21959480190617
 
+        References
+        ----------
+        See :class:`~EarthDatetime.to_solar_longitude` for discussion on the
+        equation used.
+
         """
         dt = self.to_datetime()
         return EarthDatetime(dt).to_solar_longitude()
@@ -276,6 +284,10 @@ class SolarLongitude:
     def __init__(self, ls: float):
         self.__ls = ls
 
+    # test ls is int or float
+    # test ls is 0 < ls < 360
+
+    #def __to_seconds(self):
 
 
 

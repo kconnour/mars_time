@@ -10,16 +10,16 @@ from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
 class TestEarthDatetime:
     class TestInit:
         @pytest.fixture
-        def utc_dt(self):
+        def utc_dt(self) -> datetime.datetime:
             yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
 
         @pytest.fixture
-        def eastern_dt(self):
+        def eastern_dt(self) -> datetime.datetime:
             eastern = pytz.timezone('US/Eastern')
             yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
 
         @pytest.fixture
-        def unaware_dt(self):
+        def unaware_dt(self) -> datetime.datetime:
             yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
 
         def test_aware_datetime_raises_no_errors(self, utc_dt):
@@ -54,7 +54,7 @@ class TestEarthDatetime:
 
     class TestToFractionalMarsYear:
         @pytest.fixture
-        def mars_year_10_start(self):
+        def mars_year_10_start(self) -> datetime.datetime:
             yield datetime.datetime(1972, 3, 15, 0, 0, 0)
 
         def test_start_of_mars_year_0_returns_0(self):
@@ -67,11 +67,11 @@ class TestEarthDatetime:
 
     class TestToWholeMarsYear:
         @pytest.fixture
-        def positive_date(self):
+        def positive_date(self) -> datetime.datetime:
             yield datetime.datetime(2000, 1, 1, 0, 0, 0, 0, pytz.UTC)
 
         @pytest.fixture
-        def negative_date(self):
+        def negative_date(self) -> datetime.datetime:
             yield datetime.datetime(1900, 1, 1, 0, 0, 0, 0, pytz.UTC)
 
         def test_positive_mars_year_returns_expected_value(self, positive_date):
@@ -184,15 +184,8 @@ class TestSol:
 
 class TestSolsAfterMarsYear0:
     @pytest.fixture
-    def maven_arrival_datetime(self):
+    def maven_arrival_datetime(self) -> datetime.datetime:
         yield datetime.datetime(2014, 9, 2, 2, 24, 0, 0, pytz.UTC)
-
-    def test_start_of_mars_year_0_returns_0(self):
-        assert sols_after_mars_year_0(mars_year_0_start) == 0
-
-    def test_maven_arrival_matches_known_value(self, maven_arrival_datetime):
-        assert sols_after_mars_year_0(maven_arrival_datetime) == \
-            21781.872772174716
 
     def test_int_input_raises_type_error(self):
         with pytest.raises(TypeError):
@@ -202,27 +195,26 @@ class TestSolsAfterMarsYear0:
         with pytest.raises(TypeError):
             sols_after_mars_year_0(maven_arrival_datetime.date())
 
+    def test_start_of_mars_year_0_returns_0(self):
+        assert sols_after_mars_year_0(mars_year_0_start) == 0
+
+    def test_maven_arrival_matches_known_value(self, maven_arrival_datetime):
+        assert sols_after_mars_year_0(maven_arrival_datetime) == \
+            21781.872772174716
+
 
 class TestSolsBetweenDatetimes:
     @pytest.fixture
-    def generic_datetime(self):
+    def generic_datetime(self) -> datetime.datetime:
         yield datetime.datetime(2000, 1, 1, 0, 0, 0)
 
     @pytest.fixture
-    def opportunity_start(self):
+    def opportunity_start(self) -> datetime.datetime:
         yield datetime.datetime(2004, 1, 25, 0, 0, 0)
 
     @pytest.fixture
-    def opportunity_end(self):
+    def opportunity_end(self) -> datetime.datetime:
         yield datetime.datetime(2018, 6, 10, 0, 0, 0)
-
-    def test_identical_datetime_inputs_returns_0(self, generic_datetime):
-        assert sols_between_datetimes(generic_datetime, generic_datetime) == 0
-
-    def test_opportunity_length_matches_known_values(
-            self, opportunity_start, opportunity_end) -> None:
-        assert sols_between_datetimes(opportunity_start, opportunity_end) == \
-            5109.551211085292
 
     def test_int_first_input_raises_type_error(self, generic_datetime):
         with pytest.raises(TypeError):
@@ -235,6 +227,14 @@ class TestSolsBetweenDatetimes:
     def test_int_both_inputs_raises_type_error(self):
         with pytest.raises(TypeError):
             sols_between_datetimes(2000, 2001)
+
+    def test_identical_datetime_inputs_returns_0(self, generic_datetime):
+        assert sols_between_datetimes(generic_datetime, generic_datetime) == 0
+
+    def test_opportunity_length_matches_known_value(
+            self, opportunity_start, opportunity_end):
+        assert sols_between_datetimes(opportunity_start, opportunity_end) == \
+            5109.551211085292
 
 
 class TestSolsSinceDatetime:
