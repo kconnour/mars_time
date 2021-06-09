@@ -206,7 +206,7 @@ class Sol:
             raise TypeError(message)
 
     def __raise_value_error_if_sol_is_unphysical(self) -> None:
-        if not (0 <= self.__sol <= sols_per_martian_year):
+        if not 0 <= self.__sol <= sols_per_martian_year:
             message = f'sol must be between 0 and {sols_per_martian_year}.'
             raise ValueError(message)
 
