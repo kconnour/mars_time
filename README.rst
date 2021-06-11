@@ -1,3 +1,7 @@
+.. image:: https://github.com/kconnour/mer/workflows/CI/badge.svg?branch=master
+     :target: https://github.com/kconnour/mer/actions?workflow=CI
+     :alt: CI Status
+
 Mars-Earth retimer (mer) is a library for converting between Martian times and
 Earth times.
 
