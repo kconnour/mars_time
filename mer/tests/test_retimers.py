@@ -4,7 +4,7 @@ import pytz
 import pytest
 from mer.constants import mars_year_0_start, sols_per_martian_year
 from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
-    sols_since_datetime, EarthDatetime, Sol
+    EarthDatetime, Sol
 
 
 class TestEarthDatetime:
@@ -21,6 +21,9 @@ class TestEarthDatetime:
         @pytest.fixture
         def unaware_dt(self) -> datetime.datetime:
             yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
+
+        def test_fail(self):
+            assert 1 == 2
 
         def test_aware_datetime_raises_no_errors(self, utc_dt):
             EarthDatetime(utc_dt)
