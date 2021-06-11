@@ -22,6 +22,9 @@ class TestEarthDatetime:
         def unaware_dt(self) -> datetime.datetime:
             yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
 
+        def test_fail(self):
+            assert 1 == 2
+
         def test_aware_datetime_raises_no_errors(self, utc_dt):
             EarthDatetime(utc_dt)
 
