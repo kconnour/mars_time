@@ -1,7 +1,8 @@
 API reference
 =============
-You can find all classes present in the package at this page. In general, all
-classes have methods to convert to all other time representations.
+You can find all classes and functions present in the package at this page.
+In general, all classes have methods to convert to all other time
+representations.
 
 EarthDatetime
 -------------
@@ -12,6 +13,12 @@ EarthDatetime
 Sol
 ---
 .. autoclass:: mer.Sol
+   :members:
+   :member-order: bysource
+
+SolarLongitude
+--------------
+.. autoclass:: mer.SolarLongitude
    :members:
    :member-order: bysource
 
