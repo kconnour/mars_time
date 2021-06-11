@@ -4,7 +4,7 @@ import pytz
 import pytest
 from mer.constants import mars_year_0_start, sols_per_martian_year
 from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
-    sols_since_datetime, EarthDatetime, Sol
+    EarthDatetime, Sol
 
 
 class TestEarthDatetime:
