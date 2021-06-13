@@ -15,37 +15,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: "Run linters"
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ 3.9 ]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pylint
-          python -m pip install -r requirements.txt
-
-      - name: Install mer
-        run: |
-          python -m pip install .
-
-      - name: Lint with pylint
-        run: |
-          pylint .
-
   test-ubuntu:
     name: "Test python ${{matrix.python-version}} on latest Ubuntu"
     runs-on: ubuntu-latest
