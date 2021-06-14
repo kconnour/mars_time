@@ -130,7 +130,7 @@ class EarthDatetime:
         from 1.
 
         >>> mer.EarthDatetime(mer.mars_year_0_start).to_sol()
-        0
+        0.0
 
         """
         return sols_after_mars_year_0(self.__dt) % sols_per_martian_year
@@ -268,7 +268,7 @@ class Sol:
         Convert a sol to its corresponding solar longitude.
 
         >>> Sol(30, 254).to_solar_longitude()
-        118.21959480190617
+        118.23478131776619
 
         References
         ----------
