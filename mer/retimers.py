@@ -3,7 +3,7 @@ representations."""
 import datetime
 import math
 from mer.constants import mars_year_0_start, sols_per_martian_year, \
-    seconds_per_sol
+    seconds_per_sol, orbital_eccentricity, perihelion_sol
 
 
 # TODO: timedelta should work with this but breaks
@@ -99,7 +99,6 @@ class EarthDateTime(datetime.datetime):
         """
         return sols_after_mars_year_0(self) % sols_per_martian_year
 
-    # TODO: use LUT instead for increased accuracy
     def to_solar_longitude(self) -> float:
         r"""Compute the corresponding Martian solar longitude.
 
@@ -253,8 +252,20 @@ class MarsYearSol:
 
 
 class MarsYearSolarLongitude:
-    def __init__(self, ls: float):
+    def __init__(self, mars_year: int, ls: float):
+        self.__mars_year = mars_year
         self.__ls = ls
+
+    def to_datetime(self):
+        sol = self.to_sol()
+        return MarsYearSol(self.__mars_year, sol).to_datetime()
+
+    def to_sol(self):
+        # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99
+        true_anomaly = self.__ls * math.pi / 180 + 1.90258341759902
+        eccentric_anomaly = 2*math.atan(math.tan(0.5*true_anomaly) / math.sqrt((1 + orbital_eccentricity)/(1 - orbital_eccentricity)))
+        mean_anomaly = eccentric_anomaly - orbital_eccentricity * math.sin(eccentric_anomaly)
+        return ((mean_anomaly / (2*math.pi))*sols_per_martian_year + perihelion_sol) % sols_per_martian_year
 
 
 def datetime_to_earthdatetime(dt: datetime.datetime) -> EarthDateTime:
@@ -378,3 +389,11 @@ def sols_since_datetime(date: datetime.datetime) -> float:
 
     """
     return sols_between_datetimes(date, datetime.datetime.utcnow())
+
+
+if __name__ == '__main__':
+    edt = EarthDateTime(2016, 6, 30, 7, 28, 46)
+    print(edt.to_sol(), edt.to_solar_longitude())
+
+    ls = MarsYearSolarLongitude(33, 177.56)
+    print(ls.to_datetime(), ls.to_sol())
