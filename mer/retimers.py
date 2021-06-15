@@ -1,4 +1,4 @@
-"""The retimers module contains classes to convert between different time
+"""The retimers module contains tools to convert between different time
 representations."""
 import datetime
 import math
@@ -6,107 +6,74 @@ from mer.constants import mars_year_0_start, sols_per_martian_year, \
     seconds_per_sol
 
 
-class EarthDatetime:
-    """An object that can convert Earth datetimes into Martian times.
+# TODO: timedelta should work with this but breaks
+class EarthDateTime(datetime.datetime):
+    """An EarthDateTime object represents an Earth datetime.
+
+    This extends datetime.datetime and adds methods to convert Earth times into
+    common Martian times.
 
     """
-    def __init__(self, dt: datetime.datetime):
+    # TODO: add the input signature (year, month, day, hour, ..., tzinfo) to doc
+    def __new__(cls, *args, **kwargs):
         """
-        Parameters
-        ----------
-        dt
-            Any datetime.
-
-        Raises
-        ------
-        TypeError
-            Raised if :code:`dt` is not a datetime.datetime.
 
         Notes
         -----
-        :code:`dt` can be "aware" (have time zone information included with it)
-        or "native" (have no associated time zone information). If it is
-        native, it is assumed to be a UTC time and will have that info added to
-        it.
+        If you do not include time zone information when constructing this
+        class, I assume it is a UTC time and add that information automatically.
 
         Examples
         --------
-        This object simply accepts datetimes. You can include UTC time zone
-        information as shown below.
+        Create an instance of this class the same way you'd make a datetime.
 
-        >>> import datetime, mer
-        >>> utc = datetime.timezone.utc
-        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=utc)
-        >>> aware_dt = mer.EarthDatetime(dt)
-        >>> aware_dt
+        >>> import mer
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0)
         2020-01-01 00:00:00+00:00
 
-        If no time zone information is included, the datetime is assumed to be
-        in UTC.
-
-        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-        >>> native_dt = mer.EarthDatetime(dt)
-        >>> native_dt
-        2020-01-01 00:00:00+00:00
-        >>> aware_dt == native_dt
-        True
-
-        This class can accept non-UTC timezones as well. I recommend using the
-        :code:`pytz` module if you want to use them.
+        You can also add timezones the same way you'd add them to a datetime. I
+        recommend using the :code:`pytz` module if you want to use them.
 
         >>> import pytz
         >>> eastern = pytz.timezone('US/Eastern')
-        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
-        >>> mer.EarthDatetime(dt)
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
         2020-01-01 00:00:00-04:56
 
         """
-        self.__raise_type_error_if_not_datetime(dt)
-        self.__dt = self.__make_aware_timezone(dt)
+        # TODO: this code sucks
+        if 'tzinfo' not in kwargs:
+            kwargs['tzinfo'] = datetime.timezone.utc
+        if kwargs['tzinfo'] is None:
+            kwargs['tzinfo'] = datetime.timezone.utc
+        return datetime.datetime.__new__(cls, *args, **kwargs)
 
-    @staticmethod
-    def __raise_type_error_if_not_datetime(dt) -> None:
-        if not isinstance(dt, datetime.datetime):
-            message = 'dt must be a datetime.datetime.'
-            raise TypeError(message)
-
-    @staticmethod
-    def __make_aware_timezone(dt) -> datetime.datetime:
-        utc = datetime.timezone.utc
-        return dt.replace(tzinfo=utc) if dt.tzinfo is None else dt
-
-    def __eq__(self, other):
-        return self.__dt == other.__dt if isinstance(other, EarthDatetime) \
-            else False
-
+    # TODO: why do I need this?
     def __repr__(self):
-        return f'{self.__dt}'
+        return f'{self}'
 
     def to_fractional_mars_year(self) -> float:
         """Compute the corresponding fractional Mars year.
 
         Examples
         --------
-        Convert a datetime into its corresponding fractional Mars year.
+        Convert a date and time into its corresponding fractional Mars year.
 
-        >>> import datetime, mer
-        >>> dt = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-        >>> mer.EarthDatetime(dt).to_fractional_mars_year()
+        >>> import mer
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0).to_fractional_mars_year()
         35.41260282427384
 
         """
-        return sols_after_mars_year_0(self.__dt) / sols_per_martian_year
+        return sols_after_mars_year_0(self) / sols_per_martian_year
 
     def to_whole_mars_year(self) -> int:
         """Compute the corresponding integer Mars year.
 
         Examples
         --------
-        Convert a datetime into its corresponding integer Mars year.
+        Convert a date and time into its corresponding integer Mars year.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-        >>> mer.EarthDatetime(date).to_whole_mars_year()
+        >>> import mer
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0).to_whole_mars_year()
         35
 
         """
@@ -117,37 +84,31 @@ class EarthDatetime:
 
         Notes
         -----
-        This function begins counting from 0. Beware that some places/people
-        use the convention that the new year starts on sol 1.
+        This function begins counting from 0 such that the first moment of the
+        Mars year is sol 0. Beware that some places/people use the convention
+        that the new year starts on sol 1.
 
         Examples
         --------
-        Convert a datetime into its corresponding sol.
+        Convert a date and time into its corresponding sol.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-        >>> mer.EarthDatetime(date).to_sol()
+        >>> import mer
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0).to_sol()
         275.86418326244836
 
-        Beware that sols start from 0, or rather beware of hooligans counting
-        from 1.
-
-        >>> mer.EarthDatetime(mer.mars_year_0_start).to_sol()
-        0.0
-
         """
-        return sols_after_mars_year_0(self.__dt) % sols_per_martian_year
+        return sols_after_mars_year_0(self) % sols_per_martian_year
 
+    # TODO: use LUT instead for increased accuracy
     def to_solar_longitude(self) -> float:
         r"""Compute the corresponding Martian solar longitude.
 
         Examples
         --------
-        Convert a datetime into its corresponding solar longitude.
+        Convert a date and time into its corresponding solar longitude.
 
-        >>> import datetime, mer
-        >>> date = datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-        >>> mer.EarthDatetime(date).to_solar_longitude()
+        >>> import mer
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0).to_solar_longitude()
         128.855367761636
 
         References
@@ -159,7 +120,7 @@ class EarthDatetime:
         """
         utc = datetime.timezone.utc
         j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, tzinfo=utc)
-        elapsed_days = (self.__dt - j2000).total_seconds() / 86400
+        elapsed_days = (self - j2000).total_seconds() / 86400
         m = math.radians(19.38095 + 0.524020769 * elapsed_days)
         ls = 270.38859 + \
             0.524038542 * elapsed_days + \
@@ -169,8 +130,12 @@ class EarthDatetime:
         return ls % 360
 
 
-class Sol:
-    """An object that can convert sols into different temporal representations.
+class MarsYear:
+    pass
+
+
+class MarsYearSol:
+    """A MarsYearSol represents time in Mars year and sol.
 
     """
     def __init__(self, mars_year: int, sol: float):
@@ -189,6 +154,14 @@ class Sol:
             an int or float.
         ValueError
             Raised if :code:`sol` is an unphysical value.
+
+        Examples
+        --------
+        Create an instance of this class. Printing it shows its input values.
+
+        >>> import mer
+        >>> mer.MarsYearSol(34, 200.5)
+        Mars year 34, sol 200.5
 
         """
         self.__my = mars_year
@@ -214,7 +187,7 @@ class Sol:
             raise ValueError(message)
 
     def __repr__(self):
-        return f'Mars year: {self.__my}, sol: {self.__sol}'
+        return f'Mars year {self.__my}, sol {self.__sol}'
 
     def to_datetime(self) -> datetime.datetime:
         """Compute the corresponding datetime.
@@ -227,18 +200,17 @@ class Sol:
 
         Examples
         --------
-        Convert a sol to its corresponding datetime.
+        Convert a Mars year and sol into its corresponding datetime.
 
-        >>> Sol(30, 254).to_datetime()
-        datetime.datetime(2010, 7, 14, 16, 4, 32, 880011, tzinfo=<UTC>)
+        >>> import mer
+        >>> mer.MarsYearSol(30, 254).to_datetime()
+        datetime.datetime(2010, 7, 14, 16, 4, 32, 880011, tzinfo=datetime.timezone.utc)
 
         """
         try:
             frac_my = self.to_fractional_mars_year()
-            elapsed_seconds = frac_my * sols_per_martian_year * \
-                seconds_per_sol
-            return mars_year_0_start + \
-                datetime.timedelta(seconds=elapsed_seconds)
+            elapsed_seconds = frac_my * sols_per_martian_year * seconds_per_sol
+            return mars_year_0_start + datetime.timedelta(seconds=elapsed_seconds)
         except OverflowError as overflow_error:
             message = 'The input Mars year is too far from the present for ' \
                       'datetime to compute dates.'
@@ -251,7 +223,8 @@ class Sol:
         --------
         Convert a sol to a fractional Mars year.
 
-        >>> Sol(30, 254).to_fractional_mars_year()
+        >>> import mer
+        >>> mer.MarsYearSol(30, 254).to_fractional_mars_year()
         30.379901138763824
 
         """
@@ -270,22 +243,53 @@ class Sol:
         --------
         Convert a sol to its corresponding solar longitude.
 
-        >>> Sol(30, 254).to_solar_longitude()
+        >>> import mer
+        >>> mer.MarsYearSol(30, 254).to_solar_longitude()
         118.23478131776619
 
-        References
-        ----------
-        See :class:`~EarthDatetime.to_solar_longitude` for discussion on the
-        equation used.
-
         """
-        dt = self.to_datetime()
-        return EarthDatetime(dt).to_solar_longitude()
+        edt = datetime_to_earthdatetime(self.to_datetime())
+        return edt.to_solar_longitude()
 
 
-class SolarLongitude:
+class MarsYearSolarLongitude:
     def __init__(self, ls: float):
         self.__ls = ls
+
+
+def datetime_to_earthdatetime(dt: datetime.datetime) -> EarthDateTime:
+    """Convert a datetime to an EarthDateTime.
+
+    Parameters
+    ----------
+    dt
+        Any datetime.
+
+    Raises
+    ------
+    TypeError
+        Raised if the input is not a datetime.datetime.
+
+    Examples
+    --------
+    Make an EarthDateTime from a known date.
+
+    >>> import datetime, mer
+    >>> datetime_to_earthdatetime(datetime.datetime(2020, 1, 1, 0, 0, 0))
+    2020-01-01 00:00:00+00:00
+
+    Make an EarthDateTime from the start of Mars year 0.
+
+    >>> datetime_to_earthdatetime(mer.mars_year_0_start)
+    1953-05-24 11:57:07.200011+00:00
+
+    """
+    try:
+        return EarthDateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute,
+                             dt.second, dt.microsecond, tzinfo=dt.tzinfo)
+    except AttributeError as ae:
+        message = 'dt must be a datetime.datetime'
+        raise TypeError(message) from ae
 
 
 def sols_after_mars_year_0(dt: datetime.datetime) -> float:
