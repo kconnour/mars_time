@@ -12,19 +12,17 @@ or used directly from mer's namespace.
 
 .. autodata:: mer.constants.mars_year_0_start
 .. autodata:: mer.constants.martian_sol_length
+.. autodata:: mer.constants.orbital_eccentricity
+.. autodata:: mer.constants.perihelion_sol
 .. autodata:: mer.constants.seconds_per_sol
 .. autodata:: mer.constants.sols_per_martian_year
 
 Available types
 ---------------
-.. autoclass:: mer.EarthDatetime
-.. autoclass:: mer.MarsYear
-.. autoclass:: mer.Sol
-.. autoclass:: mer.SolarLongitude
 
 EarthDatetime
 *************
-.. autoclass:: mer.EarthDatetime
+.. autoclass:: mer.EarthDateTime
    :members:
    :member-order: bysource
 
@@ -36,13 +34,13 @@ MarsYear
 
 Sol
 ***
-.. autoclass:: mer.Sol
+.. autoclass:: mer.MarsYearSol
    :members:
    :member-order: bysource
 
 SolarLongitude
 **************
-.. autoclass:: mer.SolarLongitude
+.. autoclass:: mer.MarsYearSolarLongitude
    :members:
    :member-order: bysource
 

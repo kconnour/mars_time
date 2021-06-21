@@ -6,7 +6,6 @@ from mer.constants import mars_year_0_start, sols_per_martian_year, \
     seconds_per_sol, orbital_eccentricity, perihelion_sol
 
 
-# TODO: timedelta should work with this but breaks
 class EarthDateTime(datetime.datetime):
     """An EarthDateTime object represents an Earth datetime.
 
@@ -14,9 +13,38 @@ class EarthDateTime(datetime.datetime):
     common Martian times.
 
     """
-    # TODO: add the input signature (year, month, day, hour, ..., tzinfo) to doc
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, year: int, month: int, day: int, hour: int = 0,
+                minute: int = 0, second: int = 0, microsecond: int = 0,
+                tzinfo=datetime.timezone.utc):
         """
+        Parameters
+        ----------
+        year
+            The year. Must be between the minyear and maxyear supported by
+            datetime.
+        month
+            The month. Must be between 1 and 12.
+        day
+            The day. Must be between 1 and the number of days in the given month
+            and year.
+        hour
+            The hour. Must be between 0 and 24.
+        minute
+            The minute. Must be between 0 and 60.
+        second
+            The second. Must be between 0 and 60.
+        microsecond
+            The microsecond. Must be between 0 and 1000000.
+        tzinfo
+            The timezone. Can be any compatible timezone.
+
+        Raises
+        ------
+        TypeError
+            Raised if any of the inputs except :code:`tzinfo` are not ints.
+
+        ValueError
+            Raised if
 
         Notes
         -----
@@ -28,7 +56,7 @@ class EarthDateTime(datetime.datetime):
         Create an instance of this class the same way you'd make a datetime.
 
         >>> import mer
-        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0)
+        >>> print(mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0))
         2020-01-01 00:00:00+00:00
 
         You can also add timezones the same way you'd add them to a datetime. I
@@ -36,20 +64,18 @@ class EarthDateTime(datetime.datetime):
 
         >>> import pytz
         >>> eastern = pytz.timezone('US/Eastern')
-        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
+        >>> print(mer.EarthDateTime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern))
         2020-01-01 00:00:00-04:56
 
-        """
-        # TODO: this code sucks
-        if 'tzinfo' not in kwargs:
-            kwargs['tzinfo'] = datetime.timezone.utc
-        if kwargs['tzinfo'] is None:
-            kwargs['tzinfo'] = datetime.timezone.utc
-        return datetime.datetime.__new__(cls, *args, **kwargs)
+        This class is compatible with time deltas, just like datetimes.
 
-    # TODO: why do I need this?
-    def __repr__(self):
-        return f'{self}'
+        >>> mer.EarthDateTime(2020, 1, 1, 0, 0, 0) + datetime.timedelta(hours=7)
+        EarthDateTime(2020, 1, 1, 7, 0, tzinfo=datetime.timezone.utc)
+
+        """
+        return datetime.datetime.__new__(
+            cls, year, month=month, day=day, hour=hour, minute=minute,
+            second=second, microsecond=microsecond, tzinfo=tzinfo)
 
     def to_fractional_mars_year(self) -> float:
         """Compute the corresponding fractional Mars year.
@@ -389,11 +415,3 @@ def sols_since_datetime(date: datetime.datetime) -> float:
 
     """
     return sols_between_datetimes(date, datetime.datetime.utcnow())
-
-
-if __name__ == '__main__':
-    edt = EarthDateTime(2016, 6, 30, 7, 28, 46)
-    print(edt.to_sol(), edt.to_solar_longitude())
-
-    ls = MarsYearSolarLongitude(33, 177.56)
-    print(ls.to_datetime(), ls.to_sol())
