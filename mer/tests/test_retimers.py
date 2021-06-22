@@ -97,16 +97,6 @@ class TestEarthDateTime:
             assert math.sin(math.radians(ls)) == pytest.approx(0, abs=0.001)
 
 
-class TestDatetimeToEarthdatetime:
-    def test_datetime_raises_no_error(self):
-        datetime_to_earthdatetime(mars_year_0_start)
-
-    def test_date_raises_type_error(self):
-        date = datetime.date(2020, 1, 1)
-        with pytest.raises(TypeError):
-            datetime_to_earthdatetime(date)
-
-
 class TestMarsYearSol:
     class TestInit:
         def test_int_mars_year_float_sol_raises_no_error(self):
@@ -124,7 +114,7 @@ class TestMarsYearSol:
 
         def test_negative_sol_raises_value_error(self):
             with pytest.raises(ValueError):
-                MarsYearSol(14, -0.5)
+                MarsYearSol(14, -0.0001)
 
         def test_large_sol_raises_value_error(self):
             sol = sols_per_martian_year + 0.0001
@@ -150,16 +140,16 @@ class TestMarsYearSol:
             MarsYearSol(-1038, 0).to_datetime()
 
     class TestToFractionalMarsYear:
-        def test_sol_0_returns_0(self):
-            assert MarsYearSol(14, 0).to_fractional_mars_year() - 14 == 0
+        def test_sol_0_returns_mars_year_number(self):
+            assert MarsYearSol(14, 0).to_fractional_mars_year() == 14
 
-        def test_last_sol_is_1(self):
+        def test_last_sol_of_year_returns_1_more_than_year(self):
             mars_year = MarsYearSol(14, sols_per_martian_year).to_fractional_mars_year()
-            assert mars_year - 14 == pytest.approx(1, abs=0.01)
+            assert mars_year == pytest.approx(15, abs=0.01)
 
-        def test_midpoint_sol_is_half(self):
+        def test_midpoint_sol_returns_half_greater_mars_year(self):
             mars_year = MarsYearSol(14, sols_per_martian_year / 2).to_fractional_mars_year()
-            assert mars_year - 14 == pytest.approx(0.5, abs=0.01)
+            assert mars_year == pytest.approx(14.5, abs=0.01)
 
     class TestToSolarLongitude:
         def test_start_of_year_returns_0(self):
@@ -203,6 +193,16 @@ class TestSolsAfterMarsYear0:
     def test_maven_arrival_matches_known_value(self, maven_arrival_datetime):
         assert sols_after_mars_year_0(maven_arrival_datetime) == \
             21781.872772174716
+
+
+class TestDatetimeToEarthdatetime:
+    def test_datetime_raises_no_error(self):
+        datetime_to_earthdatetime(mars_year_0_start)
+
+    def test_date_raises_type_error(self):
+        date = datetime.date(2020, 1, 1)
+        with pytest.raises(TypeError):
+            datetime_to_earthdatetime(date)
 
 
 class TestSolsBetweenDatetimes:

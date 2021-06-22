@@ -155,10 +155,6 @@ class EarthDateTime(datetime.datetime):
         return ls % 360
 
 
-class MarsYear:
-    pass
-
-
 class MarsYearSol:
     """A MarsYearSol represents time in Mars year and sol.
 
@@ -185,7 +181,7 @@ class MarsYearSol:
         Create an instance of this class. Printing it shows its input values.
 
         >>> import mer
-        >>> mer.MarsYearSol(34, 200.5)
+        >>> print(mer.MarsYearSol(34, 200.5))
         Mars year 34, sol 200.5
 
         """
@@ -211,8 +207,11 @@ class MarsYearSol:
             message = f'sol must be between 0 and {sols_per_martian_year}.'
             raise ValueError(message)
 
-    def __repr__(self):
+    def __str__(self):
         return f'Mars year {self.__my}, sol {self.__sol}'
+
+    def __repr__(self):
+        return f'MarsYearSol({self.__my}, {self.__sol})'
 
     def to_datetime(self) -> datetime.datetime:
         """Compute the corresponding datetime.
@@ -228,8 +227,8 @@ class MarsYearSol:
         Convert a Mars year and sol into its corresponding datetime.
 
         >>> import mer
-        >>> mer.MarsYearSol(30, 254).to_datetime()
-        datetime.datetime(2010, 7, 14, 16, 4, 32, 880011, tzinfo=datetime.timezone.utc)
+        >>> print(mer.MarsYearSol(30, 254).to_datetime())
+        2010-07-14 16:04:32.880011+00:00
 
         """
         try:
@@ -278,20 +277,121 @@ class MarsYearSol:
 
 
 class MarsYearSolarLongitude:
+    """A MarsYearSolarLongitude represents time in Mars year and solar longitude.
+
+    """
     def __init__(self, mars_year: int, ls: float):
-        self.__mars_year = mars_year
+        """
+
+        Parameters
+        ----------
+        mars_year
+            The Mars year.
+        ls
+            The solar longitude [degrees].
+
+        Raises
+        ------
+        TypeError
+            Raised if :code:`mars_year` is not an int, or if :code:`ls` is not
+            an int or float.
+        ValueError
+            Raised if :code:`ls` is not between 0 and 360.
+
+        Examples
+        --------
+        Create an instance of this class. Printing it shows its input values.
+
+        >>> import mer
+        >>> print(mer.MarsYearSolarLongitude(34, 200.5))
+        Mars year 34, Ls 200.5
+
+        """
+        self.__my = mars_year
         self.__ls = ls
 
-    def to_datetime(self):
-        sol = self.to_sol()
-        return MarsYearSol(self.__mars_year, sol).to_datetime()
+        self.__raise_type_error_if_mars_year_is_not_int()
+        self.__raise_type_error_if_ls_is_not_int_or_float()
+        self.__raise_value_error_if_ls_is_unphysical()
 
-    def to_sol(self):
+    def __raise_type_error_if_mars_year_is_not_int(self) -> None:
+        if not isinstance(self.__my, int):
+            message = 'mars_year must be an int.'
+            raise TypeError(message)
+
+    def __raise_type_error_if_ls_is_not_int_or_float(self) -> None:
+        if not isinstance(self.__ls, (int, float)):
+            message = 'ls must be an int or a float.'
+            raise TypeError(message)
+
+    def __raise_value_error_if_ls_is_unphysical(self) -> None:
+        if not 0 <= self.__ls <= sols_per_martian_year:
+            message = 'ls must be between 0 and 360.'
+            raise ValueError(message)
+
+    def __str__(self):
+        return f'Mars year {self.__my}, Ls {self.__ls}'
+
+    def __repr__(self):
+        return f'MarsYearSolarLongitude({self.__my}, {self.__ls})'
+
+    def to_datetime(self) -> datetime.datetime:
+        """Compute the corresponding datetime.
+
+        Examples
+        --------
+        Convert a solar longitude into its corresponding datetime.
+
+        >>> import mer
+        >>> print(mer.MarsYearSolarLongitude(34, 200.5).to_datetime())
+        2018-06-26 23:50:49.579031+00:00
+
+        Find the start of Mars year 1.
+
+        >>> print(mer.MarsYearSolarLongitude(1, 0).to_datetime())
+        1955-04-11 11:19:36.327061+00:00
+
+        Note that this is about 30 minutes off from the "true" value because I
+        don't have more precise numbers when calculating the true anomaly. If
+        you know of more accurate numbers, I want them!
+
+        """
+        sol = self.to_sol()
+        return MarsYearSol(self.__my, sol).to_datetime()
+
+    def to_sol(self) -> float:
+        """Compute the corresponding sol.
+
+        Examples
+        --------
+        Convert a solar longitude into its corresponding sol.
+
+        >>> import mer
+        >>> print(mer.MarsYearSolarLongitude(34, 200.5).to_sol())
+        406.2469172489268
+
+        """
         # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99
+        # according to the LMD converter code
         true_anomaly = self.__ls * math.pi / 180 + 1.90258341759902
         eccentric_anomaly = 2*math.atan(math.tan(0.5*true_anomaly) / math.sqrt((1 + orbital_eccentricity)/(1 - orbital_eccentricity)))
         mean_anomaly = eccentric_anomaly - orbital_eccentricity * math.sin(eccentric_anomaly)
         return ((mean_anomaly / (2*math.pi))*sols_per_martian_year + perihelion_sol) % sols_per_martian_year
+
+    def to_mars_year(self) -> float:
+        """Compute the corresponding fractional Mars year.
+
+        Examples
+        --------
+        Convert a solar longitude into its corresponding Mars year.
+
+        >>> import mer
+        >>> print(mer.MarsYearSolarLongitude(34, 200.5).to_mars_year())
+        34.607612860165986
+
+        """
+        sol = self.to_sol()
+        return self.__my + sol / sols_per_martian_year
 
 
 def datetime_to_earthdatetime(dt: datetime.datetime) -> EarthDateTime:
