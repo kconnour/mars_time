@@ -246,6 +246,16 @@ class TestMarsYearSolarLongitude:
             assert sol == pytest.approx(514.76, abs=0.2)
 
 
+class TestDatetimeToEarthdatetime:
+    def test_datetime_raises_no_error(self):
+        datetime_to_earthdatetime(mars_year_0_start)
+
+    def test_date_raises_type_error(self):
+        date = datetime.date(2020, 1, 1)
+        with pytest.raises(TypeError):
+            datetime_to_earthdatetime(date)
+
+
 class TestSolsAfterMarsYear0:
     @pytest.fixture
     def maven_arrival_datetime(self) -> datetime.datetime:
@@ -265,16 +275,6 @@ class TestSolsAfterMarsYear0:
     def test_maven_arrival_matches_known_value(self, maven_arrival_datetime):
         assert sols_after_mars_year_0(maven_arrival_datetime) == \
             21781.872772174716
-
-
-class TestDatetimeToEarthdatetime:
-    def test_datetime_raises_no_error(self):
-        datetime_to_earthdatetime(mars_year_0_start)
-
-    def test_date_raises_type_error(self):
-        date = datetime.date(2020, 1, 1)
-        with pytest.raises(TypeError):
-            datetime_to_earthdatetime(date)
 
 
 class TestSolsBetweenDatetimes:

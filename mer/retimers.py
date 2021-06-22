@@ -44,12 +44,7 @@ class EarthDateTime(datetime.datetime):
             Raised if any of the inputs except :code:`tzinfo` are not ints.
 
         ValueError
-            Raised if
-
-        Notes
-        -----
-        If you do not include time zone information when constructing this
-        class, I assume it is a UTC time and add that information automatically.
+            Raised if any of the inputs are outside their valid range.
 
         Examples
         --------
@@ -458,7 +453,8 @@ def sols_after_mars_year_0(dt: datetime.datetime) -> float:
 
     """
     try:
-        return sols_between_datetimes(mars_year_0_start, dt)
+        edt = datetime_to_earthdatetime(dt)
+        return sols_between_datetimes(mars_year_0_start, edt)
     except TypeError as type_error:
         message = 'dt must be a datetime.datetime.'
         raise TypeError(message) from type_error
@@ -504,18 +500,23 @@ def sols_between_datetimes(early_dt: datetime.datetime,
         raise TypeError(message) from attr_error
 
 
-def sols_since_datetime(date: datetime.datetime) -> float:
+def sols_since_datetime(dt: datetime.datetime) -> float:
     """Compute the number of sols between an input datetime and today.
 
     Parameters
     ----------
-    date
-        Any date.
+    dt
+        Any datetime.
 
     Raises
     ------
     TypeError
-        Raised if :code:`date` is not a datetime.datetime.
+        Raised if :code:`dt` is not a datetime.datetime.
+
+    Notes
+    -----
+    This function requires that a datetime's :code:`tzinfo` is set.
 
     """
-    return sols_between_datetimes(date, datetime.datetime.utcnow())
+    return sols_between_datetimes(
+        dt, datetime.datetime.now(datetime.timezone.utc))

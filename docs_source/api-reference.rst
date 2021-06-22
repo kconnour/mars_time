@@ -19,7 +19,6 @@ or used directly from mer's namespace.
 
 Available types
 ---------------
-
 EarthDatetime
 *************
 .. autoclass:: mer.EarthDateTime
@@ -38,8 +37,8 @@ MarsYearSolarLongitude
    :members:
    :member-order: bysource
 
-Miscellaneous functions
------------------------
+Converter functions
+-------------------
 A collection of functions for helping during time conversions.
 
 datetime_to_earthdatetime
