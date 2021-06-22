@@ -135,8 +135,8 @@ class EarthDateTime(datetime.datetime):
         ----------
         The equation used in this method can be found in `this paper
         <https://doi.org/10.1016/j.icarus.2014.12.014>`_. While this paper
-        claims the equation is accurate to within 0.05 degrees, I have found
-        errors up to 0.2 $^\circ$.
+        claims the equation is accurate to within 0.05\ :math:`^\circ`,
+        I have found errors up to 0.2\ :math:`^\circ`.
         """
         utc = datetime.timezone.utc
         j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, tzinfo=utc)

@@ -1,7 +1,7 @@
 import datetime
 import math
-import pytz
 import pytest
+import pytz
 from mer.constants import mars_year_0_start, sols_per_martian_year
 from mer.retimers import EarthDateTime, MarsYearSol, MarsYearSolarLongitude, \
     datetime_to_earthdatetime, sols_after_mars_year_0, sols_between_datetimes, \

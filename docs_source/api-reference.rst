@@ -19,6 +19,16 @@ or used directly from mer's namespace.
 
 Available types
 ---------------
+This package provides the following classes:
+
+.. autosummary::
+
+   mer.EarthDateTime
+   mer.MarsYearSol
+   mer.MarsYearSolarLongitude
+
+The sections below provide more details on each one.
+
 EarthDatetime
 *************
 .. autoclass:: mer.EarthDateTime

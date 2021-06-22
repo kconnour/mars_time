@@ -35,6 +35,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -97,7 +98,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#marsyearsolarlongitude">MarsYearSolarLongitude</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#miscellaneous-functions">Miscellaneous functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#converter-functions">Converter functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#datetime-to-earthdatetime">datetime_to_earthdatetime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sols-after-mars-year-0">sols_after_mars_year_0</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sols-between-datetimes">sols_between_datetimes</a></li>
@@ -222,6 +223,25 @@ or used directly from mer’s namespace.</p>
 </div>
 <div class="section" id="available-types">
 <h2>Available types<a class="headerlink" href="#available-types" title="Permalink to this headline">¶</a></h2>
+<p>This package provides the following classes:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mer.EarthDateTime" title="mer.EarthDateTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mer.EarthDateTime</span></code></a>(year, month, day[, hour, …])</p></td>
+<td><p>An EarthDateTime object represents an Earth datetime.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mer.MarsYearSol" title="mer.MarsYearSol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mer.MarsYearSol</span></code></a>(mars_year, sol)</p></td>
+<td><p>A MarsYearSol represents time in Mars year and sol.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mer.MarsYearSolarLongitude" title="mer.MarsYearSolarLongitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mer.MarsYearSolarLongitude</span></code></a>(mars_year, ls)</p></td>
+<td><p>A MarsYearSolarLongitude represents time in Mars year and solar longitude.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The sections below provide more details on each one.</p>
 <div class="section" id="earthdatetime">
 <h3>EarthDatetime<a class="headerlink" href="#earthdatetime" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
@@ -248,13 +268,10 @@ and year.</p></li>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> – Raised if any of the inputs except <code class="code docutils literal notranslate"><span class="pre">tzinfo</span></code> are not ints.</p></li>
-<li><p><strong>ValueError</strong> – Raised if</p></li>
+<li><p><strong>ValueError</strong> – Raised if any of the inputs are outside their valid range.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>If you do not include time zone information when constructing this
-class, I assume it is a UTC time and add that information automatically.</p>
 <p class="rubric">Examples</p>
 <p>Create an instance of this class the same way you’d make a datetime.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mer</span>
@@ -346,8 +363,8 @@ that the new year starts on sol 1.</p>
 </div>
 <p class="rubric">References</p>
 <p>The equation used in this method can be found in <a class="reference external" href="https://doi.org/10.1016/j.icarus.2014.12.014">this paper</a>. While this paper
-claims the equation is accurate to within 0.05 degrees, I have found
-errors up to 0.2 $^circ$.</p>
+claims the equation is accurate to within 0.05<span class="math notranslate nohighlight">\(^\circ\)</span>,
+I have found errors up to 0.2<span class="math notranslate nohighlight">\(^\circ\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
@@ -542,8 +559,8 @@ errors up to 0.2 $^circ$.</p>
 
 </div>
 </div>
-<div class="section" id="miscellaneous-functions">
-<h2>Miscellaneous functions<a class="headerlink" href="#miscellaneous-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="converter-functions">
+<h2>Converter functions<a class="headerlink" href="#converter-functions" title="Permalink to this headline">¶</a></h2>
 <p>A collection of functions for helping during time conversions.</p>
 <div class="section" id="datetime-to-earthdatetime">
 <h3>datetime_to_earthdatetime<a class="headerlink" href="#datetime-to-earthdatetime" title="Permalink to this headline">¶</a></h3>
@@ -644,19 +661,21 @@ minute, or second of the start or end of the mission so I set them to 0.</p>
 <h3>sols_since_datetime<a class="headerlink" href="#sols-since-datetime" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="mer.sols_since_datetime">
-<span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">sols_since_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.sols_since_datetime" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">mer.</span></span><span class="sig-name descname"><span class="pre">sols_since_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mer.sols_since_datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the number of sols between an input datetime and today.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>date</strong> (<em>datetime.datetime</em>) – Any date.</p>
+<dd class="field-odd"><p><strong>dt</strong> (<em>datetime.datetime</em>) – Any datetime.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>TypeError</strong> – Raised if <code class="code docutils literal notranslate"><span class="pre">date</span></code> is not a datetime.datetime.</p>
+<dd class="field-even"><p><strong>TypeError</strong> – Raised if <code class="code docutils literal notranslate"><span class="pre">dt</span></code> is not a datetime.datetime.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function requires that a datetime’s <code class="code docutils literal notranslate"><span class="pre">tzinfo</span></code> is set.</p>
 </dd></dl>
 
 </div>
