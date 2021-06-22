@@ -3,8 +3,9 @@ import math
 import pytz
 import pytest
 from mer.constants import mars_year_0_start, sols_per_martian_year
-from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
-    EarthDateTime, MarsYearSol, datetime_to_earthdatetime
+from mer.retimers import EarthDateTime, MarsYearSol, MarsYearSolarLongitude, \
+    datetime_to_earthdatetime, sols_after_mars_year_0, sols_between_datetimes, \
+    sols_since_datetime
 
 
 class TestEarthDateTime:
@@ -172,6 +173,77 @@ class TestMarsYearSol:
         def test_northern_winter_solstice_matches_lmd_value(self):
             assert MarsYearSol(0, 514.76).to_solar_longitude() == \
                    pytest.approx(270, abs=0.2)
+
+
+class TestMarsYearSolarLongitude:
+    class TestInit:
+        def test_int_mars_year_float_ls_raises_no_error(self):
+            MarsYearSolarLongitude(0, 234.567)
+
+        def test_float_mars_year_raises_type_error(self):
+            with pytest.raises(TypeError):
+                MarsYearSolarLongitude(14.0, 54)
+
+        def test_first_moment_of_year_raises_no_error(self):
+            MarsYearSolarLongitude(14, 0)
+
+        def test_last_moment_of_year_raises_no_error(self):
+            MarsYearSolarLongitude(14, 360)
+
+        def test_negative_ls_raises_value_error(self):
+            with pytest.raises(ValueError):
+                MarsYearSolarLongitude(14, -0.0001)
+
+        def test_large_ls_raises_value_error(self):
+            with pytest.raises(ValueError):
+                MarsYearSolarLongitude(14, 360.0001)
+
+    class TestToDatetime:
+        def test_sol_0_of_my_0_matches_known_datetime(self):
+            assert MarsYearSol(0, 0).to_datetime() == mars_year_0_start
+
+        def test_far_future_date_raises_overflow_error(self) -> None:
+            with pytest.raises(OverflowError):
+                MarsYearSol(4279, 0).to_datetime()
+
+        def test_not_far_future_date_raises_no_error(self) -> None:
+            MarsYearSol(4278, 0).to_datetime()
+
+        def test_far_past_date_raises_overflow_error(self) -> None:
+            with pytest.raises(OverflowError):
+                MarsYearSol(-1039, 0).to_datetime()
+
+        def test_not_far_past_date_raises_no_error(self) -> None:
+            MarsYearSol(-1038, 0).to_datetime()
+
+    class TestToFractionalMarsYear:
+        def test_ls_0_returns_mars_year_number(self):
+            assert MarsYearSolarLongitude(14, 0).to_fractional_mars_year() == pytest.approx(14, abs=0.001)
+
+        def test_ls_360_of_year_returns_1_more_than_year(self):
+            mars_year = MarsYearSolarLongitude(14, 359.99).to_fractional_mars_year()
+            assert mars_year == pytest.approx(15, abs=0.01)
+
+    class TestToSol:
+        def test_start_of_year_returns_0(self):
+            sol = MarsYearSolarLongitude(30, 0).to_sol()
+            assert sol == pytest.approx(0, abs=0.05)
+
+        def test_end_of_year_returns_0(self):
+            sol = MarsYearSolarLongitude(30, 359.99).to_sol()
+            assert sol == pytest.approx(sols_per_martian_year, abs=0.05)
+
+        def test_northern_summer_solstice_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 90).to_sol()
+            assert sol == pytest.approx(193.47, abs=0.2)
+
+        def test_northern_autumn_equinox_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 180).to_sol()
+            assert sol == pytest.approx(371.99, abs=0.2)
+
+        def test_northern_winter_solstice_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 270).to_sol()
+            assert sol == pytest.approx(514.76, abs=0.2)
 
 
 class TestSolsAfterMarsYear0:

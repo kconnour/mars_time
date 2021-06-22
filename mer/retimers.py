@@ -234,7 +234,8 @@ class MarsYearSol:
         try:
             frac_my = self.to_fractional_mars_year()
             elapsed_seconds = frac_my * sols_per_martian_year * seconds_per_sol
-            return mars_year_0_start + datetime.timedelta(seconds=elapsed_seconds)
+            return mars_year_0_start + datetime.timedelta(
+                seconds=elapsed_seconds)
         except OverflowError as overflow_error:
             message = 'The input Mars year is too far from the present for ' \
                       'datetime to compute dates.'
@@ -325,7 +326,7 @@ class MarsYearSolarLongitude:
             raise TypeError(message)
 
     def __raise_value_error_if_ls_is_unphysical(self) -> None:
-        if not 0 <= self.__ls <= sols_per_martian_year:
+        if not 0 <= self.__ls <= 360:
             message = 'ls must be between 0 and 360.'
             raise ValueError(message)
 
@@ -351,13 +352,24 @@ class MarsYearSolarLongitude:
         >>> print(mer.MarsYearSolarLongitude(1, 0).to_datetime())
         1955-04-11 11:19:36.327061+00:00
 
-        Note that this is about 30 minutes off from the "true" value because I
-        don't have more precise numbers when calculating the true anomaly. If
-        you know of more accurate numbers, I want them!
-
         """
         sol = self.to_sol()
         return MarsYearSol(self.__my, sol).to_datetime()
+
+    def to_fractional_mars_year(self) -> float:
+        """Compute the corresponding fractional Mars year.
+
+        Examples
+        --------
+        Convert a solar longitude into its corresponding Mars year.
+
+        >>> import mer
+        >>> mer.MarsYearSolarLongitude(34, 200.5).to_fractional_mars_year()
+        34.607612860165986
+
+        """
+        sol = self.to_sol()
+        return self.__my + sol / sols_per_martian_year
 
     def to_sol(self) -> float:
         """Compute the corresponding sol.
@@ -374,24 +386,13 @@ class MarsYearSolarLongitude:
         # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99
         # according to the LMD converter code
         true_anomaly = self.__ls * math.pi / 180 + 1.90258341759902
-        eccentric_anomaly = 2*math.atan(math.tan(0.5*true_anomaly) / math.sqrt((1 + orbital_eccentricity)/(1 - orbital_eccentricity)))
-        mean_anomaly = eccentric_anomaly - orbital_eccentricity * math.sin(eccentric_anomaly)
-        return ((mean_anomaly / (2*math.pi))*sols_per_martian_year + perihelion_sol) % sols_per_martian_year
-
-    def to_mars_year(self) -> float:
-        """Compute the corresponding fractional Mars year.
-
-        Examples
-        --------
-        Convert a solar longitude into its corresponding Mars year.
-
-        >>> import mer
-        >>> print(mer.MarsYearSolarLongitude(34, 200.5).to_mars_year())
-        34.607612860165986
-
-        """
-        sol = self.to_sol()
-        return self.__my + sol / sols_per_martian_year
+        eccentric_anomaly = 2*math.atan(math.tan(0.5*true_anomaly) /
+                                        math.sqrt((1 + orbital_eccentricity) /
+                                                  (1 - orbital_eccentricity)))
+        mean_anomaly = eccentric_anomaly - orbital_eccentricity * \
+            math.sin(eccentric_anomaly)
+        return ((mean_anomaly / (2 * math.pi)) *
+                sols_per_martian_year + perihelion_sol) % sols_per_martian_year
 
 
 def datetime_to_earthdatetime(dt: datetime.datetime) -> EarthDateTime:
@@ -412,21 +413,24 @@ def datetime_to_earthdatetime(dt: datetime.datetime) -> EarthDateTime:
     Make an EarthDateTime from a known date.
 
     >>> import datetime, mer
-    >>> datetime_to_earthdatetime(datetime.datetime(2020, 1, 1, 0, 0, 0))
+    >>> print(datetime_to_earthdatetime(datetime.datetime(2020, 1, 1, 0, 0, 0)))
     2020-01-01 00:00:00+00:00
 
     Make an EarthDateTime from the start of Mars year 0.
 
-    >>> datetime_to_earthdatetime(mer.mars_year_0_start)
+    >>> print(datetime_to_earthdatetime(mer.mars_year_0_start))
     1953-05-24 11:57:07.200011+00:00
 
     """
     try:
         return EarthDateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute,
-                             dt.second, dt.microsecond, tzinfo=dt.tzinfo)
-    except AttributeError as ae:
+                             dt.second, dt.microsecond,
+                             tzinfo=dt.tzinfo) if dt.tzinfo is not None else \
+            EarthDateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute,
+                          dt.second, dt.microsecond)
+    except AttributeError as attribute_error:
         message = 'dt must be a datetime.datetime'
-        raise TypeError(message) from ae
+        raise TypeError(message) from attribute_error
 
 
 def sols_after_mars_year_0(dt: datetime.datetime) -> float:
