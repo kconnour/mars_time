@@ -1,6 +1,6 @@
 API reference
 =============
-The mer package supplies functions and classes for converting between different
+The mer package supplies classes and functions for converting between different
 time representations.
 
 Constants
@@ -26,20 +26,14 @@ EarthDatetime
    :members:
    :member-order: bysource
 
-MarsYear
-********
-.. autoclass:: mer.MarsYear
-   :members:
-   :member-order: bysource
-
-Sol
-***
+MarsYearSol
+***********
 .. autoclass:: mer.MarsYearSol
    :members:
    :member-order: bysource
 
-SolarLongitude
-**************
+MarsYearSolarLongitude
+**********************
 .. autoclass:: mer.MarsYearSolarLongitude
    :members:
    :member-order: bysource
