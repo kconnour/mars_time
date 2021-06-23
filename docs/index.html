@@ -171,12 +171,32 @@ L<sub>s</sub> when it started), or</p></li>
 times to others.</p></li>
 </ul>
 <p>If either of these apply to you, this package is for you.</p>
+<div class="section" id="a-note-about-accuracy">
+<h2>A note about accuracy<a class="headerlink" href="#a-note-about-accuracy" title="Permalink to this headline">¶</a></h2>
+<p>This package makes 2 assumptions that can introduce errors:</p>
+<ul class="simple">
+<li><p>A Mars year has a constant length. The Piqueux <em>et al</em> paper of accurate
+Mars year starting dates indicates, for example, that Mars year 97 to 98
+is 686.995 days, whereas Mars year 99 to 100 is 686.959 days. I assume the
+Mars years have a constant length, but this assumption is not quite true.</p></li>
+<li><p>The constants are infinitely precise. Some constants (like the solar
+longitude at perihelion) aren’t particularly precise. It may not even be
+possible for them to be more precise without running into errors described in
+the first bullet point.</p></li>
+</ul>
+<p>Therefore I recommend you use this package as a <em>generally</em> accurate
+retimer—not a <em>supremely</em> accurate retimer. If you need second or minute
+accuracy and precision, I suggest you use SPICE.</p>
+<p>If you know of a way to perform more accurate calculations, please
+<a class="reference external" href="https://github.com/kconnour/mer/issues">raise an issue</a> to help improve
+this package.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Useful links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api-reference.html">API reference</a></li>
 </ul>
+</div>
 </div>
 </div>
 

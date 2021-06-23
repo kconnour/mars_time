@@ -1,185 +1,259 @@
 import datetime
 import math
-import pytz
 import pytest
+import pytz
 from mer.constants import mars_year_0_start, sols_per_martian_year
-from mer.retimers import sols_after_mars_year_0, sols_between_datetimes,\
-    EarthDatetime, Sol
+from mer.retimers import EarthDateTime, MarsYearSol, MarsYearSolarLongitude, \
+    datetime_to_earthdatetime, sols_after_mars_year_0, sols_between_datetimes, \
+    sols_since_datetime
 
 
-class TestEarthDatetime:
-    class TestInit:
+class TestEarthDateTime:
+    class TestNew:
         @pytest.fixture
-        def utc_dt(self) -> datetime.datetime:
-            yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
+        def utc_edt(self) -> datetime.datetime:
+            yield EarthDateTime(2020, 1, 1, 0, 0, 0, 0, tzinfo=pytz.UTC)
 
         @pytest.fixture
-        def eastern_dt(self) -> datetime.datetime:
+        def eastern_edt(self) -> datetime.datetime:
             eastern = pytz.timezone('US/Eastern')
-            yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
+            yield EarthDateTime(2020, 1, 1, 0, 0, 0, 0, tzinfo=eastern)
 
         @pytest.fixture
-        def unaware_dt(self) -> datetime.datetime:
-            yield datetime.datetime(2020, 1, 1, 0, 0, 0, 0)
-
-        def test_aware_datetime_raises_no_errors(self, utc_dt):
-            EarthDatetime(utc_dt)
-
-        def test_unaware_datetime_raises_no_errors(self, unaware_dt):
-            EarthDatetime(unaware_dt)
+        def native_edt(self) -> datetime.datetime:
+            yield EarthDateTime(2020, 1, 1, 0, 0, 0, 0)
 
         def test_int_input_raises_type_error(self):
             with pytest.raises(TypeError):
-                EarthDatetime(2837476)
+                EarthDateTime(2837476)
 
-        def test_date_input_raises_type_error(self):
-            date = datetime.date(2020, 1, 1)
+        def test_datetime_input_raises_type_error(self):
+            dt = datetime.datetime(2020, 1, 1, 0, 0, 0)
             with pytest.raises(TypeError):
-                EarthDatetime(date)
+                EarthDateTime(dt)
 
-        def test_utc_datetime_equals_unaware_datetime(self, utc_dt, unaware_dt):
-            assert EarthDatetime(utc_dt) == EarthDatetime(unaware_dt)
+        def test_utc_input_equals_unaware_input(self, utc_edt, native_edt):
+            assert utc_edt == native_edt
 
-        def test_utc_datetime_is_not_eastern_datetime(self, utc_dt, eastern_dt):
-            assert EarthDatetime(utc_dt) != EarthDatetime(eastern_dt)
-
-        def test_datetime_is_not_earth_datetime(self, utc_dt):
-            assert EarthDatetime(utc_dt) != utc_dt
-
-        def test_str_equals_aware_datetime(self, utc_dt):
-            assert str(EarthDatetime(utc_dt)) == str(utc_dt)
-
-        def test_str_does_not_equal_unaware_datetime(self, unaware_dt):
-            assert str(EarthDatetime(unaware_dt)) != str(unaware_dt)
+        def test_utc_input_is_not_eastern_input(self, utc_edt, eastern_edt):
+            assert utc_edt != eastern_edt
 
     class TestToFractionalMarsYear:
         @pytest.fixture
-        def mars_year_10_start(self) -> datetime.datetime:
-            yield datetime.datetime(1972, 3, 15, 0, 0, 0)
+        def mars_year_10_start(self) -> EarthDateTime:
+            yield EarthDateTime(1972, 3, 15, 4, 48, 0)
 
-        def test_start_of_mars_year_0_returns_0(self):
-            edt = EarthDatetime(mars_year_0_start)
-            assert edt.to_fractional_mars_year() == 0
+        @pytest.fixture
+        def mars_year_20_start(self) -> EarthDateTime:
+            yield EarthDateTime(1991, 1, 4, 21, 50, 24)
 
-        def test_date_of_mars_year_10_returns_10(self, mars_year_10_start):
-            edt = EarthDatetime(mars_year_10_start)
-            assert edt.to_fractional_mars_year() == pytest.approx(10, abs=0.01)
+        def test_mars_year_10_start_returns_10(self, mars_year_10_start):
+            assert mars_year_10_start.to_fractional_mars_year() == \
+                   pytest.approx(10, abs=0.0001)
+
+        def test_mars_year_20_start_returns_20(self, mars_year_20_start):
+            assert mars_year_20_start.to_fractional_mars_year() == \
+                   pytest.approx(20, abs=0.0001)
 
     class TestToWholeMarsYear:
         @pytest.fixture
-        def positive_date(self) -> datetime.datetime:
-            yield datetime.datetime(2000, 1, 1, 0, 0, 0, 0, pytz.UTC)
+        def positive_date(self) -> EarthDateTime:
+            yield EarthDateTime(2000, 1, 1, 0, 0, 0, 0)
 
         @pytest.fixture
-        def negative_date(self) -> datetime.datetime:
-            yield datetime.datetime(1900, 1, 1, 0, 0, 0, 0, pytz.UTC)
+        def negative_date(self) -> EarthDateTime:
+            yield EarthDateTime(1900, 1, 1, 0, 0, 0, 0)
 
         def test_positive_mars_year_returns_expected_value(self, positive_date):
-            edt = EarthDatetime(positive_date)
-            assert edt.to_whole_mars_year() == 24
+            assert positive_date.to_whole_mars_year() == 24
 
         def test_negative_mars_year_returns_expected_value(self, negative_date):
-            edt = EarthDatetime(negative_date)
-            assert edt.to_whole_mars_year() == -29
+            assert negative_date.to_whole_mars_year() == -29
 
     class TestToSol:
-        def test_first_moment_of_year_equals_0(self):
-            edt = EarthDatetime(mars_year_0_start)
-            assert edt.to_sol() == 0
+        @pytest.fixture
+        def mars_year_0_start_edt(self) -> EarthDateTime:
+            yield datetime_to_earthdatetime(mars_year_0_start)
 
-        def test_last_moment_of_mars_year_equals_yearly_sols(self):
-            last_moment = mars_year_0_start - datetime.timedelta(seconds=1)
-            sol = EarthDatetime(last_moment).to_sol()
+        @pytest.fixture
+        def moment_before_mars_year_0_start(self) -> EarthDateTime:
+            yield datetime_to_earthdatetime(mars_year_0_start) - \
+                  datetime.timedelta(milliseconds=1)
+
+        def test_first_moment_of_year_equals_0(self, mars_year_0_start_edt):
+            assert mars_year_0_start_edt.to_sol() == 0
+
+        def test_last_moment_of_mars_year_equals_yearly_sols(
+                self, moment_before_mars_year_0_start):
+            sol = moment_before_mars_year_0_start.to_sol()
             assert sol == pytest.approx(sols_per_martian_year, abs=0.001)
 
     class TestToSolarLongitude:
-        def test_start_of_mars_year_0_is_0(self):
-            edt = EarthDatetime(mars_year_0_start)
-            sin_ls = math.sin(math.radians(edt.to_solar_longitude()))
-            assert sin_ls == pytest.approx(0, abs=0.05)
+        @pytest.fixture
+        def mars_year_0_start_edt(self) -> EarthDateTime:
+            yield datetime_to_earthdatetime(mars_year_0_start)
 
-        def test_last_moment_of_mars_year_is_almost_0(self):
-            last_moment = mars_year_0_start - datetime.timedelta(seconds=1)
-            edt = EarthDatetime(last_moment)
-            sin_ls = math.sin(math.radians(edt.to_solar_longitude()))
-            assert sin_ls == pytest.approx(0, abs=0.05)
+        def test_start_of_mars_year_0_returns_0(self, mars_year_0_start_edt):
+            ls = mars_year_0_start_edt.to_solar_longitude()
+            assert math.sin(math.radians(ls)) == pytest.approx(0, abs=0.001)
 
 
-class TestSol:
+class TestMarsYearSol:
     class TestInit:
         def test_int_mars_year_float_sol_raises_no_error(self):
-            Sol(0, 234.567)
+            MarsYearSol(0, 234.567)
 
         def test_float_mars_year_raises_type_error(self):
             with pytest.raises(TypeError):
-                Sol(14.0, 54)
+                MarsYearSol(14.0, 54)
 
         def test_first_moment_of_year_raises_no_error(self):
-            Sol(14, 0)
+            MarsYearSol(14, 0)
 
         def test_last_moment_of_year_raises_no_error(self):
-            Sol(14, sols_per_martian_year)
+            MarsYearSol(14, sols_per_martian_year)
 
         def test_negative_sol_raises_value_error(self):
             with pytest.raises(ValueError):
-                Sol(14, -0.5)
+                MarsYearSol(14, -0.0001)
 
         def test_large_sol_raises_value_error(self):
             sol = sols_per_martian_year + 0.0001
             with pytest.raises(ValueError):
-                Sol(14, sol)
+                MarsYearSol(14, sol)
 
     class TestToDatetime:
         def test_sol_0_of_my_0_matches_known_datetime(self):
-            assert Sol(0, 0).to_datetime() == mars_year_0_start
+            assert MarsYearSol(0, 0).to_datetime() == mars_year_0_start
 
         def test_far_future_date_raises_overflow_error(self) -> None:
             with pytest.raises(OverflowError):
-                Sol(4279, 0).to_datetime()
+                MarsYearSol(4279, 0).to_datetime()
 
         def test_not_far_future_date_raises_no_error(self) -> None:
-            Sol(4278, 0).to_datetime()
+            MarsYearSol(4278, 0).to_datetime()
 
         def test_far_past_date_raises_overflow_error(self) -> None:
             with pytest.raises(OverflowError):
-                Sol(-1039, 0).to_datetime()
+                MarsYearSol(-1039, 0).to_datetime()
 
         def test_not_far_past_date_raises_no_error(self) -> None:
-            Sol(-1038, 0).to_datetime()
+            MarsYearSol(-1038, 0).to_datetime()
 
     class TestToFractionalMarsYear:
-        def test_sol_0_returns_0(self):
-            assert Sol(14, 0).to_fractional_mars_year() - 14 == 0
+        def test_sol_0_returns_mars_year_number(self):
+            assert MarsYearSol(14, 0).to_fractional_mars_year() == 14
 
-        def test_last_sol_is_1(self):
-            mars_year = Sol(14, sols_per_martian_year).to_fractional_mars_year()
-            assert mars_year - 14 == pytest.approx(1, abs=0.01)
+        def test_last_sol_of_year_returns_1_more_than_year(self):
+            mars_year = MarsYearSol(14, sols_per_martian_year).to_fractional_mars_year()
+            assert mars_year == pytest.approx(15, abs=0.01)
 
-        def test_midpoint_sol_is_half(self):
-            mars_year = Sol(14, sols_per_martian_year / 2).to_fractional_mars_year()
-            assert mars_year - 14 == pytest.approx(0.5, abs=0.01)
+        def test_midpoint_sol_returns_half_greater_mars_year(self):
+            mars_year = MarsYearSol(14, sols_per_martian_year / 2).to_fractional_mars_year()
+            assert mars_year == pytest.approx(14.5, abs=0.01)
 
     class TestToSolarLongitude:
         def test_start_of_year_returns_0(self):
-            sin_ls = math.sin(math.radians(Sol(30, 0).to_solar_longitude()))
+            sin_ls = math.sin(math.radians(MarsYearSol(30, 0).to_solar_longitude()))
             assert sin_ls == pytest.approx(0, abs=0.05)
 
         def test_end_of_year_returns_0(self):
             sin_ls = math.sin(math.radians(
-                Sol(30, sols_per_martian_year).to_solar_longitude()))
+                MarsYearSol(30, sols_per_martian_year).to_solar_longitude()))
             assert sin_ls == pytest.approx(0, abs=0.05)
 
         def test_northern_summer_solstice_matches_lmd_value(self):
-            assert Sol(0, 193.47).to_solar_longitude() == \
+            assert MarsYearSol(0, 193.47).to_solar_longitude() == \
                    pytest.approx(90, abs=0.1)
 
         def test_northern_autumn_equinox_matches_lmd_value(self):
-            assert Sol(0, 371.99).to_solar_longitude() == \
+            assert MarsYearSol(0, 371.99).to_solar_longitude() == \
                    pytest.approx(180, abs=0.2)
 
         def test_northern_winter_solstice_matches_lmd_value(self):
-            assert Sol(0, 514.76).to_solar_longitude() == \
+            assert MarsYearSol(0, 514.76).to_solar_longitude() == \
                    pytest.approx(270, abs=0.2)
+
+
+class TestMarsYearSolarLongitude:
+    class TestInit:
+        def test_int_mars_year_float_ls_raises_no_error(self):
+            MarsYearSolarLongitude(0, 234.567)
+
+        def test_float_mars_year_raises_type_error(self):
+            with pytest.raises(TypeError):
+                MarsYearSolarLongitude(14.0, 54)
+
+        def test_first_moment_of_year_raises_no_error(self):
+            MarsYearSolarLongitude(14, 0)
+
+        def test_last_moment_of_year_raises_no_error(self):
+            MarsYearSolarLongitude(14, 360)
+
+        def test_negative_ls_raises_value_error(self):
+            with pytest.raises(ValueError):
+                MarsYearSolarLongitude(14, -0.0001)
+
+        def test_large_ls_raises_value_error(self):
+            with pytest.raises(ValueError):
+                MarsYearSolarLongitude(14, 360.0001)
+
+    class TestToDatetime:
+        def test_sol_0_of_my_0_matches_known_datetime(self):
+            assert MarsYearSol(0, 0).to_datetime() == mars_year_0_start
+
+        def test_far_future_date_raises_overflow_error(self) -> None:
+            with pytest.raises(OverflowError):
+                MarsYearSol(4279, 0).to_datetime()
+
+        def test_not_far_future_date_raises_no_error(self) -> None:
+            MarsYearSol(4278, 0).to_datetime()
+
+        def test_far_past_date_raises_overflow_error(self) -> None:
+            with pytest.raises(OverflowError):
+                MarsYearSol(-1039, 0).to_datetime()
+
+        def test_not_far_past_date_raises_no_error(self) -> None:
+            MarsYearSol(-1038, 0).to_datetime()
+
+    class TestToFractionalMarsYear:
+        def test_ls_0_returns_mars_year_number(self):
+            assert MarsYearSolarLongitude(14, 0).to_fractional_mars_year() == pytest.approx(14, abs=0.001)
+
+        def test_ls_360_of_year_returns_1_more_than_year(self):
+            mars_year = MarsYearSolarLongitude(14, 359.99).to_fractional_mars_year()
+            assert mars_year == pytest.approx(15, abs=0.01)
+
+    class TestToSol:
+        def test_start_of_year_returns_0(self):
+            sol = MarsYearSolarLongitude(30, 0).to_sol()
+            assert sol == pytest.approx(0, abs=0.05)
+
+        def test_end_of_year_returns_0(self):
+            sol = MarsYearSolarLongitude(30, 359.99).to_sol()
+            assert sol == pytest.approx(sols_per_martian_year, abs=0.05)
+
+        def test_northern_summer_solstice_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 90).to_sol()
+            assert sol == pytest.approx(193.47, abs=0.2)
+
+        def test_northern_autumn_equinox_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 180).to_sol()
+            assert sol == pytest.approx(371.99, abs=0.2)
+
+        def test_northern_winter_solstice_matches_lmd_value(self):
+            sol = MarsYearSolarLongitude(0, 270).to_sol()
+            assert sol == pytest.approx(514.76, abs=0.2)
+
+
+class TestDatetimeToEarthdatetime:
+    def test_datetime_raises_no_error(self):
+        datetime_to_earthdatetime(mars_year_0_start)
+
+    def test_date_raises_type_error(self):
+        date = datetime.date(2020, 1, 1)
+        with pytest.raises(TypeError):
+            datetime_to_earthdatetime(date)
 
 
 class TestSolsAfterMarsYear0:
