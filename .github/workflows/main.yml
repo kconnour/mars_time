@@ -2,7 +2,6 @@
 # -- run the linter
 # -- run all tests
 # -- rebuild documentation
-# If all pass, it will publish it to PyPI
 
 name: CI
 
@@ -15,14 +14,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-ubuntu:
-    name: "Test python ${{matrix.python-version}} on latest Ubuntu"
-    runs-on: ubuntu-latest
+  test-mars_time:
+    name: "Test mars_time on ${{ matrix.ox }} using Python ${{ matrix.python-version }}"
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
+        os: [ubuntu-20.04, ubuntu-22.04, macos-11, macos-12]
+        python-version: [3.8, 3.9, "3.10", "3.11"]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
@@ -32,75 +33,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Install mars_time and testing utilities
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pytest pytz
-
-      - name: Install mars_time
-        run: |
-          python -m pip install .
+          python -m pip install .[test]
 
       - name: Test with pytest
         run: |
-          python -m pytest ./mer
-
-  test-macos:
-    name: "Test python ${{matrix.python-version}} on latest MacOS"
-    runs-on: macos-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.8, 3.9]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest pytz
-
-      - name: Install mars_time
-        run: |
-          python -m pip install .
-
-      - name: Test with pytest
-        run: |
-          python -m pytest ./mer
-
-  test-windows:
-    name: "Test python ${{matrix.python-version}} on latest Windows"
-    runs-on: windows-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.8, 3.9]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest pytz
-
-      - name: Install mars_time
-        run: |
-          python -m pip install .
-
-      - name: Test with pytest
-        run: |
-          python -m pytest ./mer
+          python -m pytest ./mars_time
