@@ -9,42 +9,40 @@ from mars_time.constants import mars_year_0_start, orbital_eccentricity, perihel
 class mars_time:
     """A mars_time object represents a Mars time and is in many ways analogous to a datetime.datetime() object.
 
+    Parameters
+    ----------
+    year
+        The Martian year. Can be any value that can be cast to an int.
+    sol
+        The sol (day of the Martian year). Must be between 0 and ~668.
+
+    Raises
+    ------
+    TypeError
+        Raised if any of the inputs cannot be cast to their assumed type.
+
+    ValueError
+        Raised if :code:`sol` is not in its valid range.
+
+    Examples
+    --------
+    Create an instance of this class.
+
+    >>> import mars_time
+    >>> mt = mars_time.mars_time(30, 0)
+    >>> mt
+    mars_time(year=30, sol=0.0)
+
+    You can add time deltas to this object or subtract time deltas from this object.
+
+    >>> dt = mars_time.mars_time_delta(sol=700)
+    >>> mt + dt
+    mars_time(year=31, sol=31.405004927067353)
+
+    Note that the resultant sol is "ugly" because I assume there aren't an integer number of sols/year.
+
     """
     def __init__(self, year: int, sol: float):
-        """
-        Parameters
-        ----------
-        year
-            The Martian year. Can be any value that can be cast to an int.
-        sol
-            The sol (day of the Martian year). Must be between 0 and ~668.
-
-        Raises
-        ------
-        TypeError
-            Raised if any of the inputs cannot be cast to their assumed type.
-
-        ValueError
-            Raised if :code:`sol` is not in its valid range.
-
-        Examples
-        --------
-        Create an instance of this class.
-
-        >>> import mars_time
-        >>> mt = mars_time.mars_time(30, 0)
-        >>> mt
-        mars_time(year=30, sol=0.0)
-
-        You can add or subtract time deltas to this object.
-
-        >>> dt = mars_time.mars_time_delta(sol=700)
-        >>> mt + dt
-        mars_time(year=31, sol=31.405004927067353)
-
-        Note that the resultant sol is "ugly" because I assume there aren't an integer number of sols/year.
-
-        """
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
 
@@ -77,6 +75,9 @@ class mars_time:
         except TypeError as te:
             message = 'The year cannot be converted to an int.'
             raise TypeError(message) from te
+        except ValueError as ve:
+            message = 'The year cannot be converted to an int.'
+            raise ValueError(message) from ve
 
     @staticmethod
     def _validate_sol(sol):
@@ -85,6 +86,9 @@ class mars_time:
         except TypeError as te:
             message = 'The sol cannot be converted to a float.'
             raise TypeError(message) from te
+        except ValueError as ve:
+            message = 'The sol cannot be converted to a float.'
+            raise ValueError(message) from ve
         if 0 <= sol <= sols_per_martian_year:
             return sol
         else:
@@ -114,29 +118,33 @@ class mars_time:
         sol = (self.sol - other.sol) % sols_per_martian_year
         return mars_time(year, sol)
 
+    def __eq__(self, other):
+        if not isinstance(other, mars_time):
+            return False
+        else:
+            return self.year == other.year and self.sol == other.sol
+
 
 class mars_time_delta:
     """A mars_time_delta object represents the difference between Mars times.
 
+    Parameters
+    ----------
+    year
+        The difference in Mars years. Must be non-negative.
+    sol
+        The difference in sols. Must be non-negative.
+
+    Raises
+    ------
+    TypeError
+        Raised if any of the inputs cannot be cast to their assumed type.
+
+    ValueError
+        Raised if either :code:`year` or :code:`sol` is negative.
+
     """
     def __init__(self, year: int = 0, sol: float = 0):
-        """
-        Parameters
-        ----------
-        year
-            The difference in Mars years. Must be non-negative.
-        sol
-            The difference in sols. Must be non-negative.
-
-        Raises
-        ------
-        TypeError
-            Raised if any of the inputs cannot be cast to their assumed type.
-
-        ValueError
-            Raised if either :code:`year` or :code:`sol` is negative.
-
-        """
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
 
@@ -155,6 +163,9 @@ class mars_time_delta:
         except TypeError as te:
             message = 'The year cannot be converted to an int.'
             raise TypeError(message) from te
+        except ValueError as ve:
+            message = 'The year cannot be converted to an int.'
+            raise ValueError(message) from ve
         if year >= 0:
             return year
         else:
@@ -168,6 +179,9 @@ class mars_time_delta:
         except TypeError as te:
             message = 'The sol cannot be converted to a float.'
             raise TypeError(message) from te
+        except ValueError as ve:
+            message = 'The sol cannot be converted to a float.'
+            raise ValueError(message) from ve
         if sol >= 0:
             return sol
         else:

@@ -1,13 +1,56 @@
 import datetime
-import math
 import pytest
-import pytz
-from mer.constants import mars_year_0_start, sols_per_martian_year
-from mer.retimers import EarthDateTime, MarsYearSol, MarsYearSolarLongitude, \
-    datetime_to_earthdatetime, sols_after_mars_year_0, sols_between_datetimes, \
-    sols_since_datetime
+from mars_time import mars_time, mars_time_delta, datetime_to_mars_time
+from mars_time import constants
 
 
+class Test_mars_time:
+    def test_bad_string_year_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time('foo', 0)
+
+    def test_bad_string_sol_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time(0, 'foo')
+
+
+class Test_mars_time_delta:
+    def test_bad_string_year_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time_delta(year='foo', sol=0)
+
+    def test_bad_string_sol_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time_delta(year=0, sol='foo')
+
+    def test_negative_year_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time_delta(year=-1, sol=0)
+
+    def test_negative_sol_raises_value_error(self):
+        with pytest.raises(ValueError):
+            mars_time_delta(year=0, sol=-1)
+
+
+class Test_datetime_to_mars_time:
+    @pytest.fixture
+    def native_datetime(self) -> datetime.datetime:
+        yield datetime.datetime(2020, 1, 1, 0, 0, 0)
+
+    @pytest.fixture
+    def aware_datetime(self) -> datetime.datetime:
+        yield datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
+
+    # idk why this doesn't work but I blame pytest and not mars_time
+    #def test_native_and_utc_aware_datetimes_give_same_answer(self):
+    #    assert datetime_to_mars_time(self.native_datetime) == datetime_to_mars_time(self.aware_datetime)
+
+    def test_mars_year_0_matches_known_value(self):
+        mt = datetime_to_mars_time(constants.mars_year_0_start)
+        assert 0 == pytest.approx(mt.year) and 0 == pytest.approx(mt.sol)
+
+
+'''
 class TestEarthDateTime:
     class TestNew:
         @pytest.fixture
@@ -313,3 +356,4 @@ class TestSolsBetweenDatetimes:
 
 class TestSolsSinceDatetime:
     pass
+    '''

@@ -1,68 +1,28 @@
-API reference
+API Reference
 =============
-The mer package supplies classes and functions for converting between different
-time representations.
+The mars_time library provides a "datetime" equivalent for Mars along with
+some functions for converting between Earth and Mars times.
 
-Constants
----------
-.. automodule:: mer.constants
+.. toctree::
+   :maxdepth: 1
+   :caption: Data types
 
-Note that these can be accessed via the :code:`constants` module (as shown)
-or used directly from mer's namespace.
+   api-reference/mars_time
+   api-reference/mars_time_delta
 
-.. autodata:: mer.constants.mars_year_0_start
-.. autodata:: mer.constants.martian_sol_length
-.. autodata:: mer.constants.orbital_eccentricity
-.. autodata:: mer.constants.perihelion_sol
-.. autodata:: mer.constants.seconds_per_sol
-.. autodata:: mer.constants.sols_per_martian_year
+.. toctree::
+   :maxdepth: 1
+   :caption: Convenience functions
 
-Available types
----------------
-This package provides the following classes:
+   api-reference/datetime_to_mars_time
+   api-reference/mars_time_to_datetime
+   api-reference/get_current_mars_time
+   api-reference/solar_longitude_to_sol
+   api-reference/sol_to_solar_longitude
 
-.. autosummary::
+.. toctree::
+   :maxdepth: 1
+   :caption: Constants
 
-   mer.EarthDateTime
-   mer.MarsYearSol
-   mer.MarsYearSolarLongitude
-
-The sections below provide more details on each one.
-
-EarthDatetime
-*************
-.. autoclass:: mer.EarthDateTime
-   :members:
-   :member-order: bysource
-
-MarsYearSol
-***********
-.. autoclass:: mer.MarsYearSol
-   :members:
-   :member-order: bysource
-
-MarsYearSolarLongitude
-**********************
-.. autoclass:: mer.MarsYearSolarLongitude
-   :members:
-   :member-order: bysource
-
-Converter functions
--------------------
-A collection of functions for helping during time conversions.
-
-datetime_to_earthdatetime
-*************************
-.. autofunction:: mer.datetime_to_earthdatetime
-
-sols_after_mars_year_0
-**********************
-.. autofunction:: mer.sols_after_mars_year_0
-
-sols_between_datetimes
-**********************
-.. autofunction:: mer.sols_between_datetimes
-
-sols_since_datetime
-*******************
-.. autofunction:: mer.sols_since_datetime
+   api-reference/constants
+   api-reference/rovers

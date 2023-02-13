@@ -1,3 +1,5 @@
+"""The rovers module is a collection of constants related to rover landings and end of life.
+"""
 import datetime
 
 opportunity_landing_date: datetime.datetime = datetime.datetime(2004, 1, 25, 5, 5, 0, 0, tzinfo=datetime.timezone.utc)

@@ -1,4 +1,4 @@
-"""A collection of Martian constants. Except where noted, these values come
+"""The constants module is a collection of Martian orbital and temporal constants. Except where noted, these values come
 directly or indirectly from the `Mars fact sheet
 <https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
 import datetime
