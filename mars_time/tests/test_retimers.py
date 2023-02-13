@@ -1,35 +1,35 @@
 import datetime
 import pytest
-from mars_time import mars_time, mars_time_delta, datetime_to_mars_time
+from mars_time import MarsTime, MarsTimeDelta, datetime_to_mars_time
 from mars_time import constants
 
 
-class Test_mars_time:
+class TestMarsTime:
     def test_bad_string_year_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time('foo', 0)
+            MarsTime('foo', 0)
 
     def test_bad_string_sol_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time(0, 'foo')
+            MarsTime(0, 'foo')
 
 
-class Test_mars_time_delta:
+class TestMarsTimeDelta:
     def test_bad_string_year_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time_delta(year='foo', sol=0)
+            MarsTimeDelta(year='foo', sol=0)
 
     def test_bad_string_sol_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time_delta(year=0, sol='foo')
+            MarsTimeDelta(year=0, sol='foo')
 
     def test_negative_year_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time_delta(year=-1, sol=0)
+            MarsTimeDelta(year=-1, sol=0)
 
     def test_negative_sol_raises_value_error(self):
         with pytest.raises(ValueError):
-            mars_time_delta(year=0, sol=-1)
+            MarsTimeDelta(year=0, sol=-1)
 
 
 class Test_datetime_to_mars_time:
