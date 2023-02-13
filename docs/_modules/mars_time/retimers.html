@@ -118,28 +118,28 @@
   <ul id="navbar-main-elements" class="navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../install.html">
+                      <a class="nav-link nav-internal" href="../../rst/install.html">
                         Installation
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../api-reference.html">
+                      <a class="nav-link nav-internal" href="../../rst/api-reference.html">
                         API Reference
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../examples.html">
+                      <a class="nav-link nav-internal" href="../../rst/examples.html">
                         Examples
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../release-notes.html">
+                      <a class="nav-link nav-internal" href="../../rst/release-notes.html">
                         Release Notes
                       </a>
                     </li>
@@ -230,28 +230,28 @@ document.write(`
   <ul id="navbar-main-elements" class="navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../install.html">
+                      <a class="nav-link nav-internal" href="../../rst/install.html">
                         Installation
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../api-reference.html">
+                      <a class="nav-link nav-internal" href="../../rst/api-reference.html">
                         API Reference
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../examples.html">
+                      <a class="nav-link nav-internal" href="../../rst/examples.html">
                         Examples
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../release-notes.html">
+                      <a class="nav-link nav-internal" href="../../rst/release-notes.html">
                         Release Notes
                       </a>
                     </li>
@@ -354,8 +354,9 @@ document.write(`
     <span class="n">sols_per_martian_year</span>
 
 
-<div class="viewcode-block" id="mars_time"><a class="viewcode-back" href="../../api-reference/mars_time.html#mars_time.mars_time">[docs]</a><span class="k">class</span> <span class="nc">mars_time</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A mars_time object represents a Mars time and is in many ways analogous to a datetime.datetime() object.</span>
+<div class="viewcode-block" id="MarsTime"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTime.html#mars_time.MarsTime">[docs]</a><span class="k">class</span> <span class="nc">MarsTime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A MarsTime object represents a Mars time and is in many ways analogous to a datetime.datetime() object. Objects</span>
+<span class="sd">    of this type are immutable.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -377,22 +378,22 @@ document.write(`
 <span class="sd">    Create an instance of this class.</span>
 
 <span class="sd">    &gt;&gt;&gt; import mars_time</span>
-<span class="sd">    &gt;&gt;&gt; mt = mars_time.mars_time(30, 0)</span>
+<span class="sd">    &gt;&gt;&gt; mt = mars_time.MarsTime(30, 0)</span>
 <span class="sd">    &gt;&gt;&gt; mt</span>
-<span class="sd">    mars_time(year=30, sol=0.0)</span>
+<span class="sd">    MarsTime(year=30, sol=0.0)</span>
 
 <span class="sd">    You can add time deltas to this object or subtract time deltas from this object.</span>
 
-<span class="sd">    &gt;&gt;&gt; dt = mars_time.mars_time_delta(sol=700)</span>
+<span class="sd">    &gt;&gt;&gt; dt = mars_time.MarsTimeDelta(sol=700)</span>
 <span class="sd">    &gt;&gt;&gt; mt + dt</span>
-<span class="sd">    mars_time(year=31, sol=31.405004927067353)</span>
+<span class="sd">    MarsTime(year=31, sol=31.405004927067353)</span>
 
 <span class="sd">    Note that the resultant sol is &quot;ugly&quot; because I assume there aren&#39;t an integer number of sols/year.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sol</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="MarsTime.__init__"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTime.html#mars_time.MarsTime.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sol</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_year</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_sol</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_sol</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -444,36 +445,36 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;mars_time(year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">, sol=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;MarsTime(year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">, sol=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="si">}</span><span class="s1">)&#39;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1">&#39;</span>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">mars_time_delta</span><span class="p">):</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot add f</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s1"> to mars_time.&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MarsTimeDelta</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot add f</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s1"> to MarsTime.&#39;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span> <span class="o">//</span> <span class="n">sols_per_martian_year</span><span class="p">)</span>
         <span class="n">sol</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span> <span class="o">%</span> <span class="n">sols_per_martian_year</span>
-        <span class="k">return</span> <span class="n">mars_time</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MarsTime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="c1"># TODO: add ability for mars_time - mars_time = mars_time_delta</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">mars_time_delta</span><span class="p">):</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot add f</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s1"> to mars_time.&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MarsTimeDelta</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot add f</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s1"> to MarsTime.&#39;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span> <span class="o">//</span> <span class="n">sols_per_martian_year</span><span class="p">)</span>
         <span class="n">sol</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span> <span class="o">%</span> <span class="n">sols_per_martian_year</span>
-        <span class="k">return</span> <span class="n">mars_time</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MarsTime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">mars_time</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MarsTime</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">year</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">sol</span></div>
 
 
-<div class="viewcode-block" id="mars_time_delta"><a class="viewcode-back" href="../../api-reference/mars_time_delta.html#mars_time.mars_time_delta">[docs]</a><span class="k">class</span> <span class="nc">mars_time_delta</span><span class="p">:</span>
+<div class="viewcode-block" id="MarsTimeDelta"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta">[docs]</a><span class="k">class</span> <span class="nc">MarsTimeDelta</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A mars_time_delta object represents the difference between Mars times.</span>
 
 <span class="sd">    Parameters</span>
@@ -492,9 +493,9 @@ document.write(`
 <span class="sd">        Raised if either :code:`year` or :code:`sol` is negative.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="MarsTimeDelta.__init__"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_year</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_sol</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_sol</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -537,10 +538,10 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;mars_time_delta(year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">, sol=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="si">}</span><span class="s1">)&#39;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;MarsTimeDelta(year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">, sol=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
-<span class="k">def</span> <span class="nf">datetime_to_mars_time</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mars_time</span><span class="p">:</span>
+<div class="viewcode-block" id="datetime_to_mars_time"><a class="viewcode-back" href="../../rst/generated/mars_time.datetime_to_mars_time.html#mars_time.datetime_to_mars_time">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_mars_time</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MarsTime</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a datetime to a mars_time.</span>
 
 <span class="sd">    Parameters</span>
@@ -559,12 +560,12 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; import mars_time, datetime</span>
 <span class="sd">    &gt;&gt;&gt; random_time = datetime.datetime(2020, 1, 1, 0, 0, 0)</span>
 <span class="sd">    &gt;&gt;&gt; datetime_to_mars_time(random_time)</span>
-<span class="sd">    mars_time(year=35, sol=275.8641742510148)</span>
+<span class="sd">    MarsTime(year=35, sol=275.8641742510148)</span>
 
 <span class="sd">    Get the Mars time when the Perseverance rover landed.</span>
 
 <span class="sd">    &gt;&gt;&gt; datetime_to_mars_time(mars_time.rovers.perseverance_landing_date)</span>
-<span class="sd">    mars_time(year=36, sol=11.042001502225048)</span>
+<span class="sd">    MarsTime(year=36, sol=11.042001502225048)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -573,13 +574,13 @@ document.write(`
         <span class="n">time_delta</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">mars_year_0_start</span>
         <span class="n">elapsed_seconds</span> <span class="o">=</span> <span class="n">time_delta</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span> <span class="o">+</span> <span class="n">time_delta</span><span class="o">.</span><span class="n">seconds</span>
         <span class="n">elapsed_sols</span> <span class="o">=</span> <span class="n">elapsed_seconds</span> <span class="o">/</span> <span class="n">seconds_per_sol</span>
-        <span class="k">return</span> <span class="n">mars_time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">mars_time_delta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="n">elapsed_sols</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MarsTime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="n">elapsed_sols</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">te</span><span class="p">:</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;The input must be a datetime.&#39;</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">te</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">te</span></div>
 
 
-<span class="k">def</span> <span class="nf">mars_time_to_datetime</span><span class="p">(</span><span class="n">mt</span><span class="p">:</span> <span class="n">mars_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+<div class="viewcode-block" id="mars_time_to_datetime"><a class="viewcode-back" href="../../rst/generated/mars_time.mars_time_to_datetime.html#mars_time.mars_time_to_datetime">[docs]</a><span class="k">def</span> <span class="nf">mars_time_to_datetime</span><span class="p">(</span><span class="n">mt</span><span class="p">:</span> <span class="n">MarsTime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a mars_time to a datetime.</span>
 
 <span class="sd">    Parameters</span>
@@ -596,7 +597,7 @@ document.write(`
 <span class="sd">    Find out when the start of Mars year 30 was.</span>
 
 <span class="sd">    &gt;&gt;&gt; import mars_time</span>
-<span class="sd">    &gt;&gt;&gt; mars_time.mars_time_to_datetime(mars_time.mars_time(30, 0))</span>
+<span class="sd">    &gt;&gt;&gt; mars_time.mars_time_to_datetime(mars_time.MarsTime(30, 0))</span>
 <span class="sd">    datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -606,21 +607,21 @@ document.write(`
         <span class="k">return</span> <span class="n">mars_year_0_start</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed_seconds</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">te</span><span class="p">:</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;The input must be a mars_time.&#39;</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">te</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">te</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_current_mars_time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">mars_time</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the current mars_time.</span>
+<div class="viewcode-block" id="get_current_mars_time"><a class="viewcode-back" href="../../rst/generated/mars_time.get_current_mars_time.html#mars_time.get_current_mars_time">[docs]</a><span class="k">def</span> <span class="nf">get_current_mars_time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">MarsTime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the current MarsTime.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    The mars_time.</span>
+<span class="sd">    The MarsTime.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span></div>
 
 
-<span class="k">def</span> <span class="nf">solar_longitude_to_sol</span><span class="p">(</span><span class="n">solar_longitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="solar_longitude_to_sol"><a class="viewcode-back" href="../../rst/generated/mars_time.solar_longitude_to_sol.html#mars_time.solar_longitude_to_sol">[docs]</a><span class="k">def</span> <span class="nf">solar_longitude_to_sol</span><span class="p">(</span><span class="n">solar_longitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert solar longitude to sol.</span>
 
 <span class="sd">    Parameters</span>
@@ -651,10 +652,10 @@ document.write(`
                                       <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">orbital_eccentricity</span><span class="p">)</span> <span class="o">/</span>
                                                 <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">orbital_eccentricity</span><span class="p">)))</span>
     <span class="n">mean_anomaly</span> <span class="o">=</span> <span class="n">eccentric_anomaly</span> <span class="o">-</span> <span class="n">orbital_eccentricity</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">eccentric_anomaly</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">mean_anomaly</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sols_per_martian_year</span> <span class="o">+</span> <span class="n">perihelion_sol</span><span class="p">)</span> <span class="o">%</span> <span class="n">sols_per_martian_year</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mean_anomaly</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sols_per_martian_year</span> <span class="o">+</span> <span class="n">perihelion_sol</span><span class="p">)</span> <span class="o">%</span> <span class="n">sols_per_martian_year</span></div>
 
 
-<span class="k">def</span> <span class="nf">sol_to_solar_longitude</span><span class="p">(</span><span class="n">sol</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="sol_to_solar_longitude"><a class="viewcode-back" href="../../rst/generated/mars_time.sol_to_solar_longitude.html#mars_time.sol_to_solar_longitude">[docs]</a><span class="k">def</span> <span class="nf">sol_to_solar_longitude</span><span class="p">(</span><span class="n">sol</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sol to solar longitude.</span>
 
 <span class="sd">    Parameters</span>
@@ -681,7 +682,7 @@ document.write(`
 <span class="sd">    93.0250805781161</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">mars_time_to_datetime</span><span class="p">(</span><span class="n">mars_time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sol</span><span class="p">))</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">mars_time_to_datetime</span><span class="p">(</span><span class="n">MarsTime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sol</span><span class="p">))</span>
     <span class="n">utc</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
     <span class="n">j2000</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">utc</span><span class="p">)</span>
     <span class="n">elapsed_days</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span> <span class="o">-</span> <span class="n">j2000</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">86400</span>
@@ -691,7 +692,7 @@ document.write(`
         <span class="mf">10.67848</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> \
         <span class="mf">0.62077</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> \
         <span class="mf">0.05031</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">m</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ls</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="k">return</span> <span class="n">ls</span> <span class="o">%</span> <span class="mi">360</span></div>
 </pre></div>
 
                 </article>

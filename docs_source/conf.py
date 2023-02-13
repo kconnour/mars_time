@@ -18,6 +18,7 @@ author = 'kconnour'
 
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode'
 ]
@@ -34,5 +35,5 @@ html_theme_options = {
     "collapse_navigation": True,
 }
 
-autoclass_contents = 'both'
+autoclass_contents = 'class'
 autodoc_typehints = 'description'  # Only show typehints in the description,

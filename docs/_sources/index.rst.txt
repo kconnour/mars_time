@@ -1,5 +1,5 @@
-mars_time documentation
-=======================
+mars_time
+=========
 :code:`mars_time` is a library for converting between Martian times and
 Earth times. You may be interested in this library if:
 
@@ -39,10 +39,10 @@ this library.
    :maxdepth: 1
    :caption: Useful links
 
-   install
-   api-reference
-   examples
-   release-notes
+   rst/install
+   rst/api-reference
+   rst/examples
+   rst/release-notes
 
 Indices and tables
 ==================

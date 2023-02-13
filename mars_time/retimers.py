@@ -6,8 +6,9 @@ from mars_time.constants import mars_year_0_start, orbital_eccentricity, perihel
     sols_per_martian_year
 
 
-class mars_time:
-    """A mars_time object represents a Mars time and is in many ways analogous to a datetime.datetime() object.
+class MarsTime:
+    """A MarsTime object represents a Mars time and is in many ways analogous to a datetime.datetime() object. Objects
+    of this type are immutable.
 
     Parameters
     ----------
@@ -29,15 +30,15 @@ class mars_time:
     Create an instance of this class.
 
     >>> import mars_time
-    >>> mt = mars_time.mars_time(30, 0)
+    >>> mt = mars_time.MarsTime(30, 0)
     >>> mt
-    mars_time(year=30, sol=0.0)
+    MarsTime(year=30, sol=0.0)
 
     You can add time deltas to this object or subtract time deltas from this object.
 
-    >>> dt = mars_time.mars_time_delta(sol=700)
+    >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt + dt
-    mars_time(year=31, sol=31.405004927067353)
+    MarsTime(year=31, sol=31.405004927067353)
 
     Note that the resultant sol is "ugly" because I assume there aren't an integer number of sols/year.
 
@@ -96,37 +97,37 @@ class mars_time:
             raise ValueError(message)
 
     def __str__(self):
-        return f'mars_time(year={self.year}, sol={self.sol})'
+        return f'MarsTime(year={self.year}, sol={self.sol})'
 
     def __repr__(self):
         return f'{self}'
 
     def __add__(self, other):
-        if not isinstance(other, mars_time_delta):
-            message = f'Cannot add f{type(other)} to mars_time.'
+        if not isinstance(other, MarsTimeDelta):
+            message = f'Cannot add f{type(other)} to MarsTime.'
             raise TypeError(message)
         year = self.year + other.year + int((self.sol + other.sol) // sols_per_martian_year)
         sol = (self.sol + other.sol) % sols_per_martian_year
-        return mars_time(year, sol)
+        return MarsTime(year, sol)
 
     def __sub__(self, other):
         # TODO: add ability for mars_time - mars_time = mars_time_delta
-        if not isinstance(other, mars_time_delta):
-            message = f'Cannot add f{type(other)} to mars_time.'
+        if not isinstance(other, MarsTimeDelta):
+            message = f'Cannot add f{type(other)} to MarsTime.'
             raise TypeError(message)
         year = self.year - other.year + int((self.sol - other.sol) // sols_per_martian_year)
         sol = (self.sol - other.sol) % sols_per_martian_year
-        return mars_time(year, sol)
+        return MarsTime(year, sol)
 
     def __eq__(self, other):
-        if not isinstance(other, mars_time):
+        if not isinstance(other, MarsTime):
             return False
         else:
             return self.year == other.year and self.sol == other.sol
 
 
-class mars_time_delta:
-    """A mars_time_delta object represents the difference between Mars times.
+class MarsTimeDelta:
+    """A MarsTimeDelta object represents the difference between Mars times.
 
     Parameters
     ----------
@@ -189,11 +190,11 @@ class mars_time_delta:
             raise ValueError(message)
 
     def __str__(self):
-        return f'mars_time_delta(year={self.year}, sol={self.sol})'
+        return f'MarsTimeDelta(year={self.year}, sol={self.sol})'
 
 
-def datetime_to_mars_time(dt: datetime.datetime) -> mars_time:
-    """Convert a datetime to a mars_time.
+def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
+    """Convert a datetime to a MarsTime.
 
     Parameters
     ----------
@@ -202,7 +203,7 @@ def datetime_to_mars_time(dt: datetime.datetime) -> mars_time:
 
     Returns
     -------
-    The mars_time associated with the input datetime.
+    The MarsTime associated with the input datetime.
 
     Examples
     --------
@@ -211,12 +212,12 @@ def datetime_to_mars_time(dt: datetime.datetime) -> mars_time:
     >>> import mars_time, datetime
     >>> random_time = datetime.datetime(2020, 1, 1, 0, 0, 0)
     >>> datetime_to_mars_time(random_time)
-    mars_time(year=35, sol=275.8641742510148)
+    MarsTime(year=35, sol=275.8641742510148)
 
     Get the Mars time when the Perseverance rover landed.
 
     >>> datetime_to_mars_time(mars_time.rovers.perseverance_landing_date)
-    mars_time(year=36, sol=11.042001502225048)
+    MarsTime(year=36, sol=11.042001502225048)
 
     """
     try:
@@ -225,14 +226,14 @@ def datetime_to_mars_time(dt: datetime.datetime) -> mars_time:
         time_delta = dt - mars_year_0_start
         elapsed_seconds = time_delta.days * 60*60*24 + time_delta.seconds
         elapsed_sols = elapsed_seconds / seconds_per_sol
-        return mars_time(0, 0) + mars_time_delta(sol=elapsed_sols)
+        return MarsTime(0, 0) + MarsTimeDelta(sol=elapsed_sols)
     except TypeError as te:
         message = 'The input must be a datetime.'
         raise TypeError(message) from te
 
 
-def mars_time_to_datetime(mt: mars_time) -> datetime.datetime:
-    """Convert a mars_time to a datetime.
+def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
+    """Convert a MarsTime to a datetime.
 
     Parameters
     ----------
@@ -241,14 +242,14 @@ def mars_time_to_datetime(mt: mars_time) -> datetime.datetime:
 
     Returns
     -------
-    The datetime associated with the input mars_time.
+    The datetime associated with the input MarsTime.
 
     Examples
     --------
-    Find out when the start of Mars year 30 was.
+    Find the UTC time that corresponds to the start of Mars year 30.
 
     >>> import mars_time
-    >>> mars_time.mars_time_to_datetime(mars_time.mars_time(30, 0))
+    >>> mars_time.mars_time_to_datetime(mars_time.MarsTime(30, 0))
     datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)
 
     """
@@ -261,12 +262,12 @@ def mars_time_to_datetime(mt: mars_time) -> datetime.datetime:
         raise TypeError(message) from te
 
 
-def get_current_mars_time() -> mars_time:
-    """Get the current mars_time.
+def get_current_mars_time() -> MarsTime:
+    """Get the current MarsTime.
 
     Returns
     -------
-    The mars_time.
+    The MarsTime.
 
     """
     return datetime_to_mars_time(datetime.datetime.now(tz=datetime.timezone.utc))
@@ -333,7 +334,7 @@ def sol_to_solar_longitude(sol: float):
     93.0250805781161
 
     """
-    dt = mars_time_to_datetime(mars_time(0, sol))
+    dt = mars_time_to_datetime(MarsTime(0, sol))
     utc = datetime.timezone.utc
     j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, tzinfo=utc)
     elapsed_days = (dt - j2000).total_seconds() / 86400
