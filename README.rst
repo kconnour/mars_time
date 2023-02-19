@@ -12,9 +12,9 @@ It aims to be a "datetime" equivalent for Mars and provides conversions between:
 
 Websites:
 
-* `Source code <https://github.com/kconnour/mars_time>`_
+* `Source code <https://github.com/kconnour/mars_time/>`_
 * `Documentation <https://kconnour.github.io/mars_time/>`_
-* `Bug reports / improvements <https://github.com/kconnour/mars_time/issues>`_
+* `Bug reports / improvements <https://github.com/kconnour/mars_time/issues/>`_
 
 Feedback is welcome. Feel free to raise an issue if you find a bug or simply
 want to request a feature.
