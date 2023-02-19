@@ -1,0 +1,21 @@
+name: Feature request
+description: You have a brillant idea that you want to see added to mars_time.
+labels: enhancement
+
+body:
+  - type: textarea
+    attributes:
+      label: Feature request
+      description: >-
+        Please describe the feature you'd like to see added to mars_time.
+        This may include papers, algorithms, code, etc.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Priority
+      description: >-
+        How pressing is this issue?
+    validations:
+      required: true
