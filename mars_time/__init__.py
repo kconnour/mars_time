@@ -1,4 +1,3 @@
-from . import constants
-from . import rovers
+from .constants import *
+from .table import *
 from .retimers import *
-
