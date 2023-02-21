@@ -38,6 +38,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'rst/api-reference';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -322,16 +323,18 @@ document.write(`
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.mars_year_0_start.html">mars_time.constants.mars_year_0_start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.martian_sol_length.html">mars_time.constants.martian_sol_length</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.northern_spring_equinox_sol.html">mars_time.constants.northern_spring_equinox_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.rovers.opportunity_landing_date.html">mars_time.rovers.opportunity_landing_date</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.rovers.opportunity_last_contact_date.html">mars_time.rovers.opportunity_last_contact_date</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.rovers.perseverance_landing_date.html">mars_time.rovers.perseverance_landing_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/mars_time.table.mars_year_starting_datetime.html">mars_time.table.mars_year_starting_datetime</a></li>
 </ul>
 </div>
 </nav></div>
@@ -386,32 +389,34 @@ document.write(`
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h1>
 <section id="data-types">
 <h2>Data types<a class="headerlink" href="#data-types" title="Permalink to this heading">#</a></h2>
-<p><code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code> is the primary data type of this library and represents a
+<p><code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code> is the primary data type of this package and represents a
 year and sol on Mars. <code class="code docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> can be used in conjunction with
-<code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code> to create new instances of <code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code>.</p>
+<code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code> to create new instances of <code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code>. These may be
+useful on their own, but as with the datetime module these are probably most
+beneficial for attribute extraction.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MarsTime</span></code></a>(year, sol)</p></td>
-<td><p>A MarsTime object represents a Mars time and is in many ways analogous to a datetime.datetime() object.</p></td>
+<td><p>A MarsTime represents the year and sol on Mars.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta" title="mars_time.MarsTimeDelta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code></a>([year, sol])</p></td>
-<td><p>A mars_time_delta object represents the difference between Mars times.</p></td>
+<td><p>A MarsTimeDelta represents the difference in years and sols on Mars.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="convenience-functions">
-<h2>Convenience functions<a class="headerlink" href="#convenience-functions" title="Permalink to this heading">#</a></h2>
+<section id="conversion-functions">
+<h2>Conversion functions<a class="headerlink" href="#conversion-functions" title="Permalink to this heading">#</a></h2>
 <p>These function help converting between <code class="code docutils literal notranslate"><span class="pre">MarsTime</span></code> and
-<code class="code docutils literal notranslate"><span class="pre">datetime.datetime</span></code>. There are also functions for converting between
-sols and solar longitudes.</p>
+<code class="code docutils literal notranslate"><span class="pre">datetime.datetime</span></code> objects. There are also functions for converting
+between sols and solar longitudes.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.datetime_to_mars_time.html#mars_time.datetime_to_mars_time" title="mars_time.datetime_to_mars_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime_to_mars_time</span></code></a>(dt)</p></td>
-<td><p>Convert a datetime to a mars_time.</p></td>
+<td><p>Convert a datetime.datetime to a MarsTime.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.mars_time_to_datetime.html#mars_time.mars_time_to_datetime" title="mars_time.mars_time_to_datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mars_time_to_datetime</span></code></a>(mt)</p></td>
-<td><p>Convert a mars_time to a datetime.</p></td>
+<td><p>Convert a MarsTime to a datetime.datetime.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.get_current_mars_time.html#mars_time.get_current_mars_time" title="mars_time.get_current_mars_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_mars_time</span></code></a>()</p></td>
 <td><p>Get the current MarsTime.</p></td>
@@ -425,45 +430,51 @@ sols and solar longitudes.</p>
 </tbody>
 </table>
 </section>
-<section id="orbital-constants">
-<h2>Orbital constants<a class="headerlink" href="#orbital-constants" title="Permalink to this heading">#</a></h2>
+<section id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this heading">#</a></h2>
 <p>These constants are related to the orbit and/or timekeeping on Mars.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.mars_year_0_start.html#mars_time.constants.mars_year_0_start" title="mars_time.constants.mars_year_0_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.mars_year_0_start</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.mars_year_0_start.html#mars_time.constants.mars_year_0_start" title="mars_time.constants.mars_year_0_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mars_year_0_start</span></code></a></p></td>
 <td><p>Time of the start of Mars year 0.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.martian_sol_length.html#mars_time.constants.martian_sol_length" title="mars_time.constants.martian_sol_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.martian_sol_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.hours_per_sol.html#mars_time.constants.hours_per_sol" title="mars_time.constants.hours_per_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hours_per_sol</span></code></a></p></td>
 <td><p>Length of a Martian sol [hours].</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.orbital_eccentricity.html#mars_time.constants.orbital_eccentricity" title="mars_time.constants.orbital_eccentricity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.orbital_eccentricity</span></code></a></p></td>
-<td><p>Mars orbital eccentricity.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.perihelion_sol.html#mars_time.constants.perihelion_sol" title="mars_time.constants.perihelion_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.perihelion_sol</span></code></a></p></td>
-<td><p>Sol number of perihelion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.seconds_per_sol.html#mars_time.constants.seconds_per_sol" title="mars_time.constants.seconds_per_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.seconds_per_sol</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.seconds_per_sol.html#mars_time.constants.seconds_per_sol" title="mars_time.constants.seconds_per_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seconds_per_sol</span></code></a></p></td>
 <td><p>Number of seconds per Martian sol.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.sols_per_martian_year.html#mars_time.constants.sols_per_martian_year" title="mars_time.constants.sols_per_martian_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants.sols_per_martian_year</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.sols_per_martian_year.html#mars_time.constants.sols_per_martian_year" title="mars_time.constants.sols_per_martian_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sols_per_martian_year</span></code></a></p></td>
 <td><p>Number of sols per Martian year.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.northern_spring_equinox_sol.html#mars_time.constants.northern_spring_equinox_sol" title="mars_time.constants.northern_spring_equinox_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">northern_spring_equinox_sol</span></code></a></p></td>
+<td><p>The sol of the northern spring equinox (solar longitude = 0<span class="math notranslate nohighlight">\(^\circ\)</span>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.northern_summer_solstice_sol.html#mars_time.constants.northern_summer_solstice_sol" title="mars_time.constants.northern_summer_solstice_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">northern_summer_solstice_sol</span></code></a></p></td>
+<td><p>The sol of the northern summer solstice (solar longitude = 90<span class="math notranslate nohighlight">\(^\circ\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.northern_autumn_equinox_sol.html#mars_time.constants.northern_autumn_equinox_sol" title="mars_time.constants.northern_autumn_equinox_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">northern_autumn_equinox_sol</span></code></a></p></td>
+<td><p>The sol of the northern autumn equinox (solar longitude = 180<span class="math notranslate nohighlight">\(^\circ\)</span>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.northern_winter_solstice_sol.html#mars_time.constants.northern_winter_solstice_sol" title="mars_time.constants.northern_winter_solstice_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">northern_winter_solstice_sol</span></code></a></p></td>
+<td><p>The sol of the northern winter solstice (solar longitude = 270<span class="math notranslate nohighlight">\(^\circ\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.constants.perihelion_sol.html#mars_time.constants.perihelion_sol" title="mars_time.constants.perihelion_sol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perihelion_sol</span></code></a></p></td>
+<td><p>Sol of perihelion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.constants.orbital_eccentricity.html#mars_time.constants.orbital_eccentricity" title="mars_time.constants.orbital_eccentricity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_eccentricity</span></code></a></p></td>
+<td><p>Mars' orbital eccentricity.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="rover-constants">
-<h2>Rover constants<a class="headerlink" href="#rover-constants" title="Permalink to this heading">#</a></h2>
-<p>These constants are related to Martian rovers.</p>
+<section id="table">
+<h2>Table<a class="headerlink" href="#table" title="Permalink to this heading">#</a></h2>
+<p>This table contains values of datetimes of the start of Mars years.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.rovers.opportunity_landing_date.html#mars_time.rovers.opportunity_landing_date" title="mars_time.rovers.opportunity_landing_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rovers.opportunity_landing_date</span></code></a></p></td>
-<td><p>Time when the Opportunity (MER-B) rover landed.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/mars_time.rovers.opportunity_last_contact_date.html#mars_time.rovers.opportunity_last_contact_date" title="mars_time.rovers.opportunity_last_contact_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rovers.opportunity_last_contact_date</span></code></a></p></td>
-<td><p>Time when the Opportunity (MER-B) rover had last contact.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.rovers.perseverance_landing_date.html#mars_time.rovers.perseverance_landing_date" title="mars_time.rovers.perseverance_landing_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rovers.perseverance_landing_date</span></code></a></p></td>
-<td><p>Time when the Perseverance rover from the Mars 2020 mission landed.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mars_time.table.mars_year_starting_datetime.html#mars_time.table.mars_year_starting_datetime" title="mars_time.table.mars_year_starting_datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mars_year_starting_datetime</span></code></a></p></td>
+<td><p>Catalog of values denoting the start of Martian years.</p></td>
 </tr>
 </tbody>
 </table>
@@ -513,9 +524,9 @@ sols and solar longitudes.</p>
   <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-types">Data types</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convenience-functions">Convenience functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbital-constants">Orbital constants</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rover-constants">Rover constants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversion-functions">Conversion functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constants">Constants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table">Table</a></li>
 </ul>
   </nav></div>
 

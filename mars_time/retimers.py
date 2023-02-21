@@ -87,7 +87,7 @@ class MarsTime:
 
     @property
     def year(self) -> int:
-        """Get the year of this object.
+        """Get the input year.
 
         Returns
         -------
@@ -98,7 +98,7 @@ class MarsTime:
 
     @property
     def sol(self) -> float:
-        """Get the sol of this object.
+        """Get the input sol.
 
         Returns
         -------
@@ -283,16 +283,17 @@ class MarsTimeDelta:
 
 
 def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
-    """Convert a datetime to a MarsTime.
+    """Convert a datetime.datetime to a MarsTime.
 
     Parameters
     ----------
-    dt
-        Any datetime. If it has no timezone info, this will assume the timezone is UTC.
+    dt: datetime.datetime
+        Any datetime.datetime. If it has no timezone info, this will assume the timezone is UTC.
 
     Returns
     -------
-    The MarsTime associated with the input datetime.
+    MarsTime
+        The MarsTime associated with the input datetime.datetime.
 
     Raises
     ------
@@ -332,12 +333,13 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
 
     Parameters
     ----------
-    mt
+    mt: MarsTime
         Any MarsTime.
 
     Returns
     -------
-    The datetime associated with the input MarsTime.
+    datetime.datetime
+        The datetime associated with the input MarsTime.
 
     Raises
     ------
@@ -368,7 +370,8 @@ def get_current_mars_time() -> MarsTime:
 
     Returns
     -------
-    The MarsTime.
+    MarsTime
+        The current MarsTime.
 
     """
     return datetime_to_mars_time(datetime.datetime.now(tz=datetime.timezone.utc))
@@ -379,12 +382,13 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
 
     Parameters
     ----------
-    solar_longitude
+    solar_longitude: float
         The solar longitude.
 
     Returns
     -------
-    The sol corresponding to the input solar longitude.
+    float
+        The sol corresponding to the input solar longitude.
 
     Raises
     ------
@@ -427,12 +431,13 @@ def sol_to_solar_longitude(sol: float) -> float:
 
     Parameters
     ----------
-    sol
+    sol: float
         The sol number.
 
     Returns
     -------
-    The solar longitude corresponding to the input sol.
+    float
+        The solar longitude corresponding to the input sol.
 
     Notes
     -----
@@ -467,3 +472,9 @@ def sol_to_solar_longitude(sol: float) -> float:
         0.62077 * math.sin(2*m) + \
         0.05031 * math.sin(3*m)
     return ls % 360
+
+
+if __name__ == '__main__':
+    s = solar_longitude_to_sol(182)
+    m = MarsTime(34, s)
+    print(mars_time_to_datetime(m))

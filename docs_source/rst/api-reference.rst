@@ -5,9 +5,11 @@ API Reference
 
 Data types
 ----------
-:code:`MarsTime` is the primary data type of this library and represents a
+:code:`MarsTime` is the primary data type of this package and represents a
 year and sol on Mars. :code:`MarsTimeDelta` can be used in conjunction with
-:code:`MarsTime` to create new instances of :code:`MarsTime`.
+:code:`MarsTime` to create new instances of :code:`MarsTime`. These may be
+useful on their own, but as with the datetime module these are probably most
+beneficial for attribute extraction.
 
 .. autosummary::
    :toctree: generated/
@@ -15,11 +17,11 @@ year and sol on Mars. :code:`MarsTimeDelta` can be used in conjunction with
    MarsTime
    MarsTimeDelta
 
-Convenience functions
----------------------
+Conversion functions
+--------------------
 These function help converting between :code:`MarsTime` and
-:code:`datetime.datetime`. There are also functions for converting between
-sols and solar longitudes.
+:code:`datetime.datetime` objects. There are also functions for converting
+between sols and solar longitudes.
 
 .. autosummary::
    :toctree: generated/
@@ -30,27 +32,33 @@ sols and solar longitudes.
    solar_longitude_to_sol
    sol_to_solar_longitude
 
-Orbital constants
------------------
+Constants
+---------
 These constants are related to the orbit and/or timekeeping on Mars.
 
-.. autosummary::
-   :toctree: generated/
-
-   constants.mars_year_0_start
-   constants.martian_sol_length
-   constants.orbital_eccentricity
-   constants.perihelion_sol
-   constants.seconds_per_sol
-   constants.sols_per_martian_year
-
-Rover constants
----------------
-These constants are related to Martian rovers.
+.. currentmodule:: mars_time.constants
 
 .. autosummary::
    :toctree: generated/
 
-   rovers.opportunity_landing_date
-   rovers.opportunity_last_contact_date
-   rovers.perseverance_landing_date
+   mars_year_0_start
+   hours_per_sol
+   seconds_per_sol
+   sols_per_martian_year
+   northern_spring_equinox_sol
+   northern_summer_solstice_sol
+   northern_autumn_equinox_sol
+   northern_winter_solstice_sol
+   perihelion_sol
+   orbital_eccentricity
+
+Table
+-----
+This table contains values of datetimes of the start of Mars years.
+
+.. currentmodule:: mars_time.table
+
+.. autosummary::
+   :toctree: generated/
+
+   mars_year_starting_datetime
