@@ -2,7 +2,7 @@ Examples
 ========
 
 These are examples of questions that can be answered by this package and
-practical uses of this package. 
+practical uses of this package.
 
 Opportunity length
 ------------------

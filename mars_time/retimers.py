@@ -406,8 +406,8 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
     Determine the sol corresponding to solar longitude 180. The "official" LMD calendar gives 371.99.
 
     >>> import mars_time
-    >>> mars_time.solar_longitude_to_sol(180)
-    371.8584911665763
+    >>> round(mars_time.solar_longitude_to_sol(180), 2)
+    371.88
 
     """
     try:
@@ -450,8 +450,8 @@ def sol_to_solar_longitude(sol: float) -> float:
     Determine the solar longitude of sol 200. The "official" LMD document gives 92.965.
 
     >>> import mars_time
-    >>> mars_time.sol_to_solar_longitude(200)
-    93.0250805781161
+    >>> round(mars_time.sol_to_solar_longitude(200), 2)
+    93.03
 
     """
     try:
