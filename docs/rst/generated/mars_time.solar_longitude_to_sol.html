@@ -322,16 +322,18 @@ document.write(`
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_0_start.html">mars_time.constants.mars_year_0_start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.martian_sol_length.html">mars_time.constants.martian_sol_length</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_spring_equinox_sol.html">mars_time.constants.northern_spring_equinox_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.rovers.opportunity_landing_date.html">mars_time.rovers.opportunity_landing_date</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.rovers.opportunity_last_contact_date.html">mars_time.rovers.opportunity_last_contact_date</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.rovers.perseverance_landing_date.html">mars_time.rovers.perseverance_landing_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.table.mars_year_starting_datetime.html">mars_time.table.mars_year_starting_datetime</a></li>
 </ul>
 </div>
 </nav></div>
@@ -389,18 +391,27 @@ document.write(`
 <h1>mars_time.solar_longitude_to_sol<a class="headerlink" href="#mars-time-solar-longitude-to-sol" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="mars_time.solar_longitude_to_sol">
-<span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">solar_longitude_to_sol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solar_longitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mars_time/retimers.html#solar_longitude_to_sol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.solar_longitude_to_sol" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">solar_longitude_to_sol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solar_longitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/mars_time/retimers.html#solar_longitude_to_sol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.solar_longitude_to_sol" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert solar longitude to sol.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>solar_longitude</strong> (<em>float</em>) – The solar longitude.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The sol corresponding to the input solar longitude.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – Raised if the input cannot be cast to a float.</p></li>
+<li><p><strong>ValueError</strong> – Raised if the input is not numeric.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This equation comes from LMD but should be more accurate.</p>
+<p>This equation comes from LMD.</p>
 <p class="rubric">Examples</p>
 <p>Determine the sol corresponding to solar longitude 180. The “official” LMD calendar gives 371.99.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>

@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Release Notes" href="release-notes.html" />
-    <link rel="prev" title="mars_time.rovers.perseverance_landing_date" href="generated/mars_time.rovers.perseverance_landing_date.html" />
+    <link rel="prev" title="mars_time.table.mars_year_starting_datetime" href="generated/mars_time.table.mars_year_starting_datetime.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -351,19 +351,35 @@ document.write(`
                   
   <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h1>
-<section id="perseverance-detection">
-<h2>Perseverance detection<a class="headerlink" href="#perseverance-detection" title="Permalink to this heading">#</a></h2>
-<p>From Lemmon et al (2022): “A water-ice halo was unambiguously visible on sol
-292 (of Perseverance’s life)…”. What solar longitude was this?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mars_time</span>
+<p>These are examples of questions / practical uses of this package.</p>
+<section id="opportunity-length">
+<h2>Opportunity length<a class="headerlink" href="#opportunity-length" title="Permalink to this heading">#</a></h2>
+<p>How long was the Opportunity rover in operation?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">mars_time</span>
 
-<span class="n">landing_date</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">rovers</span><span class="o">.</span><span class="n">perseverance_landing_date</span>
-<span class="n">landing_time</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">landing_date</span><span class="p">)</span>
-<span class="n">detection_time</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">292</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="n">detection_time</span><span class="o">.</span><span class="n">sol</span><span class="p">))</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">sols</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This gives about 142.49, consistent with the values in the paper.</p>
+<p>This gives 5111.3, consistent with the Wikipedia page.</p>
+</section>
+<section id="perseverance-ice-halo">
+<h2>Perseverance ice halo<a class="headerlink" href="#perseverance-ice-halo" title="Permalink to this heading">#</a></h2>
+<p>At what solar longitude did Lemmon <em>et al</em> (2022) find water-ice halos, given
+that they mention “A water-ice halo was unambiguously visible on sol 292
+(of Perseverance’s life)…”</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">mars_time</span>
+
+<span class="n">landing_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">landing_time</span> <span class="o">=</span> <span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">landing_date</span><span class="p">)</span>
+<span class="n">detection_time</span> <span class="o">=</span> <span class="n">landing_time</span> <span class="o">+</span> <span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">292</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="n">detection_time</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This gives 142.49, consistent with the values in the paper.</p>
 </section>
 </section>
 
@@ -377,12 +393,12 @@ document.write(`
 <div class="prev-next-area">
     <a class="left-prev"
        id="prev-link"
-       href="generated/mars_time.rovers.perseverance_landing_date.html"
+       href="generated/mars_time.table.mars_year_starting_datetime.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mars_time.rovers.perseverance_landing_date</p>
+        <p class="prev-next-title">mars_time.table.mars_year_starting_datetime</p>
       </div>
     </a>
     <a class="right-next"
@@ -409,7 +425,8 @@ document.write(`
   </div>
   <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perseverance-detection">Perseverance detection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opportunity-length">Opportunity length</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perseverance-ice-halo">Perseverance ice halo</a></li>
 </ul>
   </nav></div>
 

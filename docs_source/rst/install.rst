@@ -8,10 +8,11 @@ documentation, adding features, or modifying tests, you'll need to install it
 locally with
 :code:`<path to python> -m pip install <path to setup.py>[<options]`.
 
+Optional dependencies
+---------------------
 The following lists the optional dependencies:
 
-* all: install all optional dependencies
-* doc: install everything related to modifying documentation
+* all: install all optional dependencies.
+* doc: install everything related to modifying documentation.
 * test: install everything related to modifying the code and testing these
   changes.
-

@@ -7,8 +7,9 @@ from mars_time.constants import mars_year_0_start, orbital_eccentricity, perihel
 
 
 class MarsTime:
-    """A MarsTime object represents a Mars time and is in many ways analogous to a datetime.datetime() object. Objects
-    of this type are immutable.
+    """A MarsTime represents the year and sol on Mars.
+
+    In many ways, a MarsTime is analogous to a datetime.datetime. Objects of this type are immutable.
 
     Parameters
     ----------
@@ -20,10 +21,10 @@ class MarsTime:
     Raises
     ------
     TypeError
-        Raised if any of the inputs cannot be cast to their assumed type.
-
+        Raised if either of the inputs are a type that cannot be cast to a numeric data type.
     ValueError
-        Raised if :code:`sol` is not in its valid range.
+        Raised if either of the inputs are a value that cannot be cast to a numeric data type or if :code:`sol` is
+        outside its valid range.
 
     Examples
     --------
@@ -34,22 +35,59 @@ class MarsTime:
     >>> mt
     MarsTime(year=30, sol=0.0)
 
-    You can add time deltas to this object or subtract time deltas from this object.
+    You can add a MarsTimeDelta to this object. Note that the resultant sol is "ugly" because I assume there aren't an
+    integer number of sols/year.
 
     >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt + dt
-    MarsTime(year=31, sol=31.405004927067353)
+    MarsTime(year=31, sol=31.405004927067417)
 
-    Note that the resultant sol is "ugly" because I assume there aren't an integer number of sols/year.
+    You can also subtract MarsTimeDeltas from this object.
+
+    >>> dt = mars_time.MarsTimeDelta(sol=700)
+    >>> mt - dt
+    MarsTime(year=28, sol=637.1899901458652)
+
+    The difference between two MarsTime objects is a MarsTimeDelta:
+
+    >>> MarsTime(33, 0) - MarsTime(32, 400)
+    MarsTimeDelta(year=1.0, sol=-400.0)
 
     """
     def __init__(self, year: int, sol: float):
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
 
+    @staticmethod
+    def _validate_year(year) -> int:
+        try:
+            return int(year)
+        except TypeError as te:
+            message = f'The year argument (type={type(year)}) cannot be converted to an int.'
+            raise TypeError(message) from te
+        except ValueError as ve:
+            message = f'The year argument (value={year}) cannot be converted to an int.'
+            raise ValueError(message) from ve
+
+    @staticmethod
+    def _validate_sol(sol) -> float:
+        try:
+            sol = float(sol)
+        except TypeError as te:
+            message = f'The sol argument (type={type(sol)}) cannot be converted to a float.'
+            raise TypeError(message) from te
+        except ValueError as ve:
+            message = f'The sol argument (value={sol}) cannot be converted to a float.'
+            raise ValueError(message) from ve
+        if 0 <= sol <= sols_per_martian_year:
+            return sol
+        else:
+            message = f'The sol must be between 0 and {sols_per_martian_year:.2f}.'
+            raise ValueError(message)
+
     @property
-    def year(self):
-        """Get the year of this object.
+    def year(self) -> int:
+        """Get the input year.
 
         Returns
         -------
@@ -59,8 +97,8 @@ class MarsTime:
         return self._year
 
     @property
-    def sol(self):
-        """Get the sol of this object.
+    def sol(self) -> float:
+        """Get the input sol.
 
         Returns
         -------
@@ -69,33 +107,6 @@ class MarsTime:
         """
         return self._sol
 
-    @staticmethod
-    def _validate_year(year):
-        try:
-            return int(year)
-        except TypeError as te:
-            message = 'The year cannot be converted to an int.'
-            raise TypeError(message) from te
-        except ValueError as ve:
-            message = 'The year cannot be converted to an int.'
-            raise ValueError(message) from ve
-
-    @staticmethod
-    def _validate_sol(sol):
-        try:
-            sol = float(sol)
-        except TypeError as te:
-            message = 'The sol cannot be converted to a float.'
-            raise TypeError(message) from te
-        except ValueError as ve:
-            message = 'The sol cannot be converted to a float.'
-            raise ValueError(message) from ve
-        if 0 <= sol <= sols_per_martian_year:
-            return sol
-        else:
-            message = f'The sol must be between 0 and {sols_per_martian_year:.2f}.'
-            raise ValueError(message)
-
     def __str__(self):
         return f'MarsTime(year={self.year}, sol={self.sol})'
 
@@ -103,21 +114,24 @@ class MarsTime:
         return f'{self}'
 
     def __add__(self, other):
-        if not isinstance(other, MarsTimeDelta):
-            message = f'Cannot add f{type(other)} to MarsTime.'
-            raise TypeError(message)
-        year = self.year + other.year + int((self.sol + other.sol) // sols_per_martian_year)
-        sol = (self.sol + other.sol) % sols_per_martian_year
-        return MarsTime(year, sol)
+        if isinstance(other, MarsTimeDelta):
+            new_fractional_year = self.year + self.sol / sols_per_martian_year + other.years
+            year = int(new_fractional_year // 1)
+            sol = (new_fractional_year % 1) * sols_per_martian_year
+            return MarsTime(year, sol)
+        else:
+            raise TypeError(f'Cannot add f{type(other)} to MarsTime.')
 
     def __sub__(self, other):
-        # TODO: add ability for mars_time - mars_time = mars_time_delta
-        if not isinstance(other, MarsTimeDelta):
-            message = f'Cannot add f{type(other)} to MarsTime.'
-            raise TypeError(message)
-        year = self.year - other.year + int((self.sol - other.sol) // sols_per_martian_year)
-        sol = (self.sol - other.sol) % sols_per_martian_year
-        return MarsTime(year, sol)
+        if isinstance(other, MarsTimeDelta):
+            new_fractional_year = self.year + self.sol / sols_per_martian_year - other.years
+            year = int(new_fractional_year // 1)
+            sol = (new_fractional_year % 1) * sols_per_martian_year
+            return MarsTime(year, sol)
+        elif isinstance(other, MarsTime):
+            return MarsTimeDelta(year=self.year-other.year, sol=self.sol-other.sol)
+        else:
+            raise TypeError(f'Cannot subtract f{type(other)} from MarsTime.')
 
     def __eq__(self, other):
         if not isinstance(other, MarsTime):
@@ -127,97 +141,179 @@ class MarsTime:
 
 
 class MarsTimeDelta:
-    """A MarsTimeDelta object represents the difference between Mars times.
+    """A MarsTimeDelta represents the difference in years and sols on Mars.
+
+    In many ways, a MarsTimeDelta is analogous to a datetime.timedelta. Objects of this type are immutable.
 
     Parameters
     ----------
     year
-        The difference in Mars years. Must be non-negative.
+        The difference in Mars years.
     sol
-        The difference in sols. Must be non-negative.
+        The difference in sols.
 
     Raises
     ------
     TypeError
-        Raised if any of the inputs cannot be cast to their assumed type.
-
+        Raised if either of the inputs are a type that cannot be cast to a numeric data type.
     ValueError
-        Raised if either :code:`year` or :code:`sol` is negative.
+        Raised if either input cannot be converted to a float.
+
+    Examples
+    --------
+    Create an instance of this class.
+
+    >>> import mars_time
+    >>> mars_time.MarsTimeDelta(year=1, sol=50)
+    MarsTimeDelta(year=1.0, sol=50.0)
+
+    Adding or subtracting a MarsTimeDelta to or from this object results in another MarsTimeDelta.
+
+    >>> mtd = mars_time.MarsTimeDelta(year=1, sol=50) + mars_time.MarsTimeDelta(sol=700)
+    >>> mtd
+    MarsTimeDelta(year=1.0, sol=750.0)
+
+    The native year and aggregate year difference are found in its attributes. The same is true for sols.
+
+    >>> mtd.year, mtd.sol
+    (1.0, 750.0)
+    >>> mtd.years, mtd.sols
+    (2.1217553309955415, 1418.5949950729328)
 
     """
-    def __init__(self, year: int = 0, sol: float = 0):
+    def __init__(self, year: float = 0, sol: float = 0):
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
-
-    @property
-    def year(self):
-        return self._year
-
-    @property
-    def sol(self):
-        return self._sol
 
     @staticmethod
     def _validate_year(year):
         try:
-            year = int(year)
+            return float(year)
         except TypeError as te:
-            message = 'The year cannot be converted to an int.'
+            message = f'The year argument (type={type(year)}) cannot be converted to a float.'
             raise TypeError(message) from te
         except ValueError as ve:
-            message = 'The year cannot be converted to an int.'
+            message = f'The year argument (value={year}) cannot be converted to a float.'
             raise ValueError(message) from ve
-        if year >= 0:
-            return year
-        else:
-            message = 'year must be non-negative.'
-            raise ValueError(message)
 
     @staticmethod
     def _validate_sol(sol):
         try:
-            sol = float(sol)
+            return float(sol)
         except TypeError as te:
-            message = 'The sol cannot be converted to a float.'
+            message = f'The sol argument (type={type(sol)}) cannot be converted to a float.'
             raise TypeError(message) from te
         except ValueError as ve:
-            message = 'The sol cannot be converted to a float.'
+            message = f'The sol argument (value={sol}) cannot be converted to a float.'
             raise ValueError(message) from ve
-        if sol >= 0:
-            return sol
-        else:
-            message = 'sol must be non-negative.'
-            raise ValueError(message)
+
+    @property
+    def year(self) -> float:
+        """Get the input year.
+
+        Returns
+        -------
+        The year.
+
+        """
+        return self._year
+
+    @property
+    def years(self) -> float:
+        """Get the fractional number of Mars years this object represents.
+
+        Returns
+        -------
+        The fractional Mars years.
+
+        """
+        return self._year + self._sol / sols_per_martian_year
+
+    @property
+    def sol(self) -> float:
+        """Get the input sol.
+
+        Returns
+        -------
+        The sol.
+
+        """
+        return self._sol
+
+    @property
+    def sols(self) -> float:
+        """Get the total number of sols that this object represents.
+
+        Returns
+        -------
+        The total number of sols.
+
+        """
+        return self._sol + self._year * sols_per_martian_year
 
     def __str__(self):
         return f'MarsTimeDelta(year={self.year}, sol={self.sol})'
 
+    def __repr__(self):
+        return f'{self}'
+
+    def __add__(self, other):
+        if isinstance(other, MarsTimeDelta):
+            year = self.year + other.year
+            sol = self.sol + other.sol
+            return MarsTimeDelta(year=year, sol=sol)
+        else:
+            message = f'Cannot add f{type(other)} to MarsTimeDelta.'
+            raise TypeError(message)
+
+    def __sub__(self, other):
+        if isinstance(other, MarsTimeDelta):
+            year = self.year - other.year
+            sol = self.sol - other.sol
+            return MarsTimeDelta(year=year, sol=sol)
+        else:
+            message = f'Cannot subtract f{type(other)} from MarsTimeDelta.'
+            raise TypeError(message)
+
+    def __eq__(self, other):
+        if not isinstance(other, MarsTimeDelta):
+            return False
+        else:
+            return self.year == other.year and self.sol == other.sol
+
 
 def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
-    """Convert a datetime to a MarsTime.
+    """Convert a datetime.datetime to a MarsTime.
 
     Parameters
     ----------
-    dt
-        Any datetime. If it has no timezone info, this will assume the timezone is UTC.
+    dt: datetime.datetime
+        Any datetime.datetime. If it has no timezone info, this will assume the timezone is UTC.
 
     Returns
     -------
-    The MarsTime associated with the input datetime.
+    MarsTime
+        The MarsTime associated with the input datetime.datetime.
+
+    Raises
+    ------
+    TypeError
+        Raised if the input is not a datetime.datetime.
 
     Examples
     --------
-    Turn a generic datetime into a Mars time
+    Get the Mars time when MAVEN arrived at Mars (date taken from Wikipedia).
 
     >>> import mars_time, datetime
-    >>> random_time = datetime.datetime(2020, 1, 1, 0, 0, 0)
-    >>> datetime_to_mars_time(random_time)
-    MarsTime(year=35, sol=275.8641742510148)
+    >>> orbit_insertion = datetime.datetime(2014, 9, 22, 2, 24, 0)
+    >>> datetime_to_mars_time(orbit_insertion)
+    MarsTime(year=32, sol=406.2978778240522)
 
-    Get the Mars time when the Perseverance rover landed.
+    Get the Mars time when the Perseverance rover landed (date taken from Wikipedia).
 
-    >>> datetime_to_mars_time(mars_time.rovers.perseverance_landing_date)
-    MarsTime(year=36, sol=11.042001502225048)
+    >>> landing_date = datetime.datetime(2021, 2, 18, 20, 55, 0)
+    >>> datetime_to_mars_time(landing_date)
+    MarsTime(year=36, sol=11.0420015022269)
 
     """
     try:
@@ -227,22 +323,28 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
         elapsed_seconds = time_delta.days * 60*60*24 + time_delta.seconds
         elapsed_sols = elapsed_seconds / seconds_per_sol
         return MarsTime(0, 0) + MarsTimeDelta(sol=elapsed_sols)
-    except TypeError as te:
-        message = 'The input must be a datetime.'
-        raise TypeError(message) from te
+    except AttributeError as ae:
+        message = 'The input must be a datetime.datetime() object.'
+        raise TypeError(message) from ae
 
 
 def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
-    """Convert a MarsTime to a datetime.
+    """Convert a MarsTime to a datetime.datetime.
 
     Parameters
     ----------
-    mt
-        Any mars_time.
+    mt: MarsTime
+        Any MarsTime.
 
     Returns
     -------
-    The datetime associated with the input MarsTime.
+    datetime.datetime
+        The datetime associated with the input MarsTime.
+
+    Raises
+    ------
+    TypeError
+        Raised if the input is not a MarsTime.
 
     Examples
     --------
@@ -253,13 +355,14 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
     datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)
 
     """
+    if isinstance(mt, MarsTimeDelta):
+        raise TypeError('The input must be a MarsTime.')
     try:
         elapsed_sols = mt.year * sols_per_martian_year + mt.sol
         elapsed_seconds = elapsed_sols * seconds_per_sol
         return mars_year_0_start + datetime.timedelta(seconds=elapsed_seconds)
-    except TypeError as te:
-        message = 'The input must be a mars_time.'
-        raise TypeError(message) from te
+    except AttributeError as te:
+        raise TypeError('The input must be a MarsTime.') from te
 
 
 def get_current_mars_time() -> MarsTime:
@@ -267,7 +370,8 @@ def get_current_mars_time() -> MarsTime:
 
     Returns
     -------
-    The MarsTime.
+    MarsTime
+        The current MarsTime.
 
     """
     return datetime_to_mars_time(datetime.datetime.now(tz=datetime.timezone.utc))
@@ -278,26 +382,41 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
 
     Parameters
     ----------
-    solar_longitude
+    solar_longitude: float
         The solar longitude.
 
     Returns
     -------
-    The sol corresponding to the input solar longitude.
+    float
+        The sol corresponding to the input solar longitude.
+
+    Raises
+    ------
+    TypeError
+        Raised if the input cannot be cast to a float.
+    ValueError
+        Raised if the input is not numeric.
 
     Notes
     -----
-    This equation comes from LMD but should be more accurate.
+    This equation comes from LMD.
 
     Examples
     --------
     Determine the sol corresponding to solar longitude 180. The "official" LMD calendar gives 371.99.
 
     >>> import mars_time
-    >>> mars_time.solar_longitude_to_sol(180)
-    371.8584911665763
+    >>> round(mars_time.solar_longitude_to_sol(180), 2)
+    371.88
 
     """
+    try:
+        solar_longitude = float(solar_longitude)
+    except TypeError as te:
+        raise TypeError('solar_longitude must be a type that can be cast to a float.') from te
+    except ValueError as ve:
+        raise ValueError('solar_longitude must be numeric') from ve
+
     # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99 according to the LMD converter code
     true_anomaly = solar_longitude * math.pi / 180 + 1.90258341759902
     eccentric_anomaly = 2 * math.atan(math.tan(0.5 * true_anomaly) /
@@ -307,17 +426,18 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
     return (mean_anomaly / (2 * math.pi) * sols_per_martian_year + perihelion_sol) % sols_per_martian_year
 
 
-def sol_to_solar_longitude(sol: float):
+def sol_to_solar_longitude(sol: float) -> float:
     """Convert sol to solar longitude.
 
     Parameters
     ----------
-    sol
+    sol: float
         The sol number.
 
     Returns
     -------
-    The solar longitude corresponding to the input sol.
+    float
+        The solar longitude corresponding to the input sol.
 
     Notes
     -----
@@ -330,10 +450,17 @@ def sol_to_solar_longitude(sol: float):
     Determine the solar longitude of sol 200. The "official" LMD document gives 92.965.
 
     >>> import mars_time
-    >>> mars_time.sol_to_solar_longitude(200)
-    93.0250805781161
+    >>> round(mars_time.sol_to_solar_longitude(200), 2)
+    93.03
 
     """
+    try:
+        sol = float(sol)
+    except TypeError as te:
+        raise TypeError('sol must be a type that can be cast to a float.') from te
+    except ValueError as ve:
+        raise ValueError('sol must be numeric') from ve
+
     dt = mars_time_to_datetime(MarsTime(0, sol))
     utc = datetime.timezone.utc
     j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, tzinfo=utc)
@@ -345,3 +472,9 @@ def sol_to_solar_longitude(sol: float):
         0.62077 * math.sin(2*m) + \
         0.05031 * math.sin(3*m)
     return ls % 360
+
+
+if __name__ == '__main__':
+    s = solar_longitude_to_sol(182)
+    m = MarsTime(34, s)
+    print(mars_time_to_datetime(m))

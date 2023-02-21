@@ -36,4 +36,11 @@ html_theme_options = {
 }
 
 autoclass_contents = 'class'
-autodoc_typehints = 'description'  # Only show typehints in the description,
+autodoc_typehints = 'both'  # Only show typehints in the description,
+'''autodoc_default_options = {
+    'members': True,
+    'member-order': 'bysource',
+    'special-members': None,
+    'undoc-members': True,
+    'exclude-members': '__weakref__'
+}'''
