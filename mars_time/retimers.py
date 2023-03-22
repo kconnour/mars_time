@@ -7,9 +7,10 @@ from mars_time.constants import mars_year_starting_datetimes, orbital_eccentrici
 
 
 class MarsTime:
-    """A MarsTime represents the year and sol on Mars.
+    """A ``MarsTime`` represents the year and sol on Mars.
 
-    In many ways, a MarsTime is analogous to a datetime.datetime. Objects of this type are immutable.
+    In many ways, a ``MarsTime`` is analogous to a ``datetime.datetime``. As with ``datetime.datetime``, instances of
+    this class may be most useful for attribute extraction.
 
     Parameters
     ----------
@@ -26,6 +27,14 @@ class MarsTime:
         Raised if either of the inputs are a value that cannot be cast to a numeric data type or if :code:`sol` is
         outside its valid range.
 
+    See Also
+    --------
+    MarsTimeDelta: For adding time differences to this class.
+
+    Notes
+    -----
+    Objects of this type are immutable.
+
     Examples
     --------
     Create an instance of this class.
@@ -33,25 +42,32 @@ class MarsTime:
     >>> import mars_time
     >>> mt = mars_time.MarsTime(30, 0)
     >>> mt
-    MarsTime(year=30, sol=0.0)
+    MarsTime(year=30, sol=0.00)
 
-    You can add a MarsTimeDelta to this object. Note that the resultant sol is "ugly" because I assume there aren't an
-    integer number of sols/year.
+    You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is "ugly" because I
+    assume there aren't an integer number of sols per year.
 
     >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt + dt
-    MarsTime(year=31, sol=31.405004927067417)
+    MarsTime(year=31, sol=31.41)
 
-    You can also subtract MarsTimeDeltas from this object.
+    You can also subtract a :class:`~mars_time.MarsTimeDelta` from this object.
 
     >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt - dt
-    MarsTime(year=28, sol=637.1899901458652)
+    MarsTime(year=28, sol=637.19)
 
-    The difference between two MarsTime objects is a MarsTimeDelta:
+    The difference between two ``MarsTime`` objects is a :class:`~mars_time.MarsTimeDelta`.
 
     >>> MarsTime(33, 0) - MarsTime(32, 400)
     MarsTimeDelta(year=1.0, sol=-400.0)
+
+    You can extract the input year and sol from this object via its properties. You can also extract the solar longitude
+    corresponding to the input sol.
+
+    >>> mt = MarsTime(33, 200)
+    >>> mt.year, mt.sol, f'{mt.solar_longitude:.1f}'
+    (33, 200.0, '93.0')
 
     """
     def __init__(self, year: int, sol: float):
@@ -109,16 +125,17 @@ class MarsTime:
 
     @property
     def solar_longitude(self) -> float:
-        """
+        """Get the solar longitude corresponding to the input sol.
 
         Returns
         -------
+        The solar longitude.
 
         """
         return sol_to_solar_longitude(self.sol)
 
     def __str__(self):
-        return f'MarsTime(year={self.year}, sol={self.sol})'
+        return f'MarsTime(year={self.year}, sol={self.sol:.2f})'
 
     def __repr__(self):
         return f'{self}'
@@ -151,9 +168,9 @@ class MarsTime:
 
 
 class MarsTimeDelta:
-    """A MarsTimeDelta represents the difference in years and sols on Mars.
+    """A ``MarsTimeDelta`` represents the difference in years and sols on Mars.
 
-    In many ways, a MarsTimeDelta is analogous to a datetime.timedelta. Objects of this type are immutable.
+    In many ways, a ``MarsTimeDelta`` is analogous to a ``datetime.timedelta``.
 
     Parameters
     ----------
@@ -169,26 +186,34 @@ class MarsTimeDelta:
     ValueError
         Raised if either input cannot be converted to a float.
 
+    See Also
+    --------
+    MarsTime: Create new Mars times from these time deltas.
+
+    Notes
+    -----
+    Objects of this type are immutable.
+
     Examples
     --------
     Create an instance of this class.
 
     >>> import mars_time
     >>> mars_time.MarsTimeDelta(year=1, sol=50)
-    MarsTimeDelta(year=1.0, sol=50.0)
+    MarsTimeDelta(year=1.0, sol=50.00)
 
-    Adding or subtracting a MarsTimeDelta to or from this object results in another MarsTimeDelta.
+    Adding or subtracting a ``MarsTimeDelta`` to or from this object results in another ``MarsTimeDelta``.
 
     >>> mtd = mars_time.MarsTimeDelta(year=1, sol=50) + mars_time.MarsTimeDelta(sol=700)
     >>> mtd
-    MarsTimeDelta(year=1.0, sol=750.0)
+    MarsTimeDelta(year=1.0, sol=750.00)
 
     The native year and aggregate year difference are found in its attributes. The same is true for sols.
 
     >>> mtd.year, mtd.sol
     (1.0, 750.0)
-    >>> mtd.years, mtd.sols
-    (2.1217553309955415, 1418.5949950729328)
+    >>> f'{mtd.years:.2f}', f'{mtd.sols:.2f}'
+    ('2.12', '1418.59')
 
     """
     def __init__(self, year: float = 0, sol: float = 0):
@@ -262,7 +287,7 @@ class MarsTimeDelta:
         return self._sol + self._year * sols_per_martian_year
 
     def __str__(self):
-        return f'MarsTimeDelta(year={self.year}, sol={self.sol})'
+        return f'MarsTimeDelta(year={self.year}, sol={self.sol:.2f})'
 
     def __repr__(self):
         return f'{self}'
@@ -293,7 +318,7 @@ class MarsTimeDelta:
 
 
 def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
-    """Convert a datetime.datetime to a MarsTime.
+    """Convert a ``datetime.datetime`` to a ``MarsTime``.
 
     Parameters
     ----------
@@ -312,18 +337,22 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
 
     Examples
     --------
-    Get the Mars time when MAVEN arrived at Mars (date taken from Wikipedia).
+    Get the Mars time when MAVEN arrived at Mars. `Wikipedia's MAVEN page
+    <https://en.wikipedia.org/wiki/MAVEN>`_ mentions the spacecraft successfully entered orbit on 2014-09-22 at
+    02:24 UTC.
 
     >>> import mars_time, datetime
     >>> orbit_insertion = datetime.datetime(2014, 9, 22, 2, 24, 0)
     >>> datetime_to_mars_time(orbit_insertion)
-    MarsTime(year=32, sol=406.2978778240522)
+    MarsTime(year=32, sol=406.36)
 
-    Get the Mars time when the Perseverance rover landed (date taken from Wikipedia).
+    Get the Mars time when the Perseverance rover landed. `Wikipedia's Perseverance page
+    <https://en.wikipedia.org/wiki/Perseverance_(rover)>`_ mentions the rover successfully landed on 2021-02-18 at
+    20:55 UTC.
 
     >>> landing_date = datetime.datetime(2021, 2, 18, 20, 55, 0)
     >>> datetime_to_mars_time(landing_date)
-    MarsTime(year=36, sol=11.0420015022269)
+    MarsTime(year=36, sol=11.11)
 
     """
     try:
@@ -363,7 +392,7 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
 
     >>> import mars_time
     >>> mars_time.mars_time_to_datetime(mars_time.MarsTime(30, 0))
-    datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)
+    datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)
 
     """
     if isinstance(mt, MarsTimeDelta):
