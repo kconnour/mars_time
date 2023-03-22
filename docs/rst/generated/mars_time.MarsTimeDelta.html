@@ -321,7 +321,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.sol_to_solar_longitude.html">mars_time.sol_to_solar_longitude</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_0_start.html">mars_time.constants.mars_year_0_start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
@@ -331,9 +331,6 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.table.mars_year_starting_datetime.html">mars_time.table.mars_year_starting_datetime</a></li>
 </ul>
 </div>
 </nav></div>
@@ -392,8 +389,8 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="mars_time.MarsTimeDelta">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">MarsTimeDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mars_time/retimers.html#MarsTimeDelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.MarsTimeDelta" title="Permalink to this definition">#</a></dt>
-<dd><p>A MarsTimeDelta represents the difference in years and sols on Mars.</p>
-<p>In many ways, a MarsTimeDelta is analogous to a datetime.timedelta. Objects of this type are immutable.</p>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> represents the difference in years and sols on Mars.</p>
+<p>In many ways, a <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> is analogous to a <code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -408,24 +405,33 @@ document.write(`
 </ul>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MarsTime</span></code></a></dt><dd><p>Create new Mars times from these time deltas.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Objects of this type are immutable.</p>
 <p class="rubric">Examples</p>
 <p>Create an instance of this class.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sol</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="go">MarsTimeDelta(year=1.0, sol=50.0)</span>
+<span class="go">MarsTimeDelta(year=1.0, sol=50.00)</span>
 </pre></div>
 </div>
-<p>Adding or subtracting a MarsTimeDelta to or from this object results in another MarsTimeDelta.</p>
+<p>Adding or subtracting a <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> to or from this object results in another <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sol</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="o">+</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span>
-<span class="go">MarsTimeDelta(year=1.0, sol=750.0)</span>
+<span class="go">MarsTimeDelta(year=1.0, sol=750.00)</span>
 </pre></div>
 </div>
 <p>The native year and aggregate year difference are found in its attributes. The same is true for sols.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">mtd</span><span class="o">.</span><span class="n">sol</span>
 <span class="go">(1.0, 750.0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span><span class="o">.</span><span class="n">years</span><span class="p">,</span> <span class="n">mtd</span><span class="o">.</span><span class="n">sols</span>
-<span class="go">(2.1217553309955415, 1418.5949950729328)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mtd</span><span class="o">.</span><span class="n">years</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mtd</span><span class="o">.</span><span class="n">sols</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="go">(&#39;2.12&#39;, &#39;1418.59&#39;)</span>
 </pre></div>
 </div>
 <dl class="py method">

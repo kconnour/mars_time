@@ -1,7 +1,9 @@
 API Reference
 =============
-
 .. currentmodule:: mars_time
+
+This page describes the `mars_time` API, where the API is grouped by
+functionality. Most docstrings contain practical example code.
 
 Data types
 ----------
@@ -41,7 +43,7 @@ These constants are related to the orbit and/or timekeeping on Mars.
 .. autosummary::
    :toctree: generated/
 
-   mars_year_0_start
+   mars_year_starting_datetimes
    hours_per_sol
    seconds_per_sol
    sols_per_martian_year
@@ -51,14 +53,3 @@ These constants are related to the orbit and/or timekeeping on Mars.
    northern_winter_solstice_sol
    perihelion_sol
    orbital_eccentricity
-
-Table
------
-This table contains values of datetimes of the start of Mars years.
-
-.. currentmodule:: mars_time.table
-
-.. autosummary::
-   :toctree: generated/
-
-   mars_year_starting_datetime

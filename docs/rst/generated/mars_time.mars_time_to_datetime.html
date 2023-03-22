@@ -321,7 +321,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.sol_to_solar_longitude.html">mars_time.sol_to_solar_longitude</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_0_start.html">mars_time.constants.mars_year_0_start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
@@ -331,9 +331,6 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.table.mars_year_starting_datetime.html">mars_time.table.mars_year_starting_datetime</a></li>
 </ul>
 </div>
 </nav></div>
@@ -411,7 +408,7 @@ document.write(`
 <p>Find the UTC time that corresponds to the start of Mars year 30.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">mars_time_to_datetime</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="go">datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)</span>
+<span class="go">datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)</span>
 </pre></div>
 </div>
 </dd></dl>
