@@ -2,7 +2,7 @@
 import datetime
 import math
 
-from mars_time.constants import mars_year_0_start, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
+from mars_time.constants import mars_year_starting_datetimes, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
     sols_per_martian_year
 
 
@@ -329,10 +329,11 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
     try:
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=datetime.timezone.utc)
-        time_delta = dt - mars_year_0_start
-        elapsed_seconds = time_delta.days * 60*60*24 + time_delta.seconds
-        elapsed_sols = elapsed_seconds / seconds_per_sol
-        return MarsTime(0, 0) + MarsTimeDelta(sol=elapsed_sols)
+        tabulated_mars_years = [f for f in mars_year_starting_datetimes().keys()]
+        seconds_between_datetime_and_mars_year_starts = [(dt - mars_year_starting_datetimes()[i]).total_seconds() for i in tabulated_mars_years]
+        mars_year, elapsed_seconds = [[tabulated_mars_years[year_idx], elapsed_seconds] for year_idx, elapsed_seconds
+                                      in enumerate(seconds_between_datetime_and_mars_year_starts) if elapsed_seconds >= 0][-1]
+        return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
     except AttributeError as ae:
         message = 'The input must be a datetime.datetime() object.'
         raise TypeError(message) from ae
@@ -368,9 +369,9 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
     if isinstance(mt, MarsTimeDelta):
         raise TypeError('The input must be a MarsTime.')
     try:
-        elapsed_sols = mt.year * sols_per_martian_year + mt.sol
-        elapsed_seconds = elapsed_sols * seconds_per_sol
-        return mars_year_0_start + datetime.timedelta(seconds=elapsed_seconds)
+        starting_datetime = mars_year_starting_datetimes()[mt.year]
+        elapsed_seconds = mt.sol * seconds_per_sol
+        return starting_datetime + datetime.timedelta(seconds=elapsed_seconds)
     except AttributeError as te:
         raise TypeError('The input must be a MarsTime.') from te
 
