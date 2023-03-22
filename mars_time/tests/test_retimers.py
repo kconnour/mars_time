@@ -1,12 +1,13 @@
 import datetime
 import math
+from unittest import mock
 
 import pytest
 
 from mars_time import MarsTime, MarsTimeDelta, datetime_to_mars_time, mars_time_to_datetime, get_current_mars_time, \
-    solar_longitude_to_sol, sol_to_solar_longitude, mars_year_0_start, sols_per_martian_year, \
+    solar_longitude_to_sol, sol_to_solar_longitude, sols_per_martian_year, \
     northern_spring_equinox_sol, northern_summer_solstice_sol, northern_autumn_equinox_sol, \
-    northern_winter_solstice_sol, mars_year_starting_datetime
+    northern_winter_solstice_sol, mars_year_starting_datetimes
 
 
 class TestMarsTime:
@@ -78,10 +79,10 @@ class TestMarsTime:
 
 
 class TestMarsTimeDelta:
-    def test_year_only_raises_no_error(self):
+    def test_year_only_input_raises_no_error(self):
         MarsTimeDelta(year=1)
 
-    def test_sol_only_raises_no_error(self):
+    def test_sol_only_input_raises_no_error(self):
         MarsTimeDelta(sol=10)
 
     def test_2_years_split_into_year_and_sol_gives_expected_properties(self):
@@ -136,8 +137,8 @@ class Test_datetime_to_mars_time:
         yield datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
 
     def test_function_matches_tabulated_results(self):
-        for year in mars_year_starting_datetime:
-            computed_mars_year = datetime_to_mars_time(mars_year_starting_datetime[year])
+        for year in mars_year_starting_datetimes().keys():
+            computed_mars_year = datetime_to_mars_time(mars_year_starting_datetimes()[year])
             fractional_mars_year = computed_mars_year.year + computed_mars_year.sol / sols_per_martian_year
             assert pytest.approx(fractional_mars_year, abs=1e-2) == year
 
@@ -151,11 +152,8 @@ class Test_datetime_to_mars_time:
 
 class Test_mars_time_to_datetime:
     def test_function_matches_tabulated_results(self):
-        for year in mars_year_starting_datetime:
-            # This is the only one I've found where the boundary is right on the edge of the day boundary
-            if year == 18:
-                continue
-            tabulated_datetime = mars_year_starting_datetime[year]
+        for year in mars_year_starting_datetimes().keys():
+            tabulated_datetime = mars_year_starting_datetimes()[year]
             computed_datetime = mars_time_to_datetime(MarsTime(year, 0))
             assert computed_datetime.year == tabulated_datetime.year and \
                    computed_datetime.month == tabulated_datetime.month and \
@@ -177,8 +175,11 @@ class Test_mars_time_to_datetime:
 
 
 class Test_get_current_mars_time:
-    # TODO: I don't know how to easily mock time.now() and it's not currently worth the effort
-    pass
+    def test_function_gives_expected_answer(self):
+        with mock.patch('datetime.datetime', wraps=datetime.datetime) as dt:
+            test_dt = datetime.datetime(2022, 1, 1)
+            dt.now.return_value = test_dt
+            assert get_current_mars_time() == datetime_to_mars_time(test_dt)
 
 
 class Test_solar_longitude_to_sol:

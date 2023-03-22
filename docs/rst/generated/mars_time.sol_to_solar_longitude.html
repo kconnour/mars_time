@@ -42,7 +42,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'rst/generated/mars_time.sol_to_solar_longitude';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="mars_time.constants.mars_year_0_start" href="mars_time.constants.mars_year_0_start.html" />
+    <link rel="next" title="mars_time.constants.mars_year_starting_datetimes" href="mars_time.constants.mars_year_starting_datetimes.html" />
     <link rel="prev" title="mars_time.solar_longitude_to_sol" href="mars_time.solar_longitude_to_sol.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -322,7 +322,7 @@ document.write(`
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">mars_time.sol_to_solar_longitude</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_0_start.html">mars_time.constants.mars_year_0_start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
@@ -332,9 +332,6 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.table.mars_year_starting_datetime.html">mars_time.table.mars_year_starting_datetime</a></li>
 </ul>
 </div>
 </nav></div>
@@ -412,8 +409,8 @@ this paper claims the equation is accurate to within 0.05<span class="math notra
 <p class="rubric">Examples</p>
 <p>Determine the solar longitude of sol 200. The “official” LMD document gives 92.965.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="go">93.0250805781161</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">93.03</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -440,11 +437,11 @@ this paper claims the equation is accurate to within 0.05<span class="math notra
     </a>
     <a class="right-next"
        id="next-link"
-       href="mars_time.constants.mars_year_0_start.html"
+       href="mars_time.constants.mars_year_starting_datetimes.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">mars_time.constants.mars_year_0_start</p>
+        <p class="prev-next-title">mars_time.constants.mars_year_starting_datetimes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

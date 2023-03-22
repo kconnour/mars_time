@@ -24,6 +24,7 @@
    .. autosummary::
    
       ~MarsTime.sol
+      ~MarsTime.solar_longitude
       ~MarsTime.year
    
    

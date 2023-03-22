@@ -350,13 +350,32 @@ document.write(`
                   
   <section id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this heading">#</a></h1>
+<p>These describe the “beta” state of the project. Since any API changes will break
+links, these will be removed with v1.0.0. The project release notes will look
+more like numpy’s (for example) after that point.</p>
+<section id="v0-5-0">
+<h2>v0.5.0<a class="headerlink" href="#v0-5-0" title="Permalink to this heading">#</a></h2>
+<p>This update expands upon the constants in the previous version and adds an
+additional attribute to <code class="docutils literal notranslate"><span class="pre">MarsTime</span></code>.</p>
+<ul class="simple">
+<li><p>Added attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">mars_time.MarsTime.solar_longitude</span></code></p></li>
+<li><p>Removed <code class="xref py py-data docutils literal notranslate"><span class="pre">mars_time.mars_year_starting_datetime</span></code>. This is replaced with
+<code class="xref py py-func docutils literal notranslate"><span class="pre">mars_time.mars_year_starting_datetimes()</span></code> which goes from year -9 to 100.
+This improved the accuracy of the computations</p></li>
+<li><p>Added tests to <a class="reference internal" href="generated/mars_time.get_current_mars_time.html#mars_time.get_current_mars_time" title="mars_time.get_current_mars_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">mars_time.get_current_mars_time()</span></code></a></p></li>
+<li><p>Modified the __str__ of <a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTime</span></code></a> and
+<a class="reference internal" href="generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta" title="mars_time.MarsTimeDelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTimeDelta</span></code></a> to truncate at 2 decimals</p></li>
+</ul>
+<p>With the addition of more accurate Mars year starting datetimes, the computation
+of the solar longitude is now more accurate.</p>
+</section>
 <section id="v0-4-0">
 <h2>v0.4.0<a class="headerlink" href="#v0-4-0" title="Permalink to this heading">#</a></h2>
-<p>This is a significant overhaul to try to create a more Pythonic API while
-keeping the same functionality.</p>
+<p>This update overhauls the previous API in favor of a more Pythonic API that’s
+similar to the datetime API, while largely keeping the same functionality.</p>
 <ul class="simple">
-<li><p>Renamed the package from mer to mars_time to avoid confusion with the Mars
-Exploration Rovers</p></li>
+<li><p>Renamed the package from <code class="docutils literal notranslate"><span class="pre">mer</span></code> to <code class="docutils literal notranslate"><span class="pre">mars_time</span></code> in order to avoid confusion
+with the Mars Exploration Rovers</p></li>
 <li><p>Removed entire previous API, with the exception of some constants</p></li>
 <li><p>Added <a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTime</span></code></a></p></li>
 <li><p>Added <a class="reference internal" href="generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta" title="mars_time.MarsTimeDelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTimeDelta</span></code></a></p></li>
@@ -368,6 +387,39 @@ Exploration Rovers</p></li>
 <li><p>Added several constants from LMD.</p></li>
 <li><p>Added incomplete table of Mars year starting times</p></li>
 <li><p>Improved documentation for these classes and function</p></li>
+</ul>
+</section>
+<section id="v0-3-0">
+<h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Permalink to this heading">#</a></h2>
+<p>This update adds additional objects that can convert between each other.</p>
+<ul class="simple">
+<li><p>Added classes: <code class="docutils literal notranslate"><span class="pre">MarsYearSol</span></code>, <code class="docutils literal notranslate"><span class="pre">MarsYearSolarLongitude</span></code></p></li>
+<li><p>Added functions: <code class="docutils literal notranslate"><span class="pre">datetime_to_earthdatetime</span></code></p></li>
+<li><p>Added constants: <code class="docutils literal notranslate"><span class="pre">orbital_eccentricity</span></code>, <code class="docutils literal notranslate"><span class="pre">perihelion_sol</span></code></p></li>
+</ul>
+</section>
+<section id="v0-2-0">
+<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Permalink to this heading">#</a></h2>
+<p>This update adds an object for converting from an Earth datetime.</p>
+<ul class="simple">
+<li><p>Added classes: <code class="docutils literal notranslate"><span class="pre">EarthDateTime</span></code></p></li>
+<li><p>Added functions: <code class="docutils literal notranslate"><span class="pre">mars_year_to_datetime</span></code>, <code class="docutils literal notranslate"><span class="pre">sols_between_datetimes</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sols_since_datetime</span></code></p></li>
+</ul>
+<p>These functions are more appropriately named functions and contain the same
+functionality as before. Other functions are wrapped into <code class="docutils literal notranslate"><span class="pre">EarthDateTime</span></code>.</p>
+</section>
+<section id="v0-1-0">
+<h2>v0.1.0<a class="headerlink" href="#v0-1-0" title="Permalink to this heading">#</a></h2>
+<p>This update adds constants along with functions for converting between different
+times.</p>
+<ul class="simple">
+<li><p>Added functions: <code class="docutils literal notranslate"><span class="pre">convert_to_solar_longitude</span></code>,
+<code class="docutils literal notranslate"><span class="pre">convert_to_fractional_mars_year</span></code>, <code class="docutils literal notranslate"><span class="pre">convert_to_whole_mars_year</span></code>,
+<code class="docutils literal notranslate"><span class="pre">convert_to_sol_number</span></code>, <code class="docutils literal notranslate"><span class="pre">sols_between_dates</span></code>, <code class="docutils literal notranslate"><span class="pre">sols_since_date</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sols_after_mars_year_0</span></code></p></li>
+<li><p>Added constants: <code class="docutils literal notranslate"><span class="pre">martian_sol_length</span></code>, <code class="docutils literal notranslate"><span class="pre">seconds_per_sol</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sols_per_martian_year</span></code>, <code class="docutils literal notranslate"><span class="pre">date_of_start_of_mars_year_0</span></code></p></li>
 </ul>
 </section>
 </section>
@@ -404,7 +456,11 @@ Exploration Rovers</p></li>
   </div>
   <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-5-0">v0.5.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-4-0">v0.4.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-3-0">v0.3.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-0">v0.2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-1-0">v0.1.0</a></li>
 </ul>
   </nav></div>
 

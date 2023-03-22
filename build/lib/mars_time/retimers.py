@@ -2,15 +2,14 @@
 import datetime
 import math
 
-from mars_time.constants import mars_year_starting_datetimes, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
+from mars_time.constants import mars_year_0_start, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
     sols_per_martian_year
 
 
 class MarsTime:
-    """A ``MarsTime`` represents the year and sol on Mars.
+    """A MarsTime represents the year and sol on Mars.
 
-    In many ways, a ``MarsTime`` is analogous to a ``datetime.datetime``. As with ``datetime.datetime``, instances of
-    this class may be most useful for attribute extraction.
+    In many ways, a MarsTime is analogous to a datetime.datetime. Objects of this type are immutable.
 
     Parameters
     ----------
@@ -27,14 +26,6 @@ class MarsTime:
         Raised if either of the inputs are a value that cannot be cast to a numeric data type or if :code:`sol` is
         outside its valid range.
 
-    See Also
-    --------
-    MarsTimeDelta: For adding time differences to this class.
-
-    Notes
-    -----
-    Objects of this type are immutable.
-
     Examples
     --------
     Create an instance of this class.
@@ -42,32 +33,25 @@ class MarsTime:
     >>> import mars_time
     >>> mt = mars_time.MarsTime(30, 0)
     >>> mt
-    MarsTime(year=30, sol=0.00)
+    MarsTime(year=30, sol=0.0)
 
-    You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is "ugly" because I
-    assume there aren't an integer number of sols per year.
+    You can add a MarsTimeDelta to this object. Note that the resultant sol is "ugly" because I assume there aren't an
+    integer number of sols/year.
 
     >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt + dt
-    MarsTime(year=31, sol=31.41)
+    MarsTime(year=31, sol=31.405004927067417)
 
-    You can also subtract a :class:`~mars_time.MarsTimeDelta` from this object.
+    You can also subtract MarsTimeDeltas from this object.
 
     >>> dt = mars_time.MarsTimeDelta(sol=700)
     >>> mt - dt
-    MarsTime(year=28, sol=637.19)
+    MarsTime(year=28, sol=637.1899901458652)
 
-    The difference between two ``MarsTime`` objects is a :class:`~mars_time.MarsTimeDelta`.
+    The difference between two MarsTime objects is a MarsTimeDelta:
 
     >>> MarsTime(33, 0) - MarsTime(32, 400)
-    MarsTimeDelta(year=1.0, sol=-400.00)
-
-    You can extract the input year and sol from this object via its properties. You can also extract the solar longitude
-    corresponding to the input sol.
-
-    >>> mt = MarsTime(33, 200)
-    >>> mt.year, mt.sol, f'{mt.solar_longitude:.1f}'
-    (33, 200.0, '93.0')
+    MarsTimeDelta(year=1.0, sol=-400.0)
 
     """
     def __init__(self, year: int, sol: float):
@@ -123,19 +107,8 @@ class MarsTime:
         """
         return self._sol
 
-    @property
-    def solar_longitude(self) -> float:
-        """Get the solar longitude corresponding to the input sol.
-
-        Returns
-        -------
-        The solar longitude.
-
-        """
-        return sol_to_solar_longitude(self.sol)
-
     def __str__(self):
-        return f'MarsTime(year={self.year}, sol={self.sol:.2f})'
+        return f'MarsTime(year={self.year}, sol={self.sol})'
 
     def __repr__(self):
         return f'{self}'
@@ -168,9 +141,9 @@ class MarsTime:
 
 
 class MarsTimeDelta:
-    """A ``MarsTimeDelta`` represents the difference in years and sols on Mars.
+    """A MarsTimeDelta represents the difference in years and sols on Mars.
 
-    In many ways, a ``MarsTimeDelta`` is analogous to a ``datetime.timedelta``.
+    In many ways, a MarsTimeDelta is analogous to a datetime.timedelta. Objects of this type are immutable.
 
     Parameters
     ----------
@@ -186,34 +159,26 @@ class MarsTimeDelta:
     ValueError
         Raised if either input cannot be converted to a float.
 
-    See Also
-    --------
-    MarsTime: Create new Mars times from these time deltas.
-
-    Notes
-    -----
-    Objects of this type are immutable.
-
     Examples
     --------
     Create an instance of this class.
 
     >>> import mars_time
     >>> mars_time.MarsTimeDelta(year=1, sol=50)
-    MarsTimeDelta(year=1.0, sol=50.00)
+    MarsTimeDelta(year=1.0, sol=50.0)
 
-    Adding or subtracting a ``MarsTimeDelta`` to or from this object results in another ``MarsTimeDelta``.
+    Adding or subtracting a MarsTimeDelta to or from this object results in another MarsTimeDelta.
 
     >>> mtd = mars_time.MarsTimeDelta(year=1, sol=50) + mars_time.MarsTimeDelta(sol=700)
     >>> mtd
-    MarsTimeDelta(year=1.0, sol=750.00)
+    MarsTimeDelta(year=1.0, sol=750.0)
 
     The native year and aggregate year difference are found in its attributes. The same is true for sols.
 
     >>> mtd.year, mtd.sol
     (1.0, 750.0)
-    >>> f'{mtd.years:.2f}', f'{mtd.sols:.2f}'
-    ('2.12', '1418.59')
+    >>> mtd.years, mtd.sols
+    (2.1217553309955415, 1418.5949950729328)
 
     """
     def __init__(self, year: float = 0, sol: float = 0):
@@ -287,7 +252,7 @@ class MarsTimeDelta:
         return self._sol + self._year * sols_per_martian_year
 
     def __str__(self):
-        return f'MarsTimeDelta(year={self.year}, sol={self.sol:.2f})'
+        return f'MarsTimeDelta(year={self.year}, sol={self.sol})'
 
     def __repr__(self):
         return f'{self}'
@@ -318,7 +283,7 @@ class MarsTimeDelta:
 
 
 def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
-    """Convert a ``datetime.datetime`` to a ``MarsTime``.
+    """Convert a datetime.datetime to a MarsTime.
 
     Parameters
     ----------
@@ -337,32 +302,27 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
 
     Examples
     --------
-    Get the Mars time when MAVEN arrived at Mars. `Wikipedia's MAVEN page
-    <https://en.wikipedia.org/wiki/MAVEN>`_ mentions the spacecraft successfully entered orbit on 2014-09-22 at
-    02:24 UTC.
+    Get the Mars time when MAVEN arrived at Mars (date taken from Wikipedia).
 
     >>> import mars_time, datetime
     >>> orbit_insertion = datetime.datetime(2014, 9, 22, 2, 24, 0)
     >>> datetime_to_mars_time(orbit_insertion)
-    MarsTime(year=32, sol=406.36)
+    MarsTime(year=32, sol=406.2978778240522)
 
-    Get the Mars time when the Perseverance rover landed. `Wikipedia's Perseverance page
-    <https://en.wikipedia.org/wiki/Perseverance_(rover)>`_ mentions the rover successfully landed on 2021-02-18 at
-    20:55 UTC.
+    Get the Mars time when the Perseverance rover landed (date taken from Wikipedia).
 
     >>> landing_date = datetime.datetime(2021, 2, 18, 20, 55, 0)
     >>> datetime_to_mars_time(landing_date)
-    MarsTime(year=36, sol=11.11)
+    MarsTime(year=36, sol=11.0420015022269)
 
     """
     try:
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=datetime.timezone.utc)
-        tabulated_mars_years = [f for f in mars_year_starting_datetimes().keys()]
-        seconds_between_datetime_and_mars_year_starts = [(dt - mars_year_starting_datetimes()[i]).total_seconds() for i in tabulated_mars_years]
-        mars_year, elapsed_seconds = [[tabulated_mars_years[year_idx], elapsed_seconds] for year_idx, elapsed_seconds
-                                      in enumerate(seconds_between_datetime_and_mars_year_starts) if elapsed_seconds >= 0][-1]
-        return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
+        time_delta = dt - mars_year_0_start
+        elapsed_seconds = time_delta.days * 60*60*24 + time_delta.seconds
+        elapsed_sols = elapsed_seconds / seconds_per_sol
+        return MarsTime(0, 0) + MarsTimeDelta(sol=elapsed_sols)
     except AttributeError as ae:
         message = 'The input must be a datetime.datetime() object.'
         raise TypeError(message) from ae
@@ -392,15 +352,15 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
 
     >>> import mars_time
     >>> mars_time.mars_time_to_datetime(mars_time.MarsTime(30, 0))
-    datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)
+    datetime.datetime(2009, 10, 26, 16, 30, 43, 200011, tzinfo=datetime.timezone.utc)
 
     """
     if isinstance(mt, MarsTimeDelta):
         raise TypeError('The input must be a MarsTime.')
     try:
-        starting_datetime = mars_year_starting_datetimes()[mt.year]
-        elapsed_seconds = mt.sol * seconds_per_sol
-        return starting_datetime + datetime.timedelta(seconds=elapsed_seconds)
+        elapsed_sols = mt.year * sols_per_martian_year + mt.sol
+        elapsed_seconds = elapsed_sols * seconds_per_sol
+        return mars_year_0_start + datetime.timedelta(seconds=elapsed_seconds)
     except AttributeError as te:
         raise TypeError('The input must be a MarsTime.') from te
 
@@ -512,3 +472,9 @@ def sol_to_solar_longitude(sol: float) -> float:
         0.62077 * math.sin(2*m) + \
         0.05031 * math.sin(3*m)
     return ls % 360
+
+
+if __name__ == '__main__':
+    s = solar_longitude_to_sol(182)
+    m = MarsTime(34, s)
+    print(mars_time_to_datetime(m))
