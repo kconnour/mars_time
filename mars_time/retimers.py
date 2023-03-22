@@ -60,7 +60,7 @@ class MarsTime:
     The difference between two ``MarsTime`` objects is a :class:`~mars_time.MarsTimeDelta`.
 
     >>> MarsTime(33, 0) - MarsTime(32, 400)
-    MarsTimeDelta(year=1.0, sol=-400.0)
+    MarsTimeDelta(year=1.0, sol=-400.00)
 
     You can extract the input year and sol from this object via its properties. You can also extract the solar longitude
     corresponding to the input sol.

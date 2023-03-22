@@ -162,19 +162,19 @@ sols_per_martian_year: float = 686.973 * 24 / hours_per_sol
 <https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
 
 northern_spring_equinox_sol: float = 0
-"""The sol of the northern spring equinox (solar longitude = 0\ :math:`^\circ`). 
+r"""The sol of the northern spring equinox (solar longitude = 0\ :math:`^\circ`). 
 This values comes from the LMD calendar."""
 
 northern_summer_solstice_sol: float = 193.47
-"""The sol of the northern summer solstice (solar longitude = 90\ :math:`^\circ`). 
+r"""The sol of the northern summer solstice (solar longitude = 90\ :math:`^\circ`). 
 This values comes from the LMD calendar."""
 
 northern_autumn_equinox_sol: float = 371.99
-"""The sol of the northern autumn equinox (solar longitude = 180\ :math:`^\circ`). 
+r"""The sol of the northern autumn equinox (solar longitude = 180\ :math:`^\circ`). 
 This values comes from the LMD calendar."""
 
 northern_winter_solstice_sol: float = 514.76
-"""The sol of the northern winter solstice (solar longitude = 270\ :math:`^\circ`). 
+r"""The sol of the northern winter solstice (solar longitude = 270\ :math:`^\circ`). 
 This values comes from the LMD calendar."""
 
 # TODO: add aphelion_sol. LMD didn't give me this number.
