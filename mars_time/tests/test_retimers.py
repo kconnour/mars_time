@@ -1,5 +1,6 @@
 import datetime
 import math
+from unittest import mock
 
 import pytest
 
@@ -177,8 +178,11 @@ class Test_mars_time_to_datetime:
 
 
 class Test_get_current_mars_time:
-    # TODO: I don't know how to easily mock time.now() and it's not currently worth the effort
-    pass
+    def test_function_gives_expected_answer(self):
+        with mock.patch('datetime.datetime', wraps=datetime.datetime) as dt:
+            test_dt = datetime.datetime(2022, 1, 1)
+            dt.now.return_value = test_dt
+            assert get_current_mars_time() == datetime_to_mars_time(test_dt)
 
 
 class Test_solar_longitude_to_sol:
