@@ -107,6 +107,16 @@ class MarsTime:
         """
         return self._sol
 
+    @property
+    def solar_longitude(self) -> float:
+        """
+
+        Returns
+        -------
+
+        """
+        return sol_to_solar_longitude(self.sol)
+
     def __str__(self):
         return f'MarsTime(year={self.year}, sol={self.sol})'
 
@@ -472,9 +482,3 @@ def sol_to_solar_longitude(sol: float) -> float:
         0.62077 * math.sin(2*m) + \
         0.05031 * math.sin(3*m)
     return ls % 360
-
-
-if __name__ == '__main__':
-    s = solar_longitude_to_sol(182)
-    m = MarsTime(34, s)
-    print(mars_time_to_datetime(m))
