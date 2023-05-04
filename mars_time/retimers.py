@@ -47,6 +47,7 @@ class MarsTime:
     You can create a ``MarsTime`` instance from the year and solar longitude (Ls)
 
     >>> mt_ls = mars_time.MarsTime.from_year_solar_longitude(year=33, solar_longitude=180)
+    >>> mt_ls
     MarsTime(year=33, sol=371.88)
 
     You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is "ugly" because I
