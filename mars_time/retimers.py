@@ -88,7 +88,7 @@ class MarsTime:
         Parameters
         ----------
         year
-        The Martian year. Can be any value that can be cast to an int.
+            The Martian year. Can be any value that can be cast to an int.
 
         solar_longitude: float
             The solar longitude [0, 360).
