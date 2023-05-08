@@ -77,6 +77,12 @@ class TestMarsTime:
         with pytest.raises(TypeError):
             MarsTime(0, 0) + MarsTime(1, 0)
 
+    def test_from_solar_longitude_returns_expected_result(self):
+        mt = MarsTime.from_solar_longitude(32, 180)
+
+        assert mt.year == 32
+        assert pytest.approx(mt.sol, 0.01) == 371.88
+
 
 class TestMarsTimeDelta:
     def test_year_only_input_raises_no_error(self):

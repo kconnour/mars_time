@@ -1,4 +1,5 @@
 """The retimers module contains tools to convert between different time representations."""
+from __future__ import annotations
 import datetime
 import math
 
@@ -44,6 +45,12 @@ class MarsTime:
     >>> mt
     MarsTime(year=30, sol=0.00)
 
+    You can create a ``MarsTime`` instance from the year and solar longitude (Ls)
+
+    >>> mt_ls = mars_time.MarsTime.from_solar_longitude(year=33, solar_longitude=180)
+    >>> mt_ls
+    MarsTime(year=33, sol=371.88)
+
     You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is "ugly" because I
     assume there aren't an integer number of sols per year.
 
@@ -73,6 +80,33 @@ class MarsTime:
     def __init__(self, year: int, sol: float):
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
+
+    @classmethod
+    def from_solar_longitude(cls, year: int, solar_longitude: float) -> MarsTime:
+        """Create class instance from Mars Year and solar longitude instead of sol.
+
+        Parameters
+        ----------
+        year
+            The Martian year. Can be any value that can be cast to an int.
+        solar_longitude
+            The solar longitude. Can be any value between 0 and 360.
+
+        Returns
+        -------
+        An instance of this class.
+
+        Examples
+        --------
+        Create an instance of this class from a solar longitude.
+
+        >>> import mars_time
+        >>> mt = MarsTime.from_solar_longitude(33, 10)
+        >>> mt
+        MarsTime(year=33, sol=19.79)
+
+        """
+        return cls(year, solar_longitude_to_sol(solar_longitude))
 
     @staticmethod
     def _validate_year(year) -> int:

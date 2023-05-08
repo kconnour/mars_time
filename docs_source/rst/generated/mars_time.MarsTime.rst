@@ -14,6 +14,7 @@
    .. autosummary::
    
       ~MarsTime.__init__
+      ~MarsTime.from_solar_longitude
    
    
 
