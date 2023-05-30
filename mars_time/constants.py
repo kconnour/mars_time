@@ -2,25 +2,133 @@
 import datetime
 
 
-def mars_year_starting_datetimes() -> dict:
-    """Get the catalog of datetimes denoting the start of Martian years. This is computed from the table from
-    `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
+def mars_year_starting_j2000() -> dict:
+    """Get the catalog of days since J2000 denoting the start of Martian years. This is copied directly from the table
+    from `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
 
     Returns
     -------
-    The datetimes of the start of each Martian year.
+    dict
+        The days since J2000 of the start of each Martian year.
+
+    See Also
+    --------
+    mars_year_starting_datetimes: The equivalent variable for datetimes instead of days since J2000.
+    j2000: The datetime of J2000.
+
+    Notes
+    -----
+    The paper tabulates these values for Mars years -184 through 100. This variable only includes values from Mars years
+    -99 through 100.
 
     Examples
     --------
-    Get the start of Mars year 33.
+    Get the number of days since J2000 corresponding to the start of Mars year 33.
 
     >>> import mars_time
-    >>> mars_time.mars_year_starting_datetimes()[33]
-    datetime.datetime(2015, 6, 18, 12, 17, 16, 800000, tzinfo=datetime.timezone.utc)
+    >>> mars_time.mars_year_starting_j2000()[33]
+    5647.012
 
     """
-    mars_year_start = {
-        # TODO: the table starts at MY -184 so I could conceivably add those
+    return {
+        -99: -85033.149,
+        -98: -84346.147,
+        -97: -83659.157,
+        -96: -82972.202,
+        -95: -82285.232,
+        -94: -81598.256,
+        -93: -80911.313,
+        -92: -80224.337,
+        -91: -79537.345,
+        -90: -78850.365,
+
+        -89: -78163.396,
+        -88: -77476.419,
+        -87: -76789.479,
+        -86: -76102.520,
+        -85: -75415.524,
+        -84: -74728.550,
+        -83: -74041.600,
+        -82: -73354.610,
+        -81: -72667.640,
+        -80: -71980.690,
+
+        -79: -71293.710,
+        -78: -70606.720,
+        -77: -69919.760,
+        -76: -69232.790,
+        -75: -68545.820,
+        -74: -67858.880,
+        -73: -67171.880,
+        -72: -66484.880,
+        -71: -65797.930,
+        -70: -65110.960,
+
+        -69: -64423.980,
+        -68: -63737.040,
+        -67: -63050.080,
+        -66: -62363.090,
+        -65: -61676.100,
+        -64: -60989.140,
+        -63: -60302.160,
+        -62: -59615.210,
+        -61: -58928.250,
+        -60: -58241.260,
+
+        -59: -57554.280,
+        -58: -56867.320,
+        -57: -56180.340,
+        -56: -55493.360,
+        -55: -54806.420,
+        -54: -54119.440,
+        -53: -53432.450,
+        -52: -52745.490,
+        -51: -52058.520,
+        -50: -51371.550,
+
+        -49: -50684.610,
+        -48: -49997.630,
+        -47: -49310.620,
+        -46: -48623.660,
+        -45: -47936.700,
+        -44: -47249.720,
+        -43: -46562.760,
+        -42: -45875.810,
+        -41: -45188.820,
+        -40: -44501.830,
+
+        -39: -43814.860,
+        -38: -43127.880,
+        -37: -42440.920,
+        -36: -41753.980,
+        -35: -41066.997,
+        -34: -40380.010,
+        -33: -39693.050,
+        -32: -39006.090,
+        -31: -38319.090,
+        -30: -37632.150,
+
+        -29: -36945.180,
+        -28: -36258.190,
+        -27: -35571.220,
+        -26: -34884.260,
+        -25: -34197.270,
+        -24: -33510.330,
+        -23: -32823.360,
+        -22: -32136.350,
+        -21: -31449.370,
+        -20: -30762.420,
+
+        -19: -30075.450,
+        -18: -29388.490,
+        -17: -28701.540,
+        -16: -28014.560,
+        -15: -27327.570,
+        -14: -26640.590,
+        -13: -25953.620,
+        -12: -25266.650,
+        -11: -24579.710,
+        -10: -23892.740,
 
         -9: -23205.740,
         -8: -22518.780,
@@ -28,7 +136,7 @@ def mars_year_starting_datetimes() -> dict:
         -6: -21144.820,
         -5: -20457.870,
         -4: -19770.910,
-        -3: -19093.920,
+        -3: -19083.920,
         -2: -18396.940,
         -1: -17709.980,
 
@@ -144,11 +252,43 @@ def mars_year_starting_datetimes() -> dict:
 
         100: 51674.083
     }
+
+
+def mars_year_starting_datetimes() -> dict:
+    """Get the catalog of datetimes denoting the start of Martian years. This is computed from the table from
+    `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
+
+    Returns
+    -------
+    dict
+        The datetimes of the start of each Martian year.
+
+    See Also
+    --------
+    mars_year_starting_j2000: The equivalent variable for days since J2000 instead of datetimes.
+
+    Notes
+    -----
+    The paper tabulates these values for Mars years -184 through 100. This variable only includes values from Mars years
+    -99 through 100.
+
+    Examples
+    --------
+    Get the datetime of the start of Mars year 33.
+
+    >>> import mars_time
+    >>> mars_time.mars_year_starting_datetimes()[33]
+    datetime.datetime(2015, 6, 18, 12, 17, 16, 800000, tzinfo=datetime.timezone.utc)
+
+    """
+    mars_year_start = mars_year_starting_j2000()
     for year in mars_year_start.keys():
-        mars_year_start[year] = datetime.datetime(2000, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc) + \
-                                datetime.timedelta(days=mars_year_start[year])
+        mars_year_start[year] = j2000 + datetime.timedelta(days=mars_year_start[year])
     return mars_year_start
 
+
+j2000: datetime.datetime = datetime.datetime(2000, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc)
+"""Starting datetime of J2000. It is defined as The first day of 2000 at noon UTC."""
 
 hours_per_sol: float = 24.6597
 """Length of a Martian sol [hours]. This value comes from `NASA's Mars fact sheet
