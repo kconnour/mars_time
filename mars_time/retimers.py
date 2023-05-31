@@ -4,7 +4,7 @@ import datetime
 import math
 
 from mars_time.constants import mars_year_starting_datetimes, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
-    sols_per_martian_year
+    sols_per_martian_year, _j2000, _seconds_per_year
 
 
 class MarsTime:
@@ -18,7 +18,7 @@ class MarsTime:
     year
         The Martian year. Can be any value that can be cast to an int.
     sol
-        The sol (day of the Martian year). Must be between 0 and ~668.
+        The sol (day of the Martian year). Must be between 0 and ~668 (it varies by Martian year).
 
     Raises
     ------
@@ -26,7 +26,7 @@ class MarsTime:
         Raised if either of the inputs are a type that cannot be cast to a numeric data type.
     ValueError
         Raised if either of the inputs are a value that cannot be cast to a numeric data type or if :code:`sol` is
-        outside its valid range.
+        outside its valid range for the input year.
 
     See Also
     --------
@@ -45,7 +45,7 @@ class MarsTime:
     >>> mt
     MarsTime(year=30, sol=0.00)
 
-    You can create a ``MarsTime`` instance from the year and solar longitude (Ls)
+    You can create a ``MarsTime`` instance from the year and solar longitude (Ls).
 
     >>> mt_ls = mars_time.MarsTime.from_solar_longitude(year=33, solar_longitude=180)
     >>> mt_ls
@@ -81,6 +81,39 @@ class MarsTime:
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
 
+    @staticmethod
+    def _validate_year(year) -> int:
+        try:
+            year = int(year)
+        except TypeError as te:
+            message = f'The year argument (type={type(year)}) cannot be converted to an int.'
+            raise TypeError(message) from te
+        except ValueError as ve:
+            message = f'The year argument (value={year}) cannot be converted to an int.'
+            raise ValueError(message) from ve
+        if -99 <= year <= 99:
+            return year
+        else:
+            message = 'The year must be between -99 and 99.'
+            raise ValueError(message)
+
+    def _validate_sol(self, sol) -> float:
+        try:
+            sol = float(sol)
+        except TypeError as te:
+            message = f'The sol argument (type={type(sol)}) cannot be converted to a float.'
+            raise TypeError(message) from te
+        except ValueError as ve:
+            message = f'The sol argument (value={sol}) cannot be converted to a float.'
+            raise ValueError(message) from ve
+        starting_datetimes = mars_year_starting_datetimes()
+        sols_per_year = (starting_datetimes[self.year+1] - starting_datetimes[self.year]).total_seconds() / seconds_per_sol
+        if 0 <= sol <= sols_per_year:
+            return sol
+        else:
+            message = f'The sol must be between 0 and ~{sols_per_year:.2f}.'
+            raise ValueError(message)
+
     @classmethod
     def from_solar_longitude(cls, year: int, solar_longitude: float) -> MarsTime:
         """Create class instance from Mars Year and solar longitude instead of sol.
@@ -108,33 +141,6 @@ class MarsTime:
         """
         return cls(year, solar_longitude_to_sol(solar_longitude))
 
-    @staticmethod
-    def _validate_year(year) -> int:
-        try:
-            return int(year)
-        except TypeError as te:
-            message = f'The year argument (type={type(year)}) cannot be converted to an int.'
-            raise TypeError(message) from te
-        except ValueError as ve:
-            message = f'The year argument (value={year}) cannot be converted to an int.'
-            raise ValueError(message) from ve
-
-    @staticmethod
-    def _validate_sol(sol) -> float:
-        try:
-            sol = float(sol)
-        except TypeError as te:
-            message = f'The sol argument (type={type(sol)}) cannot be converted to a float.'
-            raise TypeError(message) from te
-        except ValueError as ve:
-            message = f'The sol argument (value={sol}) cannot be converted to a float.'
-            raise ValueError(message) from ve
-        if 0 <= sol <= sols_per_martian_year:
-            return sol
-        else:
-            message = f'The sol must be between 0 and {sols_per_martian_year:.2f}.'
-            raise ValueError(message)
-
     @property
     def year(self) -> int:
         """Get the input year.
@@ -159,14 +165,62 @@ class MarsTime:
 
     @property
     def solar_longitude(self) -> float:
-        """Get the solar longitude corresponding to the input sol.
+        r"""Get the solar longitude corresponding to the input year and sol.
 
         Returns
         -------
         The solar longitude.
 
+        Notes
+        -----
+        The equation used to compute this value comes from `Piqueux et al (2015)
+        <https://doi.org/10.1016/j.icarus.2014.12.014>`_. According to the paper, it has a maximum error of 0.0045
+        :math:`^\circ` with RMS residual of 0.00105 :math:`^\circ`.
         """
-        return sol_to_solar_longitude(self.sol)
+        # The paper took a few liberties that they failed to mention... I only figured them out by going to the IDL
+        # source code.
+        # 1. the mean anomaly has to be in the range [-180, 180) after the equation given in the paper
+        # 2. Then the mean anomaly has to be converted to radians
+        # 3. The output has to be %360'd
+
+        dt = mars_time_to_datetime(self)
+        days_since_j2000 = (dt - _j2000).total_seconds() / _seconds_per_year
+
+        julian_centuries = days_since_j2000 / 36525
+        linear_rate_angle = 270.389001822 + 0.52403850205 * days_since_j2000 - 0.000565452 * julian_centuries ** 2
+        mean_anomaly = (19.38028331517 + 0.52402076345 * days_since_j2000) % 360
+        if mean_anomaly > 180:
+            mean_anomaly -= 360
+        mean_anomaly = mean_anomaly * math.pi / 180
+        eccentricity = 0.093402202 + 0.000091406 * julian_centuries
+        delta = (2 * eccentricity - eccentricity ** 3 / 4 + 5 * eccentricity ** 5 / 96) * math.sin(mean_anomaly) + \
+                (5 * eccentricity ** 2 / 4 - 11 * eccentricity ** 4 / 24 + 17 * eccentricity ** 6 / 192) * math.sin(2 * mean_anomaly) + \
+                (13 * eccentricity ** 3 / 12 - 43 * eccentricity ** 5 / 64) * math.sin(3 * mean_anomaly) + \
+                (103 * eccentricity ** 4 / 96 - 451 * eccentricity ** 6 / 480) * math.sin(4 * mean_anomaly) + \
+                (1097 * eccentricity ** 5 / 960) * math.sin(5 * mean_anomaly) + \
+                (1223 * eccentricity ** 5 / 960) * math.sin(6 * mean_anomaly)
+
+        def compute_planetary_perturbation(amplitude, period, phase):
+            return amplitude / 1000 * math.cos(2 * math.pi * days_since_j2000 / period + math.pi / 180 * phase)
+
+        planetary_perturbation = compute_planetary_perturbation(7.0591, 816.3755210, 48.48944) + \
+                                 compute_planetary_perturbation(6.0890, 1005.8002614, 167.55418) + \
+                                 compute_planetary_perturbation(4.4462, 408.1877605, 188.35480) + \
+                                 compute_planetary_perturbation(3.8947, 5765.3098103, 19.97295) + \
+                                 compute_planetary_perturbation(2.4328, 779.9286472, 12.03224) + \
+                                 compute_planetary_perturbation(2.0400, 901.9431281, 95.98253) + \
+                                 compute_planetary_perturbation(1.7746, 11980.9332471, 49.00256) + \
+                                 compute_planetary_perturbation(1.34607, 2882.1147, 288.7737) + \
+                                 compute_planetary_perturbation(1.03438, 4332.2204, 37.9378) + \
+                                 compute_planetary_perturbation(0.88180, 373.07883, 65.3160) + \
+                                 compute_planetary_perturbation(0.72350, 1069.3231, 175.4911) + \
+                                 compute_planetary_perturbation(0.65555, 343.49194, 98.8644) + \
+                                 compute_planetary_perturbation(0.81460, 1309.9410, 186.2253) + \
+                                 compute_planetary_perturbation(0.74578, 450.69255, 202.9323) + \
+                                 compute_planetary_perturbation(0.58359, 256.06036, 212.1853) + \
+                                 compute_planetary_perturbation(0.42864, 228.99145, 32.1227)
+
+        return (linear_rate_angle + 180 / math.pi * delta + planetary_perturbation) % 360
 
     def __str__(self):
         return f'MarsTime(year={self.year}, sol={self.sol:.2f})'
@@ -546,3 +600,9 @@ def sol_to_solar_longitude(sol: float) -> float:
         0.62077 * math.sin(2*m) + \
         0.05031 * math.sin(3*m)
     return ls % 360
+
+
+if __name__ == '__main__':
+    foo = datetime.datetime(2020, 1, 1)
+    m = datetime_to_mars_time(foo)
+    print(m.solar_longitude)
