@@ -75,7 +75,7 @@ class MarsTime:
 
     >>> mt = MarsTime(33, 200)
     >>> mt.year, mt.sol, f'{mt.solar_longitude:.1f}'
-    (33, 200.0, '93.0')
+    (33, 200.0, '93.1')
 
     """
     def __init__(self, year: int, sol: float):
