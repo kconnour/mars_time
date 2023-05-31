@@ -255,7 +255,7 @@ def mars_year_starting_datetimes() -> dict:
 
 _j2000: datetime.datetime = datetime.datetime(2000, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc)
 
-_seconds_per_year: int = 86400
+_seconds_per_day: int = 86400
 
 hours_per_sol: float = 24.6597
 """Length of a Martian sol [hours]. This value comes from `NASA's Mars fact sheet
@@ -264,32 +264,31 @@ hours_per_sol: float = 24.6597
 seconds_per_sol: float = hours_per_sol / 24 * 86400
 """Number of seconds per Martian sol."""
 
-# Everything below here may not be constant
 sols_per_martian_year: float = 686.973 * 24 / hours_per_sol
-"""Number of sols per Martian year. This value is derived from `NASA's Mars fact sheet
+"""Approximate number of sols per Martian year. This value is derived from `NASA's Mars fact sheet
 <https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
 
 northern_spring_equinox_sol: float = 0
 r"""The sol of the northern spring equinox (solar longitude = 0\ :math:`^\circ`). 
-This values comes from the LMD calendar."""
+This value comes from the LMD calendar."""
 
 northern_summer_solstice_sol: float = 193.47
 r"""The sol of the northern summer solstice (solar longitude = 90\ :math:`^\circ`). 
-This values comes from the LMD calendar."""
+This value comes from the LMD calendar."""
 
 northern_autumn_equinox_sol: float = 371.99
 r"""The sol of the northern autumn equinox (solar longitude = 180\ :math:`^\circ`). 
-This values comes from the LMD calendar."""
+This value comes from the LMD calendar."""
 
 northern_winter_solstice_sol: float = 514.76
 r"""The sol of the northern winter solstice (solar longitude = 270\ :math:`^\circ`). 
-This values comes from the LMD calendar."""
+This value comes from the LMD calendar."""
 
-# TODO: add aphelion_sol. LMD didn't give me this number.
+aphelion_sol: float = 152.52
+r"""The sol of aphelion. 
+I approximated this value using this package.
+"""
 
 perihelion_sol: float = 485.35
-"""Sol of perihelion. This values comes from LMD."""
-
-orbital_eccentricity: float = 0.0935
-"""Mars' orbital eccentricity. This value comes from `NASA's Mars fact sheet
-<https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html>`_."""
+"""The sol of perihelion. 
+This value comes from LMD."""

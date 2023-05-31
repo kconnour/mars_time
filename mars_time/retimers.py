@@ -2,9 +2,10 @@
 from __future__ import annotations
 import datetime
 import math
+import warnings
 
-from mars_time.constants import mars_year_starting_datetimes, orbital_eccentricity, perihelion_sol, seconds_per_sol, \
-    sols_per_martian_year, _j2000, _seconds_per_year
+from mars_time.constants import mars_year_starting_datetimes, perihelion_sol, seconds_per_sol, sols_per_martian_year, \
+    _j2000, _seconds_per_day
 
 
 class MarsTime:
@@ -183,8 +184,11 @@ class MarsTime:
         # 2. Then the mean anomaly has to be converted to radians
         # 3. The output has to be %360'd
 
+        # It might be beastly, but I suspect I could invert this equation to turn a Mars year + Ls into a datetime.
+        # If so, I could make certain aspects more accurate. But that's a project for a later time.
+
         dt = mars_time_to_datetime(self)
-        days_since_j2000 = (dt - _j2000).total_seconds() / _seconds_per_year
+        days_since_j2000 = (dt - _j2000).total_seconds() / _seconds_per_day
 
         julian_centuries = days_since_j2000 / 36525
         linear_rate_angle = 270.389001822 + 0.52403850205 * days_since_j2000 - 0.000565452 * julian_centuries ** 2
@@ -204,21 +208,21 @@ class MarsTime:
             return amplitude / 1000 * math.cos(2 * math.pi * days_since_j2000 / period + math.pi / 180 * phase)
 
         planetary_perturbation = compute_planetary_perturbation(7.0591, 816.3755210, 48.48944) + \
-                                 compute_planetary_perturbation(6.0890, 1005.8002614, 167.55418) + \
-                                 compute_planetary_perturbation(4.4462, 408.1877605, 188.35480) + \
-                                 compute_planetary_perturbation(3.8947, 5765.3098103, 19.97295) + \
-                                 compute_planetary_perturbation(2.4328, 779.9286472, 12.03224) + \
-                                 compute_planetary_perturbation(2.0400, 901.9431281, 95.98253) + \
-                                 compute_planetary_perturbation(1.7746, 11980.9332471, 49.00256) + \
-                                 compute_planetary_perturbation(1.34607, 2882.1147, 288.7737) + \
-                                 compute_planetary_perturbation(1.03438, 4332.2204, 37.9378) + \
-                                 compute_planetary_perturbation(0.88180, 373.07883, 65.3160) + \
-                                 compute_planetary_perturbation(0.72350, 1069.3231, 175.4911) + \
-                                 compute_planetary_perturbation(0.65555, 343.49194, 98.8644) + \
-                                 compute_planetary_perturbation(0.81460, 1309.9410, 186.2253) + \
-                                 compute_planetary_perturbation(0.74578, 450.69255, 202.9323) + \
-                                 compute_planetary_perturbation(0.58359, 256.06036, 212.1853) + \
-                                 compute_planetary_perturbation(0.42864, 228.99145, 32.1227)
+            compute_planetary_perturbation(6.0890, 1005.8002614, 167.55418) + \
+            compute_planetary_perturbation(4.4462, 408.1877605, 188.35480) + \
+            compute_planetary_perturbation(3.8947, 5765.3098103, 19.97295) + \
+            compute_planetary_perturbation(2.4328, 779.9286472, 12.03224) + \
+            compute_planetary_perturbation(2.0400, 901.9431281, 95.98253) + \
+            compute_planetary_perturbation(1.7746, 11980.9332471, 49.00256) + \
+            compute_planetary_perturbation(1.34607, 2882.1147, 288.7737) + \
+            compute_planetary_perturbation(1.03438, 4332.2204, 37.9378) + \
+            compute_planetary_perturbation(0.88180, 373.07883, 65.3160) + \
+            compute_planetary_perturbation(0.72350, 1069.3231, 175.4911) + \
+            compute_planetary_perturbation(0.65555, 343.49194, 98.8644) + \
+            compute_planetary_perturbation(0.81460, 1309.9410, 186.2253) + \
+            compute_planetary_perturbation(0.74578, 450.69255, 202.9323) + \
+            compute_planetary_perturbation(0.58359, 256.06036, 212.1853) + \
+            compute_planetary_perturbation(0.42864, 228.99145, 32.1227)
 
         return (linear_rate_angle + 180 / math.pi * delta + planetary_perturbation) % 360
 
@@ -525,6 +529,10 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
     ValueError
         Raised if the input is not numeric.
 
+    Warns
+    -----
+    If used, a warning is raised to indicate the function is not particularly accurate.
+
     Notes
     -----
     This equation comes from LMD.
@@ -538,6 +546,7 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
     371.88
 
     """
+    warnings.warn('This function is not as accurate as the rest of the package.', UserWarning)
     try:
         solar_longitude = float(solar_longitude)
     except TypeError as te:
@@ -546,6 +555,7 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
         raise ValueError('solar_longitude must be numeric') from ve
 
     # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99 according to the LMD converter code
+    orbital_eccentricity = 0.0935
     true_anomaly = solar_longitude * math.pi / 180 + 1.90258341759902
     eccentric_anomaly = 2 * math.atan(math.tan(0.5 * true_anomaly) /
                                       math.sqrt((1 + orbital_eccentricity) /
@@ -569,9 +579,10 @@ def sol_to_solar_longitude(sol: float) -> float:
 
     Notes
     -----
-    The equation used in this method can be found in `this paper <https://doi.org/10.1016/j.icarus.2014.12.014>`_. While
-    this paper claims the equation is accurate to within 0.05\ :math:`^\circ`, I have found errors up to
-    0.2\ :math:`^\circ`.
+    This function uses the equation from `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_
+    assuming the Mars year is 0. This function cannot be "supremely" accurate, as the number of sols vary slightly from
+    Mars year to Mars year. If possible, consider computing the solar longitude from a given Mars year and sol via
+    :class:`~mars_time.MarsTime`; if not, this function ought to be fairly accurate though.
 
     Examples
     --------
@@ -579,7 +590,7 @@ def sol_to_solar_longitude(sol: float) -> float:
 
     >>> import mars_time
     >>> round(mars_time.sol_to_solar_longitude(200), 2)
-    93.03
+    93.02
 
     """
     try:
@@ -589,20 +600,10 @@ def sol_to_solar_longitude(sol: float) -> float:
     except ValueError as ve:
         raise ValueError('sol must be numeric') from ve
 
-    dt = mars_time_to_datetime(MarsTime(0, sol))
-    utc = datetime.timezone.utc
-    j2000 = datetime.datetime(2000, 1, 1, 12, 0, 0, 0, tzinfo=utc)
-    elapsed_days = (dt - j2000).total_seconds() / 86400
-    m = math.radians(19.38095 + 0.524020769 * elapsed_days)
-    ls = 270.38859 + \
-        0.524038542 * elapsed_days + \
-        10.67848 * math.sin(m) + \
-        0.62077 * math.sin(2*m) + \
-        0.05031 * math.sin(3*m)
-    return ls % 360
+    mt = MarsTime(0, sol)
+    return mt.solar_longitude
 
 
 if __name__ == '__main__':
-    foo = datetime.datetime(2020, 1, 1)
-    m = datetime_to_mars_time(foo)
-    print(m.solar_longitude)
+    for i in range(0, 200):
+        print(i, MarsTime(0, i).solar_longitude)
