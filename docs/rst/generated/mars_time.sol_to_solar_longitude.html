@@ -37,7 +37,6 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'rst/generated/mars_time.sol_to_solar_longitude';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -124,6 +123,13 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../accuracy.html">
+                        Accuracy
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../install.html">
                         Installation
@@ -245,6 +251,13 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../accuracy.html">
+                        Accuracy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../install.html">
                         Installation
                       </a>
@@ -335,8 +348,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.aphelion_sol.html">mars_time.constants.aphelion_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.orbital_eccentricity.html">mars_time.constants.orbital_eccentricity</a></li>
 </ul>
 </div>
 </nav></div>
@@ -412,14 +425,15 @@ document.write(`
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The equation used in this method can be found in <a class="reference external" href="https://doi.org/10.1016/j.icarus.2014.12.014">this paper</a>. While
-this paper claims the equation is accurate to within 0.05<span class="math notranslate nohighlight">\(^\circ\)</span>, I have found errors up to
-0.2<span class="math notranslate nohighlight">\(^\circ\)</span>.</p>
+<p>This function uses the equation from <a class="reference external" href="https://doi.org/10.1016/j.icarus.2014.12.014">Piqueux et al (2015)</a>
+assuming the Mars year is 0. This function cannot be “supremely” accurate, as the number of sols vary slightly from
+Mars year to Mars year. If possible, consider computing the solar longitude from a given Mars year and sol via
+<a class="reference internal" href="mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarsTime</span></code></a>; if not, this function ought to be fairly accurate though.</p>
 <p class="rubric">Examples</p>
 <p>Determine the solar longitude of sol 200. The “official” LMD document gives 92.965.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
-<span class="go">93.03</span>
+<span class="go">93.02</span>
 </pre></div>
 </div>
 </dd></dl>

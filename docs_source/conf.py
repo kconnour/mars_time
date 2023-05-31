@@ -35,12 +35,12 @@ html_theme_options = {
     "collapse_navigation": True,
 }
 
-autoclass_contents = 'class'
+autoclass_content = 'class'
 autodoc_typehints = 'both'  # Only show typehints in the description,
 '''autodoc_default_options = {
     'members': True,
     'member-order': 'bysource',
     'special-members': None,
-    'undoc-members': True,
+    'undoc-members': False,
     'exclude-members': '__weakref__'
 }'''

@@ -1,4 +1,6 @@
-﻿mars\_time.MarsTime
+﻿.. This is the default script that I've hacked to make it look as I want
+
+mars\_time.MarsTime
 ===================
 
 .. currentmodule:: mars_time
@@ -6,7 +8,7 @@
 .. autoclass:: MarsTime
 
    
-   .. automethod:: __init__
+
 
    
    .. rubric:: Methods

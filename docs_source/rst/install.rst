@@ -1,7 +1,8 @@
 Installation
 ============
 The easiest way to install `mars_time` is to use pip. Simply use
-:code:`pip install mars_time` and you should be good to go!
+:code:`pip install mars_time` and you should be good to go! (note: I plan to
+push this to PyPI at the v1.0 release. For now, it is *not* on PyPI).
 
 Alternatively, if you want to develop this package (either by modifying the
 documentation, adding features, or modifying tests, you'll need to install it

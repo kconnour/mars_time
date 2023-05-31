@@ -51,5 +51,5 @@ These constants are related to the orbit and/or timekeeping on Mars.
    northern_summer_solstice_sol
    northern_autumn_equinox_sol
    northern_winter_solstice_sol
+   aphelion_sol
    perihelion_sol
-   orbital_eccentricity
