@@ -602,8 +602,3 @@ def sol_to_solar_longitude(sol: float) -> float:
 
     mt = MarsTime(0, sol)
     return mt.solar_longitude
-
-
-if __name__ == '__main__':
-    for i in range(0, 200):
-        print(i, MarsTime(0, i).solar_longitude)

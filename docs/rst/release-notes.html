@@ -123,6 +123,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="accuracy.html">
+                        Accuracy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="install.html">
                         Installation
                       </a>
@@ -243,6 +250,13 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="accuracy.html">
+                        Accuracy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="install.html">
                         Installation
                       </a>
@@ -361,8 +375,8 @@ document.write(`
   <section id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this heading">#</a></h1>
 <p>These describe the “beta” state of the project. Since any API changes will break
-links, these will be removed with v1.0.0. The project release notes will look
-more like numpy’s (for example) after that point.</p>
+links, these may be removed with v1.0.0. My idea is that they will look more
+like numpy’s after that point.</p>
 <section id="v0-5-0">
 <h2>v0.5.0<a class="headerlink" href="#v0-5-0" title="Permalink to this heading">#</a></h2>
 <p>This update expands upon the constants in the previous version and adds an
@@ -370,11 +384,13 @@ additional attribute to <code class="docutils literal notranslate"><span class="
 <ul class="simple">
 <li><p>Added attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">mars_time.MarsTime.solar_longitude</span></code></p></li>
 <li><p>Removed <code class="xref py py-data docutils literal notranslate"><span class="pre">mars_time.mars_year_starting_datetime</span></code>. This is replaced with
-<code class="xref py py-func docutils literal notranslate"><span class="pre">mars_time.mars_year_starting_datetimes()</span></code> which goes from year -9 to 100.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">mars_time.mars_year_starting_datetimes()</span></code> which goes from year -99 to 100.
 This improved the accuracy of the computations</p></li>
 <li><p>Added tests to <a class="reference internal" href="generated/mars_time.get_current_mars_time.html#mars_time.get_current_mars_time" title="mars_time.get_current_mars_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">mars_time.get_current_mars_time()</span></code></a></p></li>
 <li><p>Modified the __str__ of <a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTime</span></code></a> and
 <a class="reference internal" href="generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta" title="mars_time.MarsTimeDelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTimeDelta</span></code></a> to truncate at 2 decimals</p></li>
+<li><p>Added classmethod to <a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTime</span></code></a> to create that class from Ls</p></li>
+<li><p>Added improved Ls computation function to <a class="reference internal" href="generated/mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">mars_time.MarsTime</span></code></a></p></li>
 </ul>
 <p>With the addition of more accurate Mars year starting datetimes, the computation
 of the solar longitude is now more accurate.</p>

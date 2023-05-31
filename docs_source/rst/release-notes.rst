@@ -1,8 +1,8 @@
 Release Notes
 =============
 These describe the "beta" state of the project. Since any API changes will break
-links, these will be removed with v1.0.0. The project release notes will look
-more like numpy's (for example) after that point.
+links, these may be removed with v1.0.0. My idea is that they will look more
+like numpy's after that point.
 
 v0.5.0
 ------
@@ -11,11 +11,13 @@ additional attribute to ``MarsTime``.
 
 * Added attribute :attr:`mars_time.MarsTime.solar_longitude`
 * Removed :data:`mars_time.mars_year_starting_datetime`. This is replaced with
-  :func:`mars_time.mars_year_starting_datetimes` which goes from year -9 to 100.
+  :func:`mars_time.mars_year_starting_datetimes` which goes from year -99 to 100.
   This improved the accuracy of the computations
 * Added tests to :func:`mars_time.get_current_mars_time`
 * Modified the __str__ of :class:`mars_time.MarsTime` and
   :class:`mars_time.MarsTimeDelta` to truncate at 2 decimals
+* Added classmethod to :class:`mars_time.MarsTime` to create that class from Ls
+* Added improved Ls computation function to :class:`mars_time.MarsTime`
 
 With the addition of more accurate Mars year starting datetimes, the computation
 of the solar longitude is now more accurate.
