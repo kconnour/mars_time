@@ -16,8 +16,9 @@ from mars_time.retimers import MarsTime
 #
 # However, it appears pytest cannot do this and all tests have to be in a class
 
-class Test_mars_year_start_days_since_j2000:
-    def test_value_matches_expected_value(self):
+
+def test_mars_year_start_days_since_j2000():
+    def test_value_matches_expected_value():
         assert mars_year_start_days_since_j2000 == {
             -99: -85033.149,
             -98: -84346.147,
@@ -240,6 +241,7 @@ class Test_mars_year_start_days_since_j2000:
 
             100: 51674.083
             }
+    test_value_matches_expected_value()
 
 
 class Test_j2000:
@@ -262,13 +264,15 @@ class Test_seconds_per_sol:
         assert seconds_per_sol == 88774.92000000001
 
 
-class Test_aphelion_sol:
-    def test_value_matches_computed_value(self):
+def test_aphelion_sol():
+    def test_value_matches_computed_value():
         sol = [find_aphelion(year).sol for year in range(-99, 100)]
 
         mean_sol = np.mean(sol)
 
         assert aphelion_sol == mean_sol
+
+    test_value_matches_computed_value()
 
 
 class Test_aphelion_solar_longitude:
