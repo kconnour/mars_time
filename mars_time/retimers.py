@@ -4,8 +4,9 @@ import datetime
 import math
 import warnings
 
-from mars_time.constants import mars_year_starting_datetimes, perihelion_sol, seconds_per_sol, sols_per_martian_year, \
-    _j2000, _seconds_per_day
+import scipy
+
+from mars_time.constants import hours_per_sol, j2000, perihelion_sol, seconds_per_day, seconds_per_sol, mars_year_start_days_since_j2000, mars_year_starting_datetimes, sols_per_mars_year
 
 
 class MarsTime:
@@ -107,12 +108,11 @@ class MarsTime:
         except ValueError as ve:
             message = f'The sol argument (value={sol}) cannot be converted to a float.'
             raise ValueError(message) from ve
-        starting_datetimes = mars_year_starting_datetimes()
-        sols_per_year = (starting_datetimes[self.year+1] - starting_datetimes[self.year]).total_seconds() / seconds_per_sol
-        if 0 <= sol <= sols_per_year:
+        sols_per_current_mars_year = sols_per_mars_year()[self.year]
+        if 0 <= sol <= sols_per_current_mars_year:
             return sol
         else:
-            message = f'The sol must be between 0 and ~{sols_per_year:.2f}.'
+            message = f'The sol must be between 0 and ~{sols_per_current_mars_year:.2f}.'
             raise ValueError(message)
 
     @classmethod
@@ -140,7 +140,17 @@ class MarsTime:
         MarsTime(year=33, sol=19.79)
 
         """
-        return cls(year, solar_longitude_to_sol(solar_longitude))
+        start = mars_year_start_days_since_j2000[year]
+        end = mars_year_start_days_since_j2000[year + 1]
+
+        def foo(day):
+            day = float(day)
+            bar = datetime_to_mars_time(j2000 + datetime.timedelta(days=day - 0.001))
+            baz = datetime_to_mars_time(j2000 + datetime.timedelta(days=day + 0.001))
+            return abs(2 * solar_longitude - bar.solar_longitude - baz.solar_longitude)
+
+        answer = scipy.optimize.minimize_scalar(foo, bounds=(start, end), method='bounded').x
+        return datetime_to_mars_time(j2000 + datetime.timedelta(days=answer))
 
     @property
     def year(self) -> int:
@@ -188,7 +198,7 @@ class MarsTime:
         # If so, I could make certain aspects more accurate. But that's a project for a later time.
 
         dt = mars_time_to_datetime(self)
-        days_since_j2000 = (dt - _j2000).total_seconds() / _seconds_per_day
+        days_since_j2000 = (dt - j2000).total_seconds() / seconds_per_day
 
         julian_centuries = days_since_j2000 / 36525
         linear_rate_angle = 270.389001822 + 0.52403850205 * days_since_j2000 - 0.000565452 * julian_centuries ** 2
@@ -234,19 +244,27 @@ class MarsTime:
 
     def __add__(self, other):
         if isinstance(other, MarsTimeDelta):
-            new_fractional_year = self.year + self.sol / sols_per_martian_year + other.years
-            year = int(new_fractional_year // 1)
-            sol = (new_fractional_year % 1) * sols_per_martian_year
-            return MarsTime(year, sol)
+            sols_per_martian_year = sols_per_mars_year()
+            new_year = self.year + other.year
+            total_sol = self.sol + other.sol
+            if total_sol >= 0:
+                while total_sol >= sols_per_martian_year[new_year]:
+                    total_sol -= sols_per_martian_year[new_year]
+                    new_year += 1
+            else:
+                while total_sol < 0:
+                    new_year -= 1
+                    total_sol += sols_per_martian_year[new_year]
+
+            return MarsTime(new_year, total_sol)
         else:
             raise TypeError(f'Cannot add f{type(other)} to MarsTime.')
 
     def __sub__(self, other):
         if isinstance(other, MarsTimeDelta):
-            new_fractional_year = self.year + self.sol / sols_per_martian_year - other.years
-            year = int(new_fractional_year // 1)
-            sol = (new_fractional_year % 1) * sols_per_martian_year
-            return MarsTime(year, sol)
+            reversed_time = MarsTimeDelta(other.year * -1, other.sol * -1)
+            return self + reversed_time
+
         elif isinstance(other, MarsTime):
             return MarsTimeDelta(year=self.year-other.year, sol=self.sol-other.sol)
         else:
@@ -300,22 +318,15 @@ class MarsTimeDelta:
     >>> mtd
     MarsTimeDelta(year=1.0, sol=750.00)
 
-    The native year and aggregate year difference are found in its attributes. The same is true for sols.
-
-    >>> mtd.year, mtd.sol
-    (1.0, 750.0)
-    >>> f'{mtd.years:.2f}', f'{mtd.sols:.2f}'
-    ('2.12', '1418.59')
-
     """
-    def __init__(self, year: float = 0, sol: float = 0):
+    def __init__(self, year: int = 0, sol: float = 0):
         self._year = self._validate_year(year)
         self._sol = self._validate_sol(sol)
 
     @staticmethod
     def _validate_year(year):
         try:
-            return float(year)
+            return int(year)
         except TypeError as te:
             message = f'The year argument (type={type(year)}) cannot be converted to a float.'
             raise TypeError(message) from te
@@ -335,7 +346,7 @@ class MarsTimeDelta:
             raise ValueError(message) from ve
 
     @property
-    def year(self) -> float:
+    def year(self) -> int:
         """Get the input year.
 
         Returns
@@ -344,17 +355,6 @@ class MarsTimeDelta:
 
         """
         return self._year
-
-    @property
-    def years(self) -> float:
-        """Get the fractional number of Mars years this object represents.
-
-        Returns
-        -------
-        The fractional Mars years.
-
-        """
-        return self._year + self._sol / sols_per_martian_year
 
     @property
     def sol(self) -> float:
@@ -366,17 +366,6 @@ class MarsTimeDelta:
 
         """
         return self._sol
-
-    @property
-    def sols(self) -> float:
-        """Get the total number of sols that this object represents.
-
-        Returns
-        -------
-        The total number of sols.
-
-        """
-        return self._sol + self._year * sols_per_martian_year
 
     def __str__(self):
         return f'MarsTimeDelta(year={self.year}, sol={self.sol:.2f})'
@@ -448,10 +437,11 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
 
     """
     try:
+        start = mars_year_starting_datetimes()
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=datetime.timezone.utc)
-        tabulated_mars_years = [f for f in mars_year_starting_datetimes().keys()]
-        seconds_between_datetime_and_mars_year_starts = [(dt - mars_year_starting_datetimes()[i]).total_seconds() for i in tabulated_mars_years]
+        tabulated_mars_years = list(start.keys())
+        seconds_between_datetime_and_mars_year_starts = [(dt - start[i]).total_seconds() for i in tabulated_mars_years]
         mars_year, elapsed_seconds = [[tabulated_mars_years[year_idx], elapsed_seconds] for year_idx, elapsed_seconds
                                       in enumerate(seconds_between_datetime_and_mars_year_starts) if elapsed_seconds >= 0][-1]
         return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
@@ -555,6 +545,7 @@ def solar_longitude_to_sol(solar_longitude: float) -> float:
         raise ValueError('solar_longitude must be numeric') from ve
 
     # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99 according to the LMD converter code
+    sols_per_martian_year = 686.973 * 24 / hours_per_sol
     orbital_eccentricity = 0.0935
     true_anomaly = solar_longitude * math.pi / 180 + 1.90258341759902
     eccentric_anomaly = 2 * math.atan(math.tan(0.5 * true_anomaly) /
@@ -602,3 +593,13 @@ def sol_to_solar_longitude(sol: float) -> float:
 
     mt = MarsTime(0, sol)
     return mt.solar_longitude
+
+
+if __name__ == '__main__':
+    import numpy as np
+
+    foobar = []
+    for i in range(-99, 100):
+        m = MarsTime.from_solar_longitude(i, 270)
+        foobar.append(m.sol)
+    print(np.mean(foobar))
