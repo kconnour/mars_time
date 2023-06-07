@@ -1,4 +1,6 @@
-"""The constants module is a collection of Martian orbital and temporal constants."""
+"""The constants module is a collection of Martian orbital and temporal constants. This includes functions applied
+to constants that produce different representations of constants.
+"""
 import datetime
 
 
@@ -238,7 +240,8 @@ j2000: datetime.datetime = datetime.datetime(2000, 1, 1, 12, 0, 0, tzinfo=dateti
 """
 
 seconds_per_day: int = 86400
-"""Number of seconds per day."""
+"""Number of seconds per day.
+"""
 
 hours_per_sol: float = 24.6597
 """Number of hours per sol. This value comes from `NASA's Mars fact sheet
@@ -254,12 +257,11 @@ r"""The average sol of aphelion between Mars years -99 and 99.
 See Also
 --------
 aphelion_solar_longitude: The corresponding average solar longitude of aphelion.
-mars_time.orbit.find_aphelion: Find the MarsTime of aphelion. 
+mars_time.orbit.find_aphelion: Find the MarsTime of aphelion.
 
 Notes
 -----
-I computed this value using mars_time.orbit.find_aphelion.
-
+I computed this value using mars_time.orbit.find_aphelion. 
 """
 
 aphelion_solar_longitude: float = 70.69416766129689
@@ -320,7 +322,7 @@ r"""The average sol of the northern summer solstice (solar longitude = 90\ :math
 
 See Also
 --------
-northern_spring_equinox_sol: The average sol of the northern spring equinox. 
+northern_spring_equinox_sol: The sol of the northern spring equinox. 
 northern_autumn_equinox_sol: The average sol of the northern autumn equinox. 
 northern_winter_solstice_sol: The average sol of the northern winter solstice. 
 
@@ -334,7 +336,7 @@ r"""The average sol of the northern autumn equinox (solar longitude = 180\ :math
 
 See Also
 --------
-northern_spring_equinox_sol: The average sol of the northern spring equinox. 
+northern_spring_equinox_sol: The sol of the northern spring equinox. 
 northern_summer_solstice_sol: The average sol of the northern summer solstice. 
 northern_winter_solstice_sol: The average sol of the northern winter solstice. 
 
@@ -344,11 +346,12 @@ I computed this value using mars_time.retimers.MarsTime.
 """
 
 northern_winter_solstice_sol: float = 514.4675057277539
-r"""The average sol of the northern winter solstice (solar longitude = 270\ :math:`^\circ`) between Mars year -99 and 99.
+r"""The average sol of the northern winter solstice (solar longitude = 270\ :math:`^\circ`) between Mars year -99 and 
+99.
 
 See Also
 --------
-northern_spring_equinox_sol: The average sol of the northern spring equinox. 
+northern_spring_equinox_sol: The sol of the northern spring equinox. 
 northern_summer_solstice_sol: The average sol of the northern summer solstice. 
 northern_autumn_equinox_sol: The average sol of the northern autumn equinox. 
 

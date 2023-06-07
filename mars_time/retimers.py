@@ -2,11 +2,11 @@
 from __future__ import annotations
 import datetime
 import math
-import warnings
 
 import scipy
 
-from mars_time.constants import hours_per_sol, j2000, perihelion_sol, seconds_per_day, seconds_per_sol, mars_year_start_days_since_j2000, mars_year_starting_datetimes, sols_per_mars_year
+from mars_time.constants import j2000, seconds_per_day, seconds_per_sol, mars_year_start_days_since_j2000, \
+    mars_year_starting_datetimes, sols_per_mars_year
 
 
 class MarsTime:
@@ -18,7 +18,7 @@ class MarsTime:
     Parameters
     ----------
     year
-        The Martian year. Can be any value that can be cast to an int.
+        The Martian year. Must be between -99 and 99.
     sol
         The sol (day of the Martian year). Must be between 0 and ~668 (it varies by Martian year).
 
@@ -51,7 +51,7 @@ class MarsTime:
 
     >>> mt_ls = mars_time.MarsTime.from_solar_longitude(year=33, solar_longitude=180)
     >>> mt_ls
-    MarsTime(year=33, sol=371.88)
+    MarsTime(year=33, sol=371.92)
 
     You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is "ugly" because I
     assume there aren't an integer number of sols per year.
@@ -69,7 +69,7 @@ class MarsTime:
     The difference between two ``MarsTime`` objects is a :class:`~mars_time.MarsTimeDelta`.
 
     >>> MarsTime(33, 0) - MarsTime(32, 400)
-    MarsTimeDelta(year=1.0, sol=-400.00)
+    MarsTimeDelta(year=1, sol=-400.00)
 
     You can extract the input year and sol from this object via its properties. You can also extract the solar longitude
     corresponding to the input sol.
@@ -137,7 +137,7 @@ class MarsTime:
         >>> import mars_time
         >>> mt = MarsTime.from_solar_longitude(33, 10)
         >>> mt
-        MarsTime(year=33, sol=19.79)
+        MarsTime(year=33, sol=19.80)
 
         """
         start = mars_year_start_days_since_j2000[year]
@@ -310,13 +310,13 @@ class MarsTimeDelta:
 
     >>> import mars_time
     >>> mars_time.MarsTimeDelta(year=1, sol=50)
-    MarsTimeDelta(year=1.0, sol=50.00)
+    MarsTimeDelta(year=1, sol=50.00)
 
     Adding or subtracting a ``MarsTimeDelta`` to or from this object results in another ``MarsTimeDelta``.
 
     >>> mtd = mars_time.MarsTimeDelta(year=1, sol=50) + mars_time.MarsTimeDelta(sol=700)
     >>> mtd
-    MarsTimeDelta(year=1.0, sol=750.00)
+    MarsTimeDelta(year=1, sol=750.00)
 
     """
     def __init__(self, year: int = 0, sol: float = 0):
@@ -403,8 +403,9 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
 
     Parameters
     ----------
-    dt: datetime.datetime
-        Any datetime.datetime. If it has no timezone info, this will assume the timezone is UTC.
+    dt
+        A datetime.datetime between Mars year -99 and 99. If it has no timezone info, this will assume the timezone is
+        UTC.
 
     Returns
     -------
@@ -436,18 +437,14 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
     MarsTime(year=36, sol=11.11)
 
     """
-    try:
-        start = mars_year_starting_datetimes()
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=datetime.timezone.utc)
-        tabulated_mars_years = list(start.keys())
-        seconds_between_datetime_and_mars_year_starts = [(dt - start[i]).total_seconds() for i in tabulated_mars_years]
-        mars_year, elapsed_seconds = [[tabulated_mars_years[year_idx], elapsed_seconds] for year_idx, elapsed_seconds
-                                      in enumerate(seconds_between_datetime_and_mars_year_starts) if elapsed_seconds >= 0][-1]
-        return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
-    except AttributeError as ae:
-        message = 'The input must be a datetime.datetime() object.'
-        raise TypeError(message) from ae
+    start = mars_year_starting_datetimes()
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    tabulated_mars_years = list(start.keys())
+    seconds_between_datetime_and_mars_year_starts = [(dt - start[i]).total_seconds() for i in tabulated_mars_years]
+    mars_year, elapsed_seconds = [[tabulated_mars_years[year_idx], elapsed_seconds] for year_idx, elapsed_seconds
+                                  in enumerate(seconds_between_datetime_and_mars_year_starts) if elapsed_seconds >= 0][-1]
+    return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
 
 
 def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
@@ -477,14 +474,9 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
     datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)
 
     """
-    if isinstance(mt, MarsTimeDelta):
-        raise TypeError('The input must be a MarsTime.')
-    try:
-        starting_datetime = mars_year_starting_datetimes()[mt.year]
-        elapsed_seconds = mt.sol * seconds_per_sol
-        return starting_datetime + datetime.timedelta(seconds=elapsed_seconds)
-    except AttributeError as te:
-        raise TypeError('The input must be a MarsTime.') from te
+    starting_datetime = mars_year_starting_datetimes()[mt.year]
+    elapsed_seconds = mt.sol * seconds_per_sol
+    return starting_datetime + datetime.timedelta(seconds=elapsed_seconds)
 
 
 def get_current_mars_time() -> MarsTime:
@@ -497,109 +489,3 @@ def get_current_mars_time() -> MarsTime:
 
     """
     return datetime_to_mars_time(datetime.datetime.now(tz=datetime.timezone.utc))
-
-
-def solar_longitude_to_sol(solar_longitude: float) -> float:
-    """Convert solar longitude to sol.
-
-    Parameters
-    ----------
-    solar_longitude: float
-        The solar longitude.
-
-    Returns
-    -------
-    float
-        The sol corresponding to the input solar longitude.
-
-    Raises
-    ------
-    TypeError
-        Raised if the input cannot be cast to a float.
-    ValueError
-        Raised if the input is not numeric.
-
-    Warns
-    -----
-    If used, a warning is raised to indicate the function is not particularly accurate.
-
-    Notes
-    -----
-    This equation comes from LMD.
-
-    Examples
-    --------
-    Determine the sol corresponding to solar longitude 180. The "official" LMD calendar gives 371.99.
-
-    >>> import mars_time
-    >>> round(mars_time.solar_longitude_to_sol(180), 2)
-    371.88
-
-    """
-    warnings.warn('This function is not as accurate as the rest of the package.', UserWarning)
-    try:
-        solar_longitude = float(solar_longitude)
-    except TypeError as te:
-        raise TypeError('solar_longitude must be a type that can be cast to a float.') from te
-    except ValueError as ve:
-        raise ValueError('solar_longitude must be numeric') from ve
-
-    # 1.90... is: 2*Pi*(1-Ls(perihelion)/360); Ls(perihelion)=250.99 according to the LMD converter code
-    sols_per_martian_year = 686.973 * 24 / hours_per_sol
-    orbital_eccentricity = 0.0935
-    true_anomaly = solar_longitude * math.pi / 180 + 1.90258341759902
-    eccentric_anomaly = 2 * math.atan(math.tan(0.5 * true_anomaly) /
-                                      math.sqrt((1 + orbital_eccentricity) /
-                                                (1 - orbital_eccentricity)))
-    mean_anomaly = eccentric_anomaly - orbital_eccentricity * math.sin(eccentric_anomaly)
-    return (mean_anomaly / (2 * math.pi) * sols_per_martian_year + perihelion_sol) % sols_per_martian_year
-
-
-def sol_to_solar_longitude(sol: float) -> float:
-    """Convert sol to solar longitude.
-
-    Parameters
-    ----------
-    sol: float
-        The sol number.
-
-    Returns
-    -------
-    float
-        The solar longitude corresponding to the input sol.
-
-    Notes
-    -----
-    This function uses the equation from `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_
-    assuming the Mars year is 0. This function cannot be "supremely" accurate, as the number of sols vary slightly from
-    Mars year to Mars year. If possible, consider computing the solar longitude from a given Mars year and sol via
-    :class:`~mars_time.MarsTime`; if not, this function ought to be fairly accurate though.
-
-    Examples
-    --------
-    Determine the solar longitude of sol 200. The "official" LMD document gives 92.965.
-
-    >>> import mars_time
-    >>> round(mars_time.sol_to_solar_longitude(200), 2)
-    93.02
-
-    """
-    try:
-        sol = float(sol)
-    except TypeError as te:
-        raise TypeError('sol must be a type that can be cast to a float.') from te
-    except ValueError as ve:
-        raise ValueError('sol must be numeric') from ve
-
-    mt = MarsTime(0, sol)
-    return mt.solar_longitude
-
-
-if __name__ == '__main__':
-    import numpy as np
-
-    foobar = []
-    for i in range(-99, 100):
-        m = MarsTime.from_solar_longitude(i, 270)
-        foobar.append(m.sol)
-    print(np.mean(foobar))
