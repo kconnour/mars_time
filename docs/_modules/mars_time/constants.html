@@ -748,6 +748,10 @@ document.write(`
 <span class="sd">    dict[float]</span>
 <span class="sd">        The number of sols in each Mars year.</span>
 
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    sols_per_year: The average number of sols per year between Mars years -99 and 99.</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    Get the number of sols in Mars year 33</span>
@@ -762,6 +766,19 @@ document.write(`
     <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="n">sols</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dt</span><span class="p">[</span><span class="n">year</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="n">seconds_per_sol</span>
     <span class="k">return</span> <span class="n">sols</span></div>
+
+
+<span class="n">sols_per_year</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">668.5930632493113</span>
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;The average number of sols per Mars year between Mars years -99 and 99.</span>
+
+<span class="sd">See Also</span>
+<span class="sd">--------</span>
+<span class="sd">sols_per_mars_year: The number of sols in each Mars year between -99 and 99.</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">I computed this value using :func:`~sols_per_mars_year`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
                 </article>

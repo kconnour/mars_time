@@ -343,6 +343,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_year.html">mars_time.constants.sols_per_year</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
@@ -437,16 +438,15 @@ this class may be most useful for attribute extraction.</p>
 <p class="rubric">Notes</p>
 <p>Objects of this type are immutable.</p>
 <p class="rubric">Examples</p>
-<p>Create an instance of this class.</p>
+<p>Create an instance of this class from a given Mars year and sol.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span>
 <span class="go">MarsTime(year=30, sol=0.00)</span>
 </pre></div>
 </div>
-<p>You can create a <code class="docutils literal notranslate"><span class="pre">MarsTime</span></code> instance from the year and solar longitude (Ls).</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mt_ls</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="o">.</span><span class="n">from_solar_longitude</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">solar_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt_ls</span>
+<p>Alternatively, you can create an instance of this class from a Mars year and solar longitude.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="o">.</span><span class="n">from_solar_longitude</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">solar_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
 <span class="go">MarsTime(year=33, sol=371.92)</span>
 </pre></div>
 </div>
@@ -458,8 +458,7 @@ assume there aren’t an integer number of sols per year.</p>
 </pre></div>
 </div>
 <p>You can also subtract a <a class="reference internal" href="mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta" title="mars_time.MarsTimeDelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code></a> from this object.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span> <span class="o">-</span> <span class="n">dt</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span> <span class="o">-</span> <span class="n">dt</span>
 <span class="go">MarsTime(year=28, sol=637.19)</span>
 </pre></div>
 </div>
@@ -482,7 +481,7 @@ corresponding to the input sol.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_solar_longitude</span></code>(year, solar_longitude)</p></td>
-<td><p>Create class instance from Mars Year and solar longitude instead of sol.</p></td>
+<td><p>Create an instance of this class from a solar longitude instead of a sol.</p></td>
 </tr>
 </tbody>
 </table>
@@ -493,10 +492,10 @@ corresponding to the input sol.</p>
 <td><p>Get the input sol.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">solar_longitude</span></code></p></td>
-<td><p>Get the solar longitude corresponding to the input year and sol.</p></td>
+<td><p>Get the solar longitude corresponding to the input Mars time.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">year</span></code></p></td>
-<td><p>Get the input year.</p></td>
+<td><p>Get the input Mars year.</p></td>
 </tr>
 </tbody>
 </table>

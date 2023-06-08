@@ -343,6 +343,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_year.html">mars_time.constants.sols_per_year</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
@@ -409,19 +410,18 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="mars_time.MarsTimeDelta">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">MarsTimeDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mars_time/retimers.html#MarsTimeDelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.MarsTimeDelta" title="Permalink to this definition">#</a></dt>
-<dd><p>A <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> represents the difference in years and sols on Mars.</p>
-<p>In many ways, a <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> is analogous to a <code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code>.</p>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> represents a generic change in time on Mars.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> (<em>int</em>) – The difference in Mars years.</p></li>
-<li><p><strong>sol</strong> (<em>float</em>) – The difference in sols.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – Some amount of Mars years.</p></li>
+<li><p><strong>sol</strong> (<em>float</em>) – Some amount of sols.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> – Raised if either of the inputs are a type that cannot be cast to a numeric data type.</p></li>
-<li><p><strong>ValueError</strong> – Raised if either input cannot be converted to a float.</p></li>
+<li><p><strong>ValueError</strong> – Raised if either input cannot be converted to its prefered type.</p></li>
 </ul>
 </dd>
 </dl>
@@ -459,10 +459,13 @@ document.write(`
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sol</span></code></p></td>
-<td><p>Get the input sol.</p></td>
+<td><p>Get the input number of sol.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">year</span></code></p></td>
-<td><p>Get the input year.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sols</span></code></p></td>
+<td><p>Get the approximate number of sols that this object represents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">year</span></code></p></td>
+<td><p>Get the input number of Mars years.</p></td>
 </tr>
 </tbody>
 </table>

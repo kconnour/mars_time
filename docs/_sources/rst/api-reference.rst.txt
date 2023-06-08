@@ -74,6 +74,7 @@ These are computed constants about the Martian orbit.
    northern_summer_solstice_sol
    northern_autumn_equinox_sol
    northern_winter_solstice_sol
+   sols_per_year
 
 Functional constants
 ********************

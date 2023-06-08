@@ -343,6 +343,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_year.html">mars_time.constants.sols_per_year</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
@@ -424,7 +425,7 @@ document.write(`
 <p class="rubric">Examples</p>
 <p>Find the UTC time that corresponds to the start of Mars year 30.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">mars_time_to_datetime</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">marstime_to_datetime</span><span class="p">(</span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTime</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="go">datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)</span>
 </pre></div>
 </div>

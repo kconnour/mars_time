@@ -343,6 +343,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_year.html">mars_time.constants.sols_per_year</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
@@ -412,7 +413,7 @@ document.write(`
 <dd><p>Convert a <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> to a <code class="docutils literal notranslate"><span class="pre">MarsTime</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dt</strong> (<em>datetime</em>) – A datetime.datetime between Mars year -99 and 99. If it has no timezone info, this will assume the timezone is
+<dd class="field-odd"><p><strong>dt</strong> (<em>datetime.datetime</em>) – A datetime.datetime between Mars year -99 and 99. If it has no timezone info, this will assume the timezone is
 UTC.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -421,23 +422,20 @@ UTC.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="mars_time.MarsTime.html#mars_time.MarsTime" title="mars_time.MarsTime">MarsTime</a></p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>TypeError</strong> – Raised if the input is not a datetime.datetime.</p>
-</dd>
 </dl>
 <p class="rubric">Examples</p>
 <p>Get the Mars time when MAVEN arrived at Mars. <a class="reference external" href="https://en.wikipedia.org/wiki/MAVEN">Wikipedia’s MAVEN page</a> mentions the spacecraft successfully entered orbit on 2014-09-22 at
 02:24 UTC.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span><span class="o">,</span> <span class="nn">datetime</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">orbit_insertion</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">orbit_insertion</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">orbit_insertion</span><span class="p">)</span>
 <span class="go">MarsTime(year=32, sol=406.36)</span>
 </pre></div>
 </div>
 <p>Get the Mars time when the Perseverance rover landed. <a class="reference external" href="https://en.wikipedia.org/wiki/Perseverance_(rover)">Wikipedia’s Perseverance page</a> mentions the rover successfully landed on 2021-02-18 at
 20:55 UTC.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">landing_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">landing_date</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">landing_date</span><span class="p">)</span>
 <span class="go">MarsTime(year=36, sol=11.11)</span>
 </pre></div>
 </div>

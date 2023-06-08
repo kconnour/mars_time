@@ -390,6 +390,10 @@ def sols_per_mars_year() -> dict[float]:
     dict[float]
         The number of sols in each Mars year.
 
+    See Also
+    --------
+    sols_per_year: The average number of sols per year between Mars years -99 and 99.
+
     Examples
     --------
     Get the number of sols in Mars year 33
@@ -404,3 +408,16 @@ def sols_per_mars_year() -> dict[float]:
     for year in list(dt.keys())[:-1]:
         sols[year] = (dt[year + 1] - dt[year]).total_seconds() / seconds_per_sol
     return sols
+
+
+sols_per_year: float = 668.5930632493113
+r"""The average number of sols per Mars year between Mars years -99 and 99.
+
+See Also
+--------
+sols_per_mars_year: The number of sols in each Mars year between -99 and 99.
+
+Notes
+-----
+I computed this value using :func:`~sols_per_mars_year`.
+"""

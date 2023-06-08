@@ -13,7 +13,7 @@ def find_aphelion(mars_year: int) -> MarsTime:
 
     Parameters
     ----------
-    mars_year
+    mars_year: int
         The Mars year. Must be between -99 and 99.
 
     Returns
@@ -54,7 +54,7 @@ def find_perihelion(mars_year: int) -> MarsTime:
 
     Parameters
     ----------
-    mars_year
+    mars_year: int
         The Mars year. Must be between -99 and 99.
 
     Returns

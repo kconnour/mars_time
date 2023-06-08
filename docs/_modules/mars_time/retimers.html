@@ -364,7 +364,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">scipy</span>
 
 <span class="kn">from</span> <span class="nn">mars_time.constants</span> <span class="kn">import</span> <span class="n">j2000</span><span class="p">,</span> <span class="n">seconds_per_day</span><span class="p">,</span> <span class="n">seconds_per_sol</span><span class="p">,</span> <span class="n">mars_year_start_days_since_j2000</span><span class="p">,</span> \
-    <span class="n">mars_year_starting_datetimes</span><span class="p">,</span> <span class="n">sols_per_mars_year</span>
+    <span class="n">mars_year_starting_datetimes</span><span class="p">,</span> <span class="n">sols_per_mars_year</span><span class="p">,</span> <span class="n">sols_per_year</span>
 
 
 <div class="viewcode-block" id="MarsTime"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTime.html#mars_time.MarsTime">[docs]</a><span class="k">class</span> <span class="nc">MarsTime</span><span class="p">:</span>
@@ -398,17 +398,16 @@ document.write(`
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    Create an instance of this class.</span>
+<span class="sd">    Create an instance of this class from a given Mars year and sol.</span>
 
 <span class="sd">    &gt;&gt;&gt; import mars_time</span>
 <span class="sd">    &gt;&gt;&gt; mt = mars_time.MarsTime(30, 0)</span>
 <span class="sd">    &gt;&gt;&gt; mt</span>
 <span class="sd">    MarsTime(year=30, sol=0.00)</span>
 
-<span class="sd">    You can create a ``MarsTime`` instance from the year and solar longitude (Ls).</span>
+<span class="sd">    Alternatively, you can create an instance of this class from a Mars year and solar longitude.</span>
 
-<span class="sd">    &gt;&gt;&gt; mt_ls = mars_time.MarsTime.from_solar_longitude(year=33, solar_longitude=180)</span>
-<span class="sd">    &gt;&gt;&gt; mt_ls</span>
+<span class="sd">    &gt;&gt;&gt; mars_time.MarsTime.from_solar_longitude(year=33, solar_longitude=180)</span>
 <span class="sd">    MarsTime(year=33, sol=371.92)</span>
 
 <span class="sd">    You can add a :class:`~mars_time.MarsTimeDelta` to this object. Note that the resultant sol is &quot;ugly&quot; because I</span>
@@ -420,7 +419,6 @@ document.write(`
 
 <span class="sd">    You can also subtract a :class:`~mars_time.MarsTimeDelta` from this object.</span>
 
-<span class="sd">    &gt;&gt;&gt; dt = mars_time.MarsTimeDelta(sol=700)</span>
 <span class="sd">    &gt;&gt;&gt; mt - dt</span>
 <span class="sd">    MarsTime(year=28, sol=637.19)</span>
 
@@ -475,12 +473,12 @@ document.write(`
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_solar_longitude</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">solar_longitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MarsTime</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create class instance from Mars Year and solar longitude instead of sol.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of this class from a solar longitude instead of a sol.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        year</span>
-<span class="sd">            The Martian year. Can be any value that can be cast to an int.</span>
+<span class="sd">            The Martian year. Must be between -99 and 99.</span>
 <span class="sd">        solar_longitude</span>
 <span class="sd">            The solar longitude. Can be any value between 0 and 360.</span>
 
@@ -498,25 +496,23 @@ document.write(`
 <span class="sd">        MarsTime(year=33, sol=19.80)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">mars_year_start_days_since_j2000</span><span class="p">[</span><span class="n">year</span><span class="p">]</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">mars_year_start_days_since_j2000</span><span class="p">[</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-
-        <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">find_ls</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
             <span class="n">day</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
-            <span class="n">bar</span> <span class="o">=</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">day</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">))</span>
-            <span class="n">baz</span> <span class="o">=</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">day</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">))</span>
-            <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">solar_longitude</span> <span class="o">-</span> <span class="n">bar</span><span class="o">.</span><span class="n">solar_longitude</span> <span class="o">-</span> <span class="n">baz</span><span class="o">.</span><span class="n">solar_longitude</span><span class="p">)</span>
+            <span class="n">pre_target_ls</span> <span class="o">=</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">day</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">))</span>
+            <span class="n">post_target_ls</span> <span class="o">=</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">day</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">solar_longitude</span> <span class="o">-</span> <span class="n">pre_target_ls</span><span class="o">.</span><span class="n">solar_longitude</span> <span class="o">-</span> <span class="n">post_target_ls</span><span class="o">.</span><span class="n">solar_longitude</span><span class="p">)</span>
 
-        <span class="n">answer</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
-        <span class="k">return</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">answer</span><span class="p">))</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">mars_year_start_days_since_j2000</span><span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="n">mars_year_start_days_since_j2000</span><span class="p">[</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="n">find_ls</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">return</span> <span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">j2000</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input year.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input Mars year.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The Martian year.</span>
+<span class="sd">        The Mars year.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_year</span>
@@ -534,7 +530,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">solar_longitude</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the solar longitude corresponding to the input year and sol.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the solar longitude corresponding to the input Mars time.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -636,23 +632,21 @@ document.write(`
 
 
 <div class="viewcode-block" id="MarsTimeDelta"><a class="viewcode-back" href="../../rst/generated/mars_time.MarsTimeDelta.html#mars_time.MarsTimeDelta">[docs]</a><span class="k">class</span> <span class="nc">MarsTimeDelta</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``MarsTimeDelta`` represents the difference in years and sols on Mars.</span>
-
-<span class="sd">    In many ways, a ``MarsTimeDelta`` is analogous to a ``datetime.timedelta``.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``MarsTimeDelta`` represents a generic change in time on Mars.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    year</span>
-<span class="sd">        The difference in Mars years.</span>
+<span class="sd">        Some amount of Mars years.</span>
 <span class="sd">    sol</span>
-<span class="sd">        The difference in sols.</span>
+<span class="sd">        Some amount of sols.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    TypeError</span>
 <span class="sd">        Raised if either of the inputs are a type that cannot be cast to a numeric data type.</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        Raised if either input cannot be converted to a float.</span>
+<span class="sd">        Raised if either input cannot be converted to its prefered type.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -705,25 +699,40 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input year.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input number of Mars years.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The year.</span>
+<span class="sd">        The number of Mars years.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_year</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input sol.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input number of sol.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        The sol.</span>
+<span class="sd">        The number of sols.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sol</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the approximate number of sols that this object represents.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        The total number of sols.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This can only be an approximation, as the number of sols per Mars year varies from year to year.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">*</span> <span class="n">sols_per_year</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;MarsTimeDelta(year=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s1">, sol=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span>
@@ -761,7 +770,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dt</span>
+<span class="sd">    dt: datetime.datetime</span>
 <span class="sd">        A datetime.datetime between Mars year -99 and 99. If it has no timezone info, this will assume the timezone is</span>
 <span class="sd">        UTC.</span>
 
@@ -769,11 +778,6 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    MarsTime</span>
 <span class="sd">        The MarsTime associated with the input datetime.datetime.</span>
-
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        Raised if the input is not a datetime.datetime.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -783,7 +787,7 @@ document.write(`
 
 <span class="sd">    &gt;&gt;&gt; import mars_time, datetime</span>
 <span class="sd">    &gt;&gt;&gt; orbit_insertion = datetime.datetime(2014, 9, 22, 2, 24, 0)</span>
-<span class="sd">    &gt;&gt;&gt; datetime_to_mars_time(orbit_insertion)</span>
+<span class="sd">    &gt;&gt;&gt; datetime_to_marstime(orbit_insertion)</span>
 <span class="sd">    MarsTime(year=32, sol=406.36)</span>
 
 <span class="sd">    Get the Mars time when the Perseverance rover landed. `Wikipedia&#39;s Perseverance page</span>
@@ -791,7 +795,7 @@ document.write(`
 <span class="sd">    20:55 UTC.</span>
 
 <span class="sd">    &gt;&gt;&gt; landing_date = datetime.datetime(2021, 2, 18, 20, 55, 0)</span>
-<span class="sd">    &gt;&gt;&gt; datetime_to_mars_time(landing_date)</span>
+<span class="sd">    &gt;&gt;&gt; datetime_to_marstime(landing_date)</span>
 <span class="sd">    MarsTime(year=36, sol=11.11)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -823,7 +827,7 @@ document.write(`
 <span class="sd">    Find the UTC time that corresponds to the start of Mars year 30.</span>
 
 <span class="sd">    &gt;&gt;&gt; import mars_time</span>
-<span class="sd">    &gt;&gt;&gt; mars_time.mars_time_to_datetime(mars_time.MarsTime(30, 0))</span>
+<span class="sd">    &gt;&gt;&gt; mars_time.marstime_to_datetime(mars_time.MarsTime(30, 0))</span>
 <span class="sd">    datetime.datetime(2009, 10, 26, 14, 58, 33, 600000, tzinfo=datetime.timezone.utc)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

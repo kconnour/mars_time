@@ -361,7 +361,7 @@ document.write(`
                   
   <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h1>
-<p>These are examples of practical uses of this package.</p>
+<p>This page shows examples of practical uses of this package.</p>
 <section id="start-of-a-global-dust-storm">
 <h2>Start of a global dust storm<a class="headerlink" href="#start-of-a-global-dust-storm" title="Permalink to this heading">#</a></h2>
 <p>When was the start of the 2018 global dust storm?
@@ -370,7 +370,7 @@ simply mention they first saw it expanding on 2018-05-30.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">mars_time</span>
 
-<span class="n">start</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">start</span><span class="o">.</span><span class="n">sol</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">start</span><span class="o">.</span><span class="n">solar_longitude</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -383,15 +383,15 @@ simply mention they first saw it expanding on 2018-05-30.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">mars_time</span>
 
-<span class="n">start</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">sols</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This gives 5111.3, consistent with the Wikipedia page.</p>
 </section>
-<section id="season-of-the-halo">
-<h2>Season of the halo<a class="headerlink" href="#season-of-the-halo" title="Permalink to this heading">#</a></h2>
+<section id="season-of-the-water-ice-halo">
+<h2>Season of the water-ice halo<a class="headerlink" href="#season-of-the-water-ice-halo" title="Permalink to this heading">#</a></h2>
 <p>At what solar longitude did <a class="reference external" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GL099776">Lemmon et al (2022)</a>
 find water-ice halos?
 They mention “A water-ice halo was unambiguously visible on sol 292
@@ -400,9 +400,9 @@ rover successfully landed on 2021-02-18 at 20:55 UTC.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">mars_time</span>
 
-<span class="n">landing_time</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_mars_time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">landing_time</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">datetime_to_marstime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">detection_time</span> <span class="o">=</span> <span class="n">landing_time</span> <span class="o">+</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">292</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sol_to_solar_longitude</span><span class="p">(</span><span class="n">detection_time</span><span class="o">.</span><span class="n">sol</span><span class="p">)</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">detection_time</span><span class="o">.</span><span class="n">solar_longitude</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This gives 142.5, consistent with the values in the paper.</p>
@@ -458,7 +458,7 @@ rover successfully landed on 2021-02-18 at 20:55 UTC.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-of-a-global-dust-storm">Start of a global dust storm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opportunity-length">Opportunity length</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#season-of-the-halo">Season of the halo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#season-of-the-water-ice-halo">Season of the water-ice halo</a></li>
 </ul>
   </nav></div>
 

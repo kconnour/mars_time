@@ -1,7 +1,7 @@
 # Upon a push to master, this workflow will:
-# -- run the linter
+# -- install mars_time
 # -- run all tests
-# -- rebuild documentation
+# -- run the linter
 
 name: CI
 
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04, macos-11, macos-12]
-        python-version: [3.9, "3.10", "3.11"]
+        python-version: [3.6, 3.7, 3.8, 3.9, "3.10", "3.11"]
 
     runs-on: ${{ matrix.os }}
 
@@ -40,4 +40,8 @@ jobs:
 
       - name: Test with pytest
         run: |
-          python -m pytest ./mars_time
+          python -m pytest mars_time
+
+      - name: Lint with pylint
+        run: |
+          python -m pylint mars_time
