@@ -145,12 +145,12 @@ class MarsTime:
 
         def foo(day):
             day = float(day)
-            bar = datetime_to_mars_time(j2000 + datetime.timedelta(days=day - 0.001))
-            baz = datetime_to_mars_time(j2000 + datetime.timedelta(days=day + 0.001))
+            bar = datetime_to_marstime(j2000 + datetime.timedelta(days=day - 0.001))
+            baz = datetime_to_marstime(j2000 + datetime.timedelta(days=day + 0.001))
             return abs(2 * solar_longitude - bar.solar_longitude - baz.solar_longitude)
 
         answer = scipy.optimize.minimize_scalar(foo, bounds=(start, end), method='bounded').x
-        return datetime_to_mars_time(j2000 + datetime.timedelta(days=answer))
+        return datetime_to_marstime(j2000 + datetime.timedelta(days=answer))
 
     @property
     def year(self) -> int:
@@ -197,7 +197,7 @@ class MarsTime:
         # It might be beastly, but I suspect I could invert this equation to turn a Mars year + Ls into a datetime.
         # If so, I could make certain aspects more accurate. But that's a project for a later time.
 
-        dt = mars_time_to_datetime(self)
+        dt = marstime_to_datetime(self)
         days_since_j2000 = (dt - j2000).total_seconds() / seconds_per_day
 
         julian_centuries = days_since_j2000 / 36525
@@ -398,7 +398,7 @@ class MarsTimeDelta:
             return self.year == other.year and self.sol == other.sol
 
 
-def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
+def datetime_to_marstime(dt: datetime.datetime) -> MarsTime:
     """Convert a ``datetime.datetime`` to a ``MarsTime``.
 
     Parameters
@@ -411,11 +411,6 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
     -------
     MarsTime
         The MarsTime associated with the input datetime.datetime.
-
-    Raises
-    ------
-    TypeError
-        Raised if the input is not a datetime.datetime.
 
     Examples
     --------
@@ -447,8 +442,8 @@ def datetime_to_mars_time(dt: datetime.datetime) -> MarsTime:
     return MarsTime(mars_year, 0) + MarsTimeDelta(sol=elapsed_seconds / seconds_per_sol)
 
 
-def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
-    """Convert a MarsTime to a datetime.datetime.
+def marstime_to_datetime(mt: MarsTime) -> datetime.datetime:
+    """Convert a ``MarsTime`` to a ``datetime``.
 
     Parameters
     ----------
@@ -459,11 +454,6 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
     -------
     datetime.datetime
         The datetime associated with the input MarsTime.
-
-    Raises
-    ------
-    TypeError
-        Raised if the input is not a MarsTime.
 
     Examples
     --------
@@ -479,13 +469,13 @@ def mars_time_to_datetime(mt: MarsTime) -> datetime.datetime:
     return starting_datetime + datetime.timedelta(seconds=elapsed_seconds)
 
 
-def get_current_mars_time() -> MarsTime:
-    """Get the current MarsTime.
+def get_current_marstime() -> MarsTime:
+    """Get the current time on Mars.
 
     Returns
     -------
     MarsTime
-        The current MarsTime.
+        The current time on Mars.
 
     """
-    return datetime_to_mars_time(datetime.datetime.now(tz=datetime.timezone.utc))
+    return datetime_to_marstime(datetime.datetime.now(tz=datetime.timezone.utc))

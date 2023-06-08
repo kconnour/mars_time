@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>mars_time.MarsTimeDelta &#8212; mars_time  documentation</title>
   
@@ -40,7 +40,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'rst/generated/mars_time.MarsTimeDelta';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="mars_time.datetime_to_mars_time" href="mars_time.datetime_to_mars_time.html" />
+    <link rel="next" title="mars_time.datetime_to_marstime" href="mars_time.datetime_to_marstime.html" />
     <link rel="prev" title="mars_time.MarsTime" href="mars_time.MarsTime.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -123,13 +123,6 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../accuracy.html">
-                        Accuracy
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../install.html">
                         Installation
@@ -251,13 +244,6 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../accuracy.html">
-                        Accuracy
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../install.html">
                         Installation
                       </a>
@@ -333,23 +319,34 @@ document.write(`
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">mars_time.MarsTimeDelta</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.datetime_to_mars_time.html">mars_time.datetime_to_mars_time</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.mars_time_to_datetime.html">mars_time.mars_time_to_datetime</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.get_current_mars_time.html">mars_time.get_current_mars_time</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.solar_longitude_to_sol.html">mars_time.solar_longitude_to_sol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.sol_to_solar_longitude.html">mars_time.sol_to_solar_longitude</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.datetime_to_marstime.html">mars_time.datetime_to_marstime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.marstime_to_datetime.html">mars_time.marstime_to_datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.get_current_marstime.html">mars_time.get_current_marstime</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.find_aphelion.html">mars_time.find_aphelion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.find_perihelion.html">mars_time.find_perihelion</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_start_days_since_j2000.html">mars_time.constants.mars_year_start_days_since_j2000</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.j2000.html">mars_time.constants.j2000</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_day.html">mars_time.constants.seconds_per_day</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.seconds_per_sol.html">mars_time.constants.seconds_per_sol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_martian_year.html">mars_time.constants.sols_per_martian_year</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.hours_per_sol.html">mars_time.constants.hours_per_sol</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.aphelion_sol.html">mars_time.constants.aphelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.aphelion_solar_longitude.html">mars_time.constants.aphelion_solar_longitude</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_solar_longitude.html">mars_time.constants.perihelion_solar_longitude</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_spring_equinox_sol.html">mars_time.constants.northern_spring_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_summer_solstice_sol.html">mars_time.constants.northern_summer_solstice_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_autumn_equinox_sol.html">mars_time.constants.northern_autumn_equinox_sol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mars_time.constants.northern_winter_solstice_sol.html">mars_time.constants.northern_winter_solstice_sol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.aphelion_sol.html">mars_time.constants.aphelion_sol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.perihelion_sol.html">mars_time.constants.perihelion_sol</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.mars_year_starting_datetimes.html">mars_time.constants.mars_year_starting_datetimes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mars_time.constants.sols_per_mars_year.html">mars_time.constants.sols_per_mars_year</a></li>
 </ul>
 </div>
 </nav></div>
@@ -411,13 +408,13 @@ document.write(`
 <h1>mars_time.MarsTimeDelta<a class="headerlink" href="#mars-time-marstimedelta" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="mars_time.MarsTimeDelta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">MarsTimeDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mars_time/retimers.html#MarsTimeDelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.MarsTimeDelta" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mars_time.</span></span><span class="sig-name descname"><span class="pre">MarsTimeDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/mars_time/retimers.html#MarsTimeDelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mars_time.MarsTimeDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> represents the difference in years and sols on Mars.</p>
 <p>In many ways, a <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> is analogous to a <code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> (<em>float</em>) – The difference in Mars years.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The difference in Mars years.</p></li>
 <li><p><strong>sol</strong> (<em>float</em>) – The difference in sols.</p></li>
 </ul>
 </dd>
@@ -441,20 +438,13 @@ document.write(`
 <p>Create an instance of this class.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mars_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sol</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="go">MarsTimeDelta(year=1.0, sol=50.00)</span>
+<span class="go">MarsTimeDelta(year=1, sol=50.00)</span>
 </pre></div>
 </div>
 <p>Adding or subtracting a <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code> to or from this object results in another <code class="docutils literal notranslate"><span class="pre">MarsTimeDelta</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span> <span class="o">=</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sol</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="o">+</span> <span class="n">mars_time</span><span class="o">.</span><span class="n">MarsTimeDelta</span><span class="p">(</span><span class="n">sol</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span>
-<span class="go">MarsTimeDelta(year=1.0, sol=750.00)</span>
-</pre></div>
-</div>
-<p>The native year and aggregate year difference are found in its attributes. The same is true for sols.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mtd</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">mtd</span><span class="o">.</span><span class="n">sol</span>
-<span class="go">(1.0, 750.0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mtd</span><span class="o">.</span><span class="n">years</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mtd</span><span class="o">.</span><span class="n">sols</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="go">(&#39;2.12&#39;, &#39;1418.59&#39;)</span>
+<span class="go">MarsTimeDelta(year=1, sol=750.00)</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -471,14 +461,8 @@ document.write(`
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sol</span></code></p></td>
 <td><p>Get the input sol.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sols</span></code></p></td>
-<td><p>Get the total number of sols that this object represents.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">year</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">year</span></code></p></td>
 <td><p>Get the input year.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">years</span></code></p></td>
-<td><p>Get the fractional number of Mars years this object represents.</p></td>
 </tr>
 </tbody>
 </table>
@@ -507,11 +491,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="mars_time.datetime_to_mars_time.html"
+       href="mars_time.datetime_to_marstime.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">mars_time.datetime_to_mars_time</p>
+        <p class="prev-next-title">mars_time.datetime_to_marstime</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -577,7 +561,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
     <br/>
   </p>
 </div>

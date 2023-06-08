@@ -26,8 +26,6 @@ mars\_time.MarsTimeDelta
    .. autosummary::
    
       ~MarsTimeDelta.sol
-      ~MarsTimeDelta.sols
       ~MarsTimeDelta.year
-      ~MarsTimeDelta.years
    
    

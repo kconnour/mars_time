@@ -4,7 +4,7 @@ to constants that produce different representations of constants.
 import datetime
 
 
-mars_year_start_days_since_j2000: dict = {
+mars_year_start_days_since_j2000: dict[datetime.datetime] = {
     -99: -85033.149,
     -98: -84346.147,
     -97: -83659.157,
@@ -257,11 +257,11 @@ r"""The average sol of aphelion between Mars years -99 and 99.
 See Also
 --------
 aphelion_solar_longitude: The corresponding average solar longitude of aphelion.
-mars_time.orbit.find_aphelion: Find the MarsTime of aphelion.
+:func:`~mars_time.find_aphelion`: Find the :class:`~mars_time.MarsTime` of aphelion.
 
 Notes
 -----
-I computed this value using mars_time.orbit.find_aphelion. 
+I computed this value using :func:`~mars_time.find_aphelion`.
 """
 
 aphelion_solar_longitude: float = 70.69416766129689
@@ -270,11 +270,11 @@ r"""The average solar longitude of aphelion between Mars years -99 and 99.
 See Also
 --------
 aphelion_sol: The corresponding average sol of aphelion.
-mars_time.orbit.find_aphelion: Find the MarsTime of aphelion. 
+:func:`~mars_time.find_aphelion`: Find the :class:`~mars_time.MarsTime` of aphelion.
 
 Notes
 -----
-I computed this value using mars_time.orbit.find_aphelion.
+I computed this value using :func:`~mars_time.find_aphelion`.
 """
 
 perihelion_sol: float = 484.77673721217315
@@ -283,11 +283,11 @@ r"""The average sol of perihelion between Mars years -99 and 99.
 See Also
 --------
 perihelion_solar_longitude: The corresponding average solar longitude of perihelion.
-mars_time.orbit.find_perihelion: Find the MarsTime of perihelion. 
+:func:`~mars_time.find_perihelion`: Find the :class:`~mars_time.MarsTime` of perihelion. 
 
 Notes
 -----
-I computed this value using mars_time.orbit.find_perihelion.
+I computed this value using :func:`~mars_time.find_perihelion`.
 """
 
 perihelion_solar_longitude: float = 250.6986496215952
@@ -296,25 +296,21 @@ r"""The average solar longitude of perihelion between Mars years -99 and 99.
 See Also
 --------
 perihelion_sol: The corresponding average sol of perihelion.
-mars_time.orbit.find_perihelion: Find the MarsTime of perihelion. 
+:func:`~mars_time.find_perihelion`: Find the :class:`~mars_time.MarsTime` of perihelion. 
 
 Notes
 -----
-I computed this value using mars_time.orbit.find_perihelion.
+I computed this value using :func:`~mars_time.find_perihelion`.
 """
 
 northern_spring_equinox_sol: float = 0
-r"""The sol of the northern spring equinox (solar longitude = 0\ :math:`^\circ`).
+r"""The sol of the northern spring equinox (solar longitude = 0\ :math:`^\circ`) between Mars year -99 and 99.
 
 See Also
 --------
 northern_summer_solstice_sol: The average sol of the northern summer solstice. 
 northern_autumn_equinox_sol: The average sol of the northern autumn equinox. 
 northern_winter_solstice_sol: The average sol of the northern winter solstice. 
-
-Notes
------
-I computed this value using mars_time.retimers.MarsTime.
 """
 
 northern_summer_solstice_sol: float = 193.3452878433077
@@ -328,7 +324,7 @@ northern_winter_solstice_sol: The average sol of the northern winter solstice.
 
 Notes
 -----
-I computed this value using mars_time.retimers.MarsTime.
+I computed this value using :class:`~mars_time.MarsTime`.
 """
 
 northern_autumn_equinox_sol: float = 371.7748105025203
@@ -342,7 +338,7 @@ northern_winter_solstice_sol: The average sol of the northern winter solstice.
 
 Notes
 -----
-I computed this value using mars_time.retimers.MarsTime.
+I computed this value using :class:`~mars_time.MarsTime`.
 """
 
 northern_winter_solstice_sol: float = 514.4675057277539
@@ -357,27 +353,22 @@ northern_autumn_equinox_sol: The average sol of the northern autumn equinox.
 
 Notes
 -----
-I computed this value using mars_time.retimers.MarsTime.
+I computed this value using :class:`~mars_time.MarsTime`.
 """
 
 
-def mars_year_starting_datetimes() -> dict:
-    """Get the catalog of datetimes denoting the start of each Mars year. This is computed from the table from
-    `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
+def mars_year_starting_datetimes() -> dict[datetime.datetime]:
+    """Get the catalog of dates and times denoting the start of each Mars year between Mars years -99 and 100.
+    This is computed from the table from `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
 
     Returns
     -------
-    dict
-        The datetimes of the start of each Mars year.
-
-    Notes
-    -----
-    The paper tabulates these values for Mars years -184 through 100. This variable only includes values from Mars years
-    -99 through 100.
+    dict[datetime.datetime]
+        The dates and times of the start of each Mars year.
 
     Examples
     --------
-    Get the datetime of the start of Mars year 33.
+    Get the date and time of the start of Mars year 33.
 
     >>> import mars_time
     >>> mars_time.mars_year_starting_datetimes()[33]
@@ -390,13 +381,13 @@ def mars_year_starting_datetimes() -> dict:
     return dt
 
 
-def sols_per_mars_year() -> dict:
-    """Get the number of sols per Mars year. This is computed from the table from
+def sols_per_mars_year() -> dict[float]:
+    """Get the number of sols per Mars year between Mars years -99 and 99. This is computed from the table from
     `Piqueux et al (2015) <https://doi.org/10.1016/j.icarus.2014.12.014>`_.
 
     Returns
     -------
-    dict
+    dict[float]
         The number of sols in each Mars year.
 
     Examples
@@ -411,5 +402,5 @@ def sols_per_mars_year() -> dict:
     dt = mars_year_starting_datetimes()
     sols = {}
     for year in list(dt.keys())[:-1]:
-        sols[year] = (dt[year+1] - dt[year]).total_seconds() / seconds_per_sol
+        sols[year] = (dt[year + 1] - dt[year]).total_seconds() / seconds_per_sol
     return sols
