@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Installation &#8212; mars_time  documentation</title>
   
@@ -41,7 +41,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="api-reference.html" />
-    <link rel="prev" title="Accuracy" href="accuracy.html" />
+    <link rel="prev" title="Mars Time" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,13 +123,6 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="accuracy.html">
-                        Accuracy
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="#">
                         Installation
@@ -250,13 +243,6 @@ document.write(`
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="accuracy.html">
-                        Accuracy
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="#">
                         Installation
@@ -375,21 +361,26 @@ document.write(`
                   
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<p>The easiest way to install <cite>mars_time</cite> is to use pip. Simply use
-<code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mars_time</span></code> and you should be good to go! (note: I plan to
-push this to PyPI at the v1.0 release. For now, it is <em>not</em> on PyPI).</p>
-<p>Alternatively, if you want to develop this package (either by modifying the
-documentation, adding features, or modifying tests, you’ll need to install it
-locally with
-<code class="code docutils literal notranslate"><span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">python&gt;</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">setup.py&gt;[&lt;options]</span></code>.</p>
+<p>This page describes the ways to install mars_time.</p>
+<section id="local-installation">
+<h2>Local installation<a class="headerlink" href="#local-installation" title="Permalink to this heading">#</a></h2>
+<p>To install mars_time locally, first clone the repository and then install it with this terminal command:
+<code class="code docutils literal notranslate"><span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">python&gt;</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">setup.py&gt;[&lt;options]</span></code>. After that, you should be good to go!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is currently the only way to install mars_time.</p>
+</div>
+</section>
+<section id="pypi">
+<h2>PyPI<a class="headerlink" href="#pypi" title="Permalink to this heading">#</a></h2>
+<p>Currently, mars_time is <em>not</em> available on PyPI. In the past I’ve found it very cumbersome to upload packages there.
+If you’d like to help me make this available on PyPI, I’d be happy to collaborate!</p>
+</section>
 <section id="optional-dependencies">
 <h2>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this heading">#</a></h2>
 <p>The following lists the optional dependencies:</p>
 <ul class="simple">
-<li><p><strong>all</strong>: install all optional dependencies.</p></li>
-<li><p><strong>doc</strong>: install everything related to modifying documentation.</p></li>
-<li><p><strong>test</strong>: install everything related to modifying the code and testing these
-changes.</p></li>
+<li><p><strong>dev</strong>: install all dependencies related to developing this package.</p></li>
 </ul>
 </section>
 </section>
@@ -406,12 +397,12 @@ changes.</p></li>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="accuracy.html"
+       href="../index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Accuracy</p>
+        <p class="prev-next-title">Mars Time</p>
       </div>
     </a>
     <a class="right-next"
@@ -441,6 +432,8 @@ changes.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-installation">Local installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypi">PyPI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-dependencies">Optional dependencies</a></li>
 </ul>
   </nav></div>
@@ -485,7 +478,7 @@ changes.</p></li>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
     <br/>
   </p>
 </div>

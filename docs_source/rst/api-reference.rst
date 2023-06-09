@@ -2,16 +2,14 @@ API Reference
 =============
 .. currentmodule:: mars_time
 
-This page describes the `mars_time` API, where the API is grouped by
-functionality. Most docstrings contain practical example code.
+This page describes the mars_time API, where the API is grouped by functionality. Many docstrings contain practical
+example code.
 
 Data types
 ----------
-:code:`MarsTime` is the primary data type of this package and represents a
-year and sol on Mars. :code:`MarsTimeDelta` can be used in conjunction with
-:code:`MarsTime` to create new instances of :code:`MarsTime`. These may be
-useful on their own, but as with the datetime module these are probably most
-beneficial for attribute extraction.
+:code:`MarsTime` is the primary data type of this package and represents a year and sol on Mars.
+:code:`MarsTimeDelta` can be used in conjunction with :code:`MarsTime` to create new instances of :code:`MarsTime`.
+These may be useful on their own, but are probably most beneficial for attribute extraction and computation.
 
 .. autosummary::
    :toctree: generated/
@@ -22,34 +20,68 @@ beneficial for attribute extraction.
 Conversion functions
 --------------------
 These function help converting between :code:`MarsTime` and
-:code:`datetime.datetime` objects. There are also functions for converting
-between sols and solar longitudes.
+`datetime <https://docs.python.org/3/library/datetime.html>`_ objects.
 
 .. autosummary::
    :toctree: generated/
 
-   datetime_to_mars_time
-   mars_time_to_datetime
-   get_current_mars_time
-   solar_longitude_to_sol
-   sol_to_solar_longitude
+   datetime_to_marstime
+   marstime_to_datetime
+   get_current_marstime
+
+Orbital positions
+-----------------
+These function help for finding special points in an orbit
+
+.. autosummary::
+   :toctree: generated/
+
+   find_aphelion
+   find_perihelion
 
 Constants
 ---------
-These constants are related to the orbit and/or timekeeping on Mars.
+These constants are related to the orbit of Mars and/or timekeeping on Mars.
+
+True constants
+**************
+These are true constants.
 
 .. currentmodule:: mars_time.constants
 
 .. autosummary::
    :toctree: generated/
 
-   mars_year_starting_datetimes
-   hours_per_sol
+   mars_year_start_days_since_j2000
+   j2000
+   seconds_per_day
    seconds_per_sol
-   sols_per_martian_year
+   hours_per_sol
+
+
+Orbital constants
+*****************
+These are computed constants about the Martian orbit.
+
+.. autosummary::
+   :toctree: generated/
+
+   aphelion_sol
+   aphelion_solar_longitude
+   perihelion_sol
+   perihelion_solar_longitude
    northern_spring_equinox_sol
    northern_summer_solstice_sol
    northern_autumn_equinox_sol
    northern_winter_solstice_sol
-   aphelion_sol
-   perihelion_sol
+   sols_per_year
+
+Functional constants
+********************
+These are functions that apply mathematical operations to constants to express them in a different representation.
+
+.. autosummary::
+   :toctree: generated/
+
+   mars_year_starting_datetimes
+   sols_per_mars_year

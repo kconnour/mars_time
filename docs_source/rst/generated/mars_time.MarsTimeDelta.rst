@@ -28,6 +28,5 @@ mars\_time.MarsTimeDelta
       ~MarsTimeDelta.sol
       ~MarsTimeDelta.sols
       ~MarsTimeDelta.year
-      ~MarsTimeDelta.years
    
    

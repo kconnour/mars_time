@@ -1,0 +1,14 @@
+
+[all]
+Sphinx
+pydata-sphinx-theme
+pytest
+tox
+
+[doc]
+Sphinx
+pydata-sphinx-theme
+
+[test]
+pytest
+tox
