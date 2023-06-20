@@ -1,13 +1,13 @@
 ### Quick Summary
 <!-- Choose one-->
+- [ ] Feature addition
 - [ ] Bug fix
 - [ ] Documentation fix
-- [ ] Feature addition
 - [ ] Refactoring current code
 - [ ] Other
 
 ### Related issues
-<!-- Post the issue #, discussion, etc. if applicable. -->
+<!-- If applicable, post the issue #, discussion, etc. -->
 
 ### Extended summary
 <!-- Describe what will be changed if this request is approved. -->
