@@ -1,15 +1,15 @@
-# Upon a push to master, this workflow will:
+# Upon a push to main, this workflow will:
 # -- install mars_time
 # -- run all tests
-# -- run the linter
+# -- run a linter
 
 name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
   workflow_dispatch:
 
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04, macos-11, macos-12]
-        python-version: [3.9, "3.10", "3.11"]
+        python-version: ["3.10", "3.11"]
 
     runs-on: ${{ matrix.os }}
 

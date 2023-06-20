@@ -1,12 +1,12 @@
-### Contributing
+Contributing
+============
 
-To contribute to this project you can do either of the following:
+To contribute to this project, you can do any of the following:
 
-1. Tell me what to change (recommended; easy for you but hard for me)
-   Let me know what you want fixed by using either the Issues or Discussions
-   tabs. When I can, I'll try to add/fix code based on your comments.
-   
-2. Do it yourself (harder for you but easy for me)
-   Create a fork of this repo. Develop a particular feature on your own branch
-   and submit a pull request. I'll take a look at it once you try to merge it.
-   If you use this option, please be sure to use the pull request template.
+* Raise an issue. This is primarily useful if you've found a bug. When I can,
+  I'll try to add/fix code based on your comments.
+* Start a discussion. This is primarily useful if you're requesting a new
+  feature. We can discuss if the feature should be added and how to do it.
+* Submit a pull request. This is primarily useful if you want to help me
+  develop mars_time. When I can, I'll take a look at your request. If you choose
+  this option, please be sure to use the pull request template.
