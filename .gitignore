@@ -2,6 +2,5 @@ __pycache__
 venv
 .idea
 .pytest_cache
-.DS_store
 .tox
-*mer.egg-info
+*.egg-info
