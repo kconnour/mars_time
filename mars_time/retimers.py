@@ -271,6 +271,25 @@ class MarsTime:
             return False
         else:
             return self.year == other.year and self.sol == other.sol
+        
+    def __gt__(self, other):
+        if not isinstance(other, MarsTime):
+            return False
+        else:
+            if self.year == other.year:
+                return self.sol > other.sol
+            else:
+                return self.year > other.year
+
+    def __ge__(self, other):
+        if not isinstance(other, MarsTime):
+            return False
+        else:
+            if self.year == other.year:
+                return self.sol >= other.sol
+            else:
+                return self.year > other.year
+    
 
 
 class MarsTimeDelta:
