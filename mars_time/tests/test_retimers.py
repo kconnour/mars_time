@@ -22,6 +22,12 @@ class TestMarsTime:
         mt1 = MarsTime(0, 0)
         assert mt0 == mt1
 
+    def test_my_greater_than_other(self):
+        assert MarsTime(33, 10) > MarsTime(32, 10)
+
+    def test_ls_less_than_other(self):
+        assert MarsTime(33, 10) < MarsTime(33, 260)
+
     def test_adding_1_year_gives_expected_result(self):
         mt = MarsTime(0, 0)
         mtd = MarsTimeDelta(year=1)
