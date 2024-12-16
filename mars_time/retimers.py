@@ -2,6 +2,7 @@
 from __future__ import annotations
 import datetime
 import math
+import click
 
 import scipy
 
@@ -424,6 +425,30 @@ class MarsTimeDelta:
             return False
         else:
             return self.year == other.year and self.sol == other.sol
+
+
+class ClickMarsTime(click.ParamType):
+    """
+    Converts string of type MY{XX}Ls{YYY} or MY{XX}Sol{YYY} to
+    MarsTime type
+    """
+
+    name = "marstime"
+
+    def convert(self, value, param, ctx):
+        if isinstance(value, MarsTime):
+            return value
+        if "Sol" in value:
+            my = int(value.split("Sol")[0].split("MY")[1])
+            sol = float(value.split("Sol")[1])
+            return MarsTime(my, sol)
+        elif "Ls" in value:
+            my = int(value.split("Ls")[0].split("MY")[1])
+            ls = float(value.split("Ls")[1])
+            return MarsTime.from_solar_longitude(my, ls)
+        else:
+            self.fail(f"{value!r} is not a valid Mars Date string", param, ctx)
+
 
 
 def datetime_to_marstime(dt: datetime.datetime) -> MarsTime:
